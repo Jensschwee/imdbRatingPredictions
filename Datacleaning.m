@@ -6,6 +6,8 @@ tblMovie=readtable('movie_metadata.csv','Format','%C%s%f%f%f%f%s%f%f%s%s%s%f%f%s
 tblMissing = ismissing(tblMovie);
 tblMovie = tblMovie(~any(tblMissing,2),:);
 clear tblMissing
+
+%Country cleaning
 tblMovie.country(find(tblMovie.country == 'New Line')) = 'USA';
 tblMovie.country(find(tblMovie.country == 'Official site')) = 'USA';
 
