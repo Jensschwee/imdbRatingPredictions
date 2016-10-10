@@ -6,7 +6,7 @@ trainingSize = length(tblMovie.movie_imdb_link)*trainingSetSize;
 
 %Spilt data ind i tables
 tblTest = tblMovie(tblIndex(1:testSize),:);
-tblValidation = tblMovie(tblIndex(testSize+1:testSize+trainingSize),:);
+tblTraining = tblMovie(tblIndex(testSize+1:testSize+1+trainingSize),:);
 
 clear tblIndex
 clear testSize
