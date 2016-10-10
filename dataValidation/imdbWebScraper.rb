@@ -6,6 +6,9 @@ require 'csv'
 $count
 $foreignCount
 
+
+
+
 def get_html
   $count = 0
   $foreignCount = 0
@@ -44,13 +47,13 @@ def parse_html(doc, row)
   row['budget'] = budgetFileContent
   row['gross'] = grossFileContent
 
-  if budgetFileContent.include?('$') or grossFileContent.include?('$')
+  if budgetFileContent.include?('$') || grossFileContent.include?('$')
     row['foreign_currency'] = 'false'
-  else if budgetFileContent.include?('USD') or grossFileContent.include?('USD')
+  elsif budgetFileContent.include?('USD') || grossFileContent.include?('USD')
     row['foreign_currency'] = 'false'
-  else if budgetFileContent.include?('dollar') or grossFileContent.include?('dollar')
+  elsif budgetFileContent.include?('dollar') || grossFileContent.include?('dollar')
     row['foreign_currency'] = 'false'
-  else if budgetFileContent.include?('dollars') or grossFileContent.include?('dollars')
+  elsif budgetFileContent.include?('dollars') || grossFileContent.include?('dollars')
     row['foreign_currency'] = 'false'
   else
     $foreignCount += 1
@@ -69,4 +72,4 @@ def cleanFile(file)
   puts newText
 end
 
-get_html
+get_html()
