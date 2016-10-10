@@ -1,8 +1,8 @@
-file = File.open('test.txt', 'r+')
+file = File.open('test.txt', 'r')
 
-file.each_line do |line|
-  line.gsub(/\s+/, "")
-  line.strip
-  line.gsub("Budget:", "")
-  line.gsub("(estimated)", "")
-end
+oldText = File.read(file)
+newText = oldText.gsub(/\s+/, "").gsub("Budget:", "").gsub("(estimated)", "")
+
+File.open('test.txt', 'w') { |file| file.puts newText }
+
+puts newText
