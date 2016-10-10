@@ -17,3 +17,18 @@ tblMovie.country(find(tblMovie.country == 'Official site')) = 'USA';
 % Remove duplicates by checking movie links
 [~,ind] = unique(tblMovie(:,18));
 tblMovie = tblMovie(ind,:);
+
+
+% Change genres to categorical data
+for i=1:size(tblMovie)
+    genres=regexp(tblMovie{i,10},'[|]+','split');
+    tblMovie.genres{i} = categorical(genres{1});
+end;
+clear genres
+
+% Change plot_keywords to categorical data
+for i=1:size(tblMovie)
+    plot_keywords=regexp(tblMovie{i,17},'[|]+','split');
+    tblMovie.plot_keywords{i} = categorical(plot_keywords{1});
+end;
+clear plot_keywords
