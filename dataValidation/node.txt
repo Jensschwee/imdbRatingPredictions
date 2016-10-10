@@ -1,0 +1,5 @@
+<div class="txt-block">
+      <h4 class="inline">Budget:</h4>        $3,800,000        
+
+      <span class="attribute">(estimated)</span>
+      </div>
