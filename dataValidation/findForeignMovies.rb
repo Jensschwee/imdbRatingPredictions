@@ -4,7 +4,7 @@ newFile = File.open("foreign_movie_metadata.csv", 'w')
 foreignCount = 0
 hollywoodCount = 0
 
-CSV.foreach("movie_metadata.csv", headers: true) do |orig|
+CSV.foreach("filtered_movie_set.csv", headers: true) do |orig|
   temp = orig['country'].to_s
   if !temp.include?("US") 
     newFile << orig
