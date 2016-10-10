@@ -32,8 +32,9 @@ for i=1:size(tblMovie)
     tblMovie.genres{i} = categorical(genres{1});
 end;
 
-genres = '';
-genres = [genres, tblMovie.genres{:}];
+clear genres
+%genres = '';
+%genres = [genres, tblMovie.genres{:}];
 
 % Change plot_keywords to categorical data
 for i=1:size(tblMovie)
