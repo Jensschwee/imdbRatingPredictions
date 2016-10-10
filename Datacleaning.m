@@ -31,11 +31,34 @@ for i=1:size(tblMovie)
     genres=regexp(tblMovie{i,10},'[|]+','split');
     tblMovie.genres{i} = categorical(genres{1});
 end;
+
 clear genres
+%genres = '';
+%genres = [genres, tblMovie.genres{:}];
 
 % Change plot_keywords to categorical data
 for i=1:size(tblMovie)
     plot_keywords=regexp(tblMovie{i,17},'[|]+','split');
     tblMovie.plot_keywords{i} = categorical(plot_keywords{1});
 end;
+
 clear plot_keywords
+%plot_keywords = '';
+%plot_keywords = [plot_keywords, tblMovie.plot_keywords{:}];
+clear i
+
+% Normalize data - in a seperate table, because why not.
+tblMovieNormalized = tblMovie;
+tblMovieNormalized.num_critic_for_reviews = mat2gray(tblMovie.num_critic_for_reviews); % Column 3
+tblMovieNormalized.duration = mat2gray(tblMovie.duration); % Column 4
+tblMovieNormalized.director_facebook_likes = mat2gray(tblMovie.director_facebook_likes); % Column 5
+tblMovieNormalized.actor_3_facebook_likes = mat2gray(tblMovie.actor_3_facebook_likes); % Column 6
+tblMovieNormalized.actor_1_facebook_likes = mat2gray(tblMovie.actor_1_facebook_likes); % Column 8
+tblMovieNormalized.num_voted_users = mat2gray(tblMovie.num_voted_users); % Column 13
+tblMovieNormalized.cast_total_facebook_likes = mat2gray(tblMovie.cast_total_facebook_likes); % Column 14
+tblMovieNormalized.facenumber_in_poster = mat2gray(tblMovie.facenumber_in_poster); % Column 16
+tblMovieNormalized.num_user_for_reviews = mat2gray(tblMovie.num_user_for_reviews); % Column 19
+tblMovieNormalized.budget = mat2gray(tblMovie.budget); % Column 23
+tblMovieNormalized.actor_2_facebook_likes = mat2gray(tblMovie.actor_2_facebook_likes); % Column 25
+tblMovieNormalized.imdb_score = mat2gray(tblMovie.imdb_score); % Column 26
+tblMovieNormalized.movie_facebook_likes_ = mat2gray(tblMovie.movie_facebook_likes_); % Column 28
