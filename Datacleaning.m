@@ -31,11 +31,19 @@ for i=1:size(tblMovie)
     genres=regexp(tblMovie{i,10},'[|]+','split');
     tblMovie.genres{i} = categorical(genres{1});
 end;
-clear genres
+
+genres = '';
+genres = [genres, tblMovie.genres{:}];
 
 % Change plot_keywords to categorical data
 for i=1:size(tblMovie)
     plot_keywords=regexp(tblMovie{i,17},'[|]+','split');
     tblMovie.plot_keywords{i} = categorical(plot_keywords{1});
 end;
+
 clear plot_keywords
+%plot_keywords = '';
+%plot_keywords = [plot_keywords, tblMovie.plot_keywords{:}];
+clear i
+
+
