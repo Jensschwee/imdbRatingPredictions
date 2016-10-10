@@ -9,9 +9,12 @@ $foreignCount
 def get_html
   $count = 0
   $foreignCount = 0
-  CSV.foreach('filtered_movie_set.csv', headers: true) do |row|
+
+  user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_0) AppleWebKit/535.2 (KHTML, like Gecko) Chrome/15.0.854.0 Safari/535.2'
+
+  CSV.foreach('foreign_movie_metadata.csv', headers: true) do |row|
     url = row['movie_imdb_link']
-    doc = Nokogiri::HTML(open(url))
+    doc = Nokogiri::HTML(open(url, 'User-Agent' => user_agent))
     parse_html(doc, row)
     sleep(Random.rand(20)+5)
   end
@@ -37,24 +40,24 @@ def parse_html(doc, row)
   grossFile = File.open('grossText.txt', 'r')
   budgetFileContent = File.read(budgetFile)
   grossFileContent = File.read(grossFile)
-  
+
   row['budget'] = budgetFileContent
   row['gross'] = grossFileContent
-  
-  if budgetFileContent.include?('$') or grossFileContent.include?('$')
+
+  if budgetFileContent.include?('$') || grossFileContent.include?('$')
     row['foreign_currency'] = 'false'
-  else if budgetFileContent.include?('USD') or grossFileContent.include?('USD')
+  elsif budgetFileContent.include?('USD') || grossFileContent.include?('USD')
     row['foreign_currency'] = 'false'
-  else if budgetFileContent.include?('dollar') or grossFileContent.include?('dollar')
+  elsif budgetFileContent.include?('dollar') || grossFileContent.include?('dollar')
     row['foreign_currency'] = 'false'
-  else if budgetFileContent.include?('dollars') or grossFileContent.include?('dollars')
+  elsif budgetFileContent.include?('dollars') || grossFileContent.include?('dollars')
     row['foreign_currency'] = 'false'
   else
     $foreignCount += 1
     row['foreign_currency'] = 'true'
   end
-  
-  $count += 1    
+
+  $count += 1
   puts $count
 end
 
@@ -66,4 +69,4 @@ def cleanFile(file)
   puts newText
 end
 
-get_html
+get_html()
