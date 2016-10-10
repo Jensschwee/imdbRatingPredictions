@@ -40,7 +40,7 @@ def parse_html(doc, row)
   
   row['budget'] = budgetFileContent
   row['gross'] = grossFileContent
-
+  
   if budgetFileContent.include?('$') or grossFileContent.include?('$')
     row['foreign_currency'] = 'false'
   else if budgetFileContent.include?('USD') or grossFileContent.include?('USD')
@@ -53,7 +53,7 @@ def parse_html(doc, row)
     $foreignCount += 1
     row['foreign_currency'] = 'true'
   end
-    
+  
   $count += 1    
   puts $count
 end
