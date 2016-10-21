@@ -13,3 +13,6 @@ clear testSize
 clear trainingSize
 clear trainingSetSize
 
+modelspec = 'sys ~ age + wgt + sex + smoke';
+mdl = fitlm(tblTraining,modelspec) 
+
