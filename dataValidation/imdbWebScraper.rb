@@ -7,8 +7,23 @@ $count
 $foreignCount
 $resultList
 
+#ONE
 $inputFilePath = 'csv/foreign_movie_metadata_one.csv'
 $outputFilePath = 'csv/result_one.csv'
+
+#TWO
+#$inputFilePath = 'csv/foreign_movie_metadata_two.csv'
+#$outputFilePath = 'csv/result_two.csv'
+
+#THREE
+#$inputFilePath = 'csv/foreign_movie_metadata_three.csv'
+#$outputFilePath = 'csv/result_three.csv'
+
+#FOUR
+#$inputFilePath = 'csv/foreign_movie_metadata_four.csv'
+#$outputFilePath = 'csv/result_four.csv'
+
+
 $budgetFilePath = 'txt/budgetText.txt'
 $grossFilePath = 'txt/grossText.txt'
 
@@ -22,6 +37,7 @@ def get_html
   $count = 0
   $foreignCount = 0
   $resultList = Array.new
+  # only include the line below if you're scraping file ONE
   $resultList.push ScrapeResult.new('movie_title', 'movie_imdb_link', 'country', 'budget', 'gross', 'foreign_currency')
   
   user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_0) AppleWebKit/535.2 (KHTML, like Gecko) Chrome/15.0.854.0 Safari/535.2'
