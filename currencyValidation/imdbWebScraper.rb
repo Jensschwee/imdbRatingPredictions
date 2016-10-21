@@ -8,12 +8,12 @@ $foreignCount
 $resultList
 
 #ONE
-$inputFilePath = 'csv/foreign_movie_metadata_one.csv'
-$outputFilePath = 'csv/result_one.csv'
+#$inputFilePath = 'csv/foreign_movie_metadata_one.csv'
+#$outputFilePath = 'csv/result_one.csv'
 
 #TWO
-#$inputFilePath = 'csv/foreign_movie_metadata_two.csv'
-#$outputFilePath = 'csv/result_two.csv'
+$inputFilePath = 'csv/foreign_movie_metadata_two.csv'
+$outputFilePath = 'csv/result_two.csv'
 
 #THREE
 #$inputFilePath = 'csv/foreign_movie_metadata_three.csv'
@@ -38,27 +38,29 @@ def get_html
   $foreignCount = 0
   $resultList = Array.new
   # only include the line below if you're scraping file ONE
-  $resultList.push ScrapeResult.new('movie_title', 'movie_imdb_link', 'country', 'budget', 'gross', 'foreign_currency')
+  # $resultList.push ScrapeResult.new('movie_title', 'movie_imdb_link', 'country', 'budget', 'gross', 'foreign_currency')
   
   user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_0) AppleWebKit/535.2 (KHTML, like Gecko) Chrome/15.0.854.0 Safari/535.2'
-
-  CSV.foreach($inputFilePath, headers: true) do |row|
-    url = row['movie_imdb_link']
-    doc = Nokogiri::HTML(open(url, 'User-Agent' => user_agent))
-    parse_html(doc, row)
-    sleep(Random.rand(5)+10)
+  begin
+    CSV.foreach($inputFilePath, headers: true) do |row|
+      url = row['movie_imdb_link']
+      doc = Nokogiri::HTML(open(url, 'User-Agent' => user_agent))
+      parse_html(doc, row)
+      sleep(Random.rand(3)+7)
+    end
+  ensure
+    puts 'Total movies scraped: ' + $count.to_s
+    puts ''
+    puts 'Movies with foreign currency found: ' + $foreignCount.to_s
+    puts ''
+    puts 'Writing result of scrape to file'
+    puts ''
+    
+    File.open($outputFilePath, "w+") do |f|
+      $resultList.each { |element| f.puts(element.toString) }
+    end
   end
-
-  puts 'Total movies scraped: ' + $count.to_s
-  puts ''
-  puts 'Movies with foreign currency found: ' + $foreignCount.to_s
-  puts ''
-  puts 'Writing result of scrape to file'
-  puts ''
-
-  File.open($outputFilePath, "w+") do |f|
-    $resultList.each { |element| f.puts(element.toString) }
-  end
+  
 end
 
 def parse_html(doc, row)
