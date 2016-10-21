@@ -98,6 +98,7 @@ clear zFactor;
 tblMovie.color = removecats(tblMovie.color);
 tblMovie.aspect_ratio = removecats(tblMovie.aspect_ratio);
 tblMovie.language = removecats(tblMovie.language);
+tblMovie.country = removecats(tblMovie.country);
 tblMovie.content_rating = removecats(tblMovie.content_rating);
 tblMovie.title_year = removecats(tblMovie.title_year);
 
