@@ -94,6 +94,14 @@ clear outlieTable
 clear outlier
 clear zFactor;
 
+%Remove catagories that is 0 of
+tblMovie.color = removecats(tblMovie.color);
+tblMovie.aspect_ratio = removecats(tblMovie.aspect_ratio);
+tblMovie.language = removecats(tblMovie.language);
+tblMovie.content_rating = removecats(tblMovie.content_rating);
+tblMovie.title_year = removecats(tblMovie.title_year);
+
+
 % Normalize data - in a seperate table, because why not.
 tblMovieNormalized = tblMovie;
 tblMovieNormalized.num_critic_for_reviews = mat2gray(tblMovie.num_critic_for_reviews); % Column 3
