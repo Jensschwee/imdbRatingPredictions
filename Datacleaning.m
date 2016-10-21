@@ -47,6 +47,17 @@ clear plot_keywords
 %plot_keywords = [plot_keywords, tblMovie.plot_keywords{:}];
 clear i
 
+%Remove catagories that is 0 of
+tblMovie.color = removecats(tblMovie.color);
+tblMovie.aspect_ratio = removecats(tblMovie.aspect_ratio);
+tblMovie.language = removecats(tblMovie.language);
+tblMovie.country = removecats(tblMovie.country);
+tblMovie.content_rating = removecats(tblMovie.content_rating);
+tblMovie.title_year = removecats(tblMovie.title_year);
+
+%add revenue
+tblMovie.revenue = tblMovie.gross - tblMovie.budget;
+
 %Remove Outlines
 zFactor = 2.5;
 %num_critic_for_reviews
@@ -94,27 +105,21 @@ clear outlieTable
 clear outlier
 clear zFactor;
 
-%Remove catagories that is 0 of
-tblMovie.color = removecats(tblMovie.color);
-tblMovie.aspect_ratio = removecats(tblMovie.aspect_ratio);
-tblMovie.language = removecats(tblMovie.language);
-tblMovie.country = removecats(tblMovie.country);
-tblMovie.content_rating = removecats(tblMovie.content_rating);
-tblMovie.title_year = removecats(tblMovie.title_year);
-
-
 % Normalize data - in a seperate table, because why not.
-tblMovieNormalized = tblMovie;
-tblMovieNormalized.num_critic_for_reviews = mat2gray(tblMovie.num_critic_for_reviews); % Column 3
-tblMovieNormalized.duration = mat2gray(tblMovie.duration); % Column 4
-tblMovieNormalized.director_facebook_likes = mat2gray(tblMovie.director_facebook_likes); % Column 5
-tblMovieNormalized.actor_3_facebook_likes = mat2gray(tblMovie.actor_3_facebook_likes); % Column 6
-tblMovieNormalized.actor_1_facebook_likes = mat2gray(tblMovie.actor_1_facebook_likes); % Column 8
-tblMovieNormalized.num_voted_users = mat2gray(tblMovie.num_voted_users); % Column 13
-tblMovieNormalized.cast_total_facebook_likes = mat2gray(tblMovie.cast_total_facebook_likes); % Column 14
-tblMovieNormalized.facenumber_in_poster = mat2gray(tblMovie.facenumber_in_poster); % Column 16
-tblMovieNormalized.num_user_for_reviews = mat2gray(tblMovie.num_user_for_reviews); % Column 19
-tblMovieNormalized.budget = mat2gray(tblMovie.budget); % Column 23
-tblMovieNormalized.actor_2_facebook_likes = mat2gray(tblMovie.actor_2_facebook_likes); % Column 25
-tblMovieNormalized.imdb_score = mat2gray(tblMovie.imdb_score); % Column 26
-tblMovieNormalized.movie_facebook_likes_ = mat2gray(tblMovie.movie_facebook_likes_); % Column 28
+tblMovieNormalized = tblMovieNoOutliers;
+tblMovieNormalized.num_critic_for_reviews = mat2gray(tblMovieNoOutliers.num_critic_for_reviews); % Column 3
+tblMovieNormalized.duration = mat2gray(tblMovieNoOutliers.duration); % Column 4
+tblMovieNormalized.director_facebook_likes = mat2gray(tblMovieNoOutliers.director_facebook_likes); % Column 5
+tblMovieNormalized.actor_3_facebook_likes = mat2gray(tblMovieNoOutliers.actor_3_facebook_likes); % Column 6
+tblMovieNormalized.actor_1_facebook_likes = mat2gray(tblMovieNoOutliers.actor_1_facebook_likes); % Column 8
+tblMovieNormalized.num_voted_users = mat2gray(tblMovieNoOutliers.num_voted_users); % Column 13
+tblMovieNormalized.cast_total_facebook_likes = mat2gray(tblMovieNoOutliers.cast_total_facebook_likes); % Column 14
+tblMovieNormalized.facenumber_in_poster = mat2gray(tblMovieNoOutliers.facenumber_in_poster); % Column 16
+tblMovieNormalized.num_user_for_reviews = mat2gray(tblMovieNoOutliers.num_user_for_reviews); % Column 19
+tblMovieNormalized.budget = mat2gray(tblMovieNoOutliers.budget); % Column 23
+tblMovieNormalized.actor_2_facebook_likes = mat2gray(tblMovieNoOutliers.actor_2_facebook_likes); % Column 25
+tblMovieNormalized.imdb_score = mat2gray(tblMovieNoOutliers.imdb_score); % Column 26
+tblMovieNormalized.movie_facebook_likes_ = mat2gray(tblMovieNoOutliers.movie_facebook_likes_); % Column 28
+
+
+
