@@ -1,7 +1,7 @@
 require "csv"
 
 puts "Counting semicolons..."
-csvFile = File.open("foreign_movie_metadata.csv", 'r+')
+csvFile = File.open("csv/foreign_movie_metadata.csv", 'r+')
 semiColonCount = 0
 csvFile.each_char do |char|
   if char == ';'
