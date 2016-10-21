@@ -7,6 +7,11 @@ $count
 $foreignCount
 $resultList
 
+$inputFilePath = 'csv/foreign_movie_metadata_one.csv'
+$outputFilePath = 'csv/result_one.csv'
+$budgetFilePath = 'txt/budgetText.txt'
+$grossFilePath = 'txt/grossText.txt'
+
 ScrapeResult = Struct.new(:title, :imdb_link, :country, :budget, :gross, :foreign_currency) do
   def toString
     "#{title}, #{imdb_link}, #{country}, #{budget}, #{gross}, #{foreign_currency}"
@@ -21,7 +26,7 @@ def get_html
   
   user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_0) AppleWebKit/535.2 (KHTML, like Gecko) Chrome/15.0.854.0 Safari/535.2'
 
-  CSV.foreach('csv/foreign_movie_metadata.csv', headers: true) do |row|
+  CSV.foreach($inputFilePath, headers: true) do |row|
     url = row['movie_imdb_link']
     doc = Nokogiri::HTML(open(url, 'User-Agent' => user_agent))
     parse_html(doc, row)
@@ -35,7 +40,7 @@ def get_html
   puts 'Writing result of scrape to file'
   puts ''
 
-  File.open("csv/result.csv", "w+") do |f|
+  File.open($outputFilePath, "w+") do |f|
     $resultList.each { |element| f.puts(element.toString) }
   end
 end
@@ -43,17 +48,17 @@ end
 def parse_html(doc, row)
   doc.xpath('//div').each do |node|
     if node.text.include?("Budget:")
-      File.open("txt/budgetText.txt", 'w') {|f| f.write(node.text) }
+      File.open($budgetFilePath, 'w') {|f| f.write(node.text) }
     end
     if node.text.include?("Gross:")
-      File.open("txt/grossText.txt", 'w') {|f| f.write(node.text) }
+      File.open($grossFilePath, 'w') {|f| f.write(node.text) }
     end
   end
 
-  cleanFile('txt/budgetText.txt')
-  cleanFile('txt/grossText.txt')
-  budgetFile = File.open('txt/budgetText.txt', 'r')
-  grossFile = File.open('txt/grossText.txt', 'r')
+  cleanFile($budgetFilePath)
+  cleanFile($grossFilePath)
+  budgetFile = File.open($budgetFilePath, 'r')
+  grossFile = File.open($grossFilePath, 'r')
   budgetFileContent = File.read(budgetFile)
   grossFileContent = File.read(grossFile)
 
