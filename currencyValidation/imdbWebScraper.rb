@@ -23,6 +23,9 @@ $resultList
 $inputFilePath = 'csv/foreign_movie_metadata_four.csv'
 $outputFilePath = 'csv/result_four.csv'
 
+#FIVE
+#$inputFilePath = 'csv/foreign_movie_metadata_five.csv'
+#$outputFilePath = 'csv/result_five.csv'
 
 $budgetFilePath = 'txt/budgetText.txt'
 $grossFilePath = 'txt/grossText.txt'
@@ -46,7 +49,7 @@ def get_html
       url = row['movie_imdb_link']
       doc = Nokogiri::HTML(open(url, 'User-Agent' => user_agent))
       parse_html(doc, row)
-      sleep(Random.rand(3)+7)
+      sleep(Random.rand(10)+10)
     end
   ensure
     puts 'Total movies scraped: ' + $count.to_s
