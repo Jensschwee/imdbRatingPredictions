@@ -20,12 +20,12 @@ $resultList
 #$outputFilePath = 'csv/result_three.csv'
 
 #FOUR
-$inputFilePath = 'csv/foreign_movie_metadata_four.csv'
-$outputFilePath = 'csv/result_four.csv'
+#$inputFilePath = 'csv/foreign_movie_metadata_four.csv'
+#$outputFilePath = 'csv/result_four.csv'
 
 #FIVE
-#$inputFilePath = 'csv/foreign_movie_metadata_five.csv'
-#$outputFilePath = 'csv/result_five.csv'
+$inputFilePath = 'csv/foreign_movie_metadata_five.csv'
+$outputFilePath = 'csv/result_five.csv'
 
 $budgetFilePath = 'txt/budgetText.txt'
 $grossFilePath = 'txt/grossText.txt'
