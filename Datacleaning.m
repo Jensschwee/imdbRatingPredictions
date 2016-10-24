@@ -72,8 +72,10 @@ clear i
 clear n
 
 %remove movies with order currency
-tblMovieToRemove=readtable('final_currency_validation.csv');
-tblMovie = tblMovie(cellfun(@isempty,strfind(tblMovie.movie_imdb_link,tblMovieToRemove.tblMovieToRemove.imdb)));
+tblMovieToRemove=readtable('foreign_movie_links.csv', 'Delimiter', ',');
+for i=1:length(tblMovieToRemove.link)
+    tblMovie = tblMovie(cellfun(@isempty,strfind(tblMovie.movie_imdb_link,tblMovieToRemove.link(i))),:);
+end;
 
 %Remove catagories that is 0 of
 tblMovie.color = removecats(tblMovie.color);
@@ -116,11 +118,11 @@ outlieTable = [outlieTable logical(outlier)];
 outlier = abs(tblMovie.num_user_for_reviews-mean(tblMovie.num_user_for_reviews)) > (zFactor * std(tblMovie.num_user_for_reviews));
 outlieTable = [outlieTable logical(outlier)];
 %budget
-%outlier = abs(tblMovie.budget-mean(tblMovie.budget)) > (zFactor * std(tblMovie.budget));
-%outlieTable = [outlieTable logical(outlier)];
+outlier = abs(tblMovie.budget-mean(tblMovie.budget)) > (zFactor * std(tblMovie.budget));
+outlieTable = [outlieTable logical(outlier)];
 %gross
-%outlier = abs(tblMovie.gross-mean(tblMovie.gross)) > (zFactor * std(tblMovie.gross));
-%outlieTable = [outlieTable logical(outlier)];
+outlier = abs(tblMovie.gross-mean(tblMovie.gross)) > (zFactor * std(tblMovie.gross));
+outlieTable = [outlieTable logical(outlier)];
 %actor_2_facebook_likes
 outlier = abs(tblMovie.actor_2_facebook_likes-mean(tblMovie.actor_2_facebook_likes)) > (zFactor * std(tblMovie.actor_2_facebook_likes));
 outlieTable = [outlieTable logical(outlier)];
