@@ -9,4 +9,3 @@ csvFile.each_char do |char|
   end
 end
 puts semiColonCount
-

@@ -1,4 +1,4 @@
-movie_title, movie_imdb_link, country, budget, gross, foreign_currency
+movie_title, movie_imdb_link, country, budget, gross, foreign_currency 
 Metropolis , http://www.imdb.com/title/tt0017136/?ref_=fn_tt_tt_1, Germany, DEM 6,000,000, $26,435(USA)(11November2011), true
 Monty Python and the Holy Grail , http://www.imdb.com/title/tt0071853/?ref_=fn_tt_tt_1, UK, £229,575, $1,229,197(USA)(25May2012), true
 Akira , http://www.imdb.com/title/tt0094625/?ref_=fn_tt_tt_1, Japan, JPY 1,100,000,000, $439,162(USA), true
@@ -52,9 +52,9 @@ The Chorus , http://www.imdb.com/title/tt0372824/?ref_=fn_tt_tt_1, France, €5
 Layer Cake , http://www.imdb.com/title/tt0375912/?ref_=fn_tt_tt_1, UK, £4,000,000, $2,338,695(USA)(12August2005), true
 The Visual Bible: The Gospel of John , http://www.imdb.com/title/tt0377992/?ref_=fn_tt_tt_1, Canada, CAD 17,000,000, $4,068,087(USA)(9April2004), true
 Oliver Twist , http://www.imdb.com/title/tt0380599/?ref_=fn_tt_tt_1, UK, €50,000,000, $1,987,287(USA)(14October2005), true
-Yes , http://www.imdb.com/title/tt0381717/?ref_=fn_tt_tt_1, UK, £1,000,000, $396,035(USA)(23September2005), true
+Yes , http://www.imdb.com/title/tt0381717/?ref_=fn_tt_tt_1, UK, £1,000,000, $396,035(USA)(23September2005), true,
 My Summer of Love , http://www.imdb.com/title/tt0382189/?ref_=fn_tt_tt_1, UK, £1,700,000, $992,238(USA)(5August2005), true
-Jindabyne , http://www.imdb.com/title/tt0382765/?ref_=fn_tt_tt_1, Australia, AUD 15,000,000, $399,879(USA)(31August2007), true
+Jindabyne , http://www.imdb.com/title/tt0382765/?ref_=fn_tt_tt_1, Australia, AUD 15,000,000, $399,879(USA)(31August2007), true, 
 Saint Ralph , http://www.imdb.com/title/tt0384488/?ref_=fn_tt_tt_1, Canada, CAD 6,000,000, $795,126(USA)(28October2005), true
 House of Flying Daggers , http://www.imdb.com/title/tt0385004/?ref_=fn_tt_tt_1, China, CNY 100,000,000, $11,041,228(USA)(1April2005), true
 Renaissance , http://www.imdb.com/title/tt0386741/?ref_=fn_tt_tt_1, France, €14,000,000, $63,260(USA)(13October2006), true
