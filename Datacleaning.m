@@ -27,25 +27,49 @@ tblMovie.content_rating(tblMovie.content_rating == 'Unrated') = 'No rating';
 tblMovie.content_rating(tblMovie.content_rating == 'Passed') = 'No rating';
 
 % Change genres to categorical data
+%Find all genres
+genres1 = '';
 for i=1:size(tblMovie)
     genres=regexp(tblMovie{i,10},'[|]+','split');
-    tblMovie.genres{i} = categorical(genres{1});
+    genres1 = [genres1, categorical(genres{1})];
+end;
+genres1 = unique(genres1);
+
+%Create genre table for temp generes
+genresCells = '';
+for i=1:length(genres1)
+    genresCells = [genresCells table(0,'VariableNames',{strcat('genre_',strrep(char(genres1(i)),'-',''))})];
 end;
 
+%Write 1 to temp gener table
+for i=1:size(tblMovie)
+    genres=regexp(tblMovie{i,10},'[|]+','split');
+    for n=1:length(genres{1})
+        warning('off','all')
+        genresCells(i,find(genres1 == genres{1}(n))) = {1};
+    end;
+end;
+warning('on','all')
+
+%Add genre table to movie table
+tblMovie = [tblMovie genresCells];
 clear genres
+clear genresCells
+clear genres1
 %genres = '';
 %genres = [genres, tblMovie.genres{:}];
 
 % Change plot_keywords to categorical data
-for i=1:size(tblMovie)
-    plot_keywords=regexp(tblMovie{i,17},'[|]+','split');
-    tblMovie.plot_keywords{i} = categorical(plot_keywords{1});
-end;
+%for i=1:size(tblMovie)
+%    plot_keywords=regexp(tblMovie{i,17},'[|]+','split');
+%    tblMovie.plot_keywords{i} = categorical(plot_keywords{1});
+%end;
 
-clear plot_keywords
+%clear plot_keywords
 %plot_keywords = '';
 %plot_keywords = [plot_keywords, tblMovie.plot_keywords{:}];
 clear i
+clear n
 
 %Remove catagories that is 0 of
 tblMovie.color = removecats(tblMovie.color);
