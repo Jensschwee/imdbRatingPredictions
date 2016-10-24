@@ -13,7 +13,8 @@ clear testSize
 clear trainingSize
 clear trainingSetSize
 
-modelspec = 'revenue ~ duration + director_facebook_likes + actor_3_facebook_likes + actor_2_facebook_likes+actor_1_facebook_likes+cast_total_facebook_likes+facenumber_in_poster';
+modelspec = 'revenue ~ ';
+modelspec = strcat(modelspec,'duration + director_facebook_likes + actor_3_facebook_likes + actor_2_facebook_likes+actor_1_facebook_likes+cast_total_facebook_likes+facenumber_in_poster');
 %modelspec = strcat(modelspec, '+movie_title+director_name+actor_3_name+actor_2_name+actor_1_name');
 %modelspec = strcat(modelspec, '+budget');
 modelspec = strcat(modelspec, '+language+country+content_rating+title_year');
