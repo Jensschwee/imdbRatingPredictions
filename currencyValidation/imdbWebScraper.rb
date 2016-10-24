@@ -113,7 +113,7 @@ end
 def cleanFile(file)
   file = File.open(file, 'r')
   oldText = File.read(file)
-  newText = oldText.gsub(/\s+/, "").gsub("Budget:", "").gsub("(estimated)", "").gsub("Gross:", "").gsub("\n", "")
+  newText = oldText.gsub(/\s+/, "").gsub("Budget:", "").gsub("(estimated)", "").gsub("Gross:", "").gsub("\n", "").gsub(",", "")
   File.open(file, 'w') { |file| file.puts newText }
   puts newText
 end
