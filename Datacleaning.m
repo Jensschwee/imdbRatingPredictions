@@ -83,7 +83,7 @@ tblMovie.title_year = removecats(tblMovie.title_year);
 tblMovie.revenue = tblMovie.gross - tblMovie.budget;
 
 %Remove Outlines
-zFactor = 2.5;
+zFactor = 3;
 %num_critic_for_reviews
 outlier = abs(tblMovie.num_critic_for_reviews-mean(tblMovie.num_critic_for_reviews)) > (zFactor * std(tblMovie.num_critic_for_reviews));
 outlieTable = logical(outlier); 
@@ -144,6 +144,3 @@ tblMovieNormalized.budget = mat2gray(tblMovieNoOutliers.budget); % Column 23
 tblMovieNormalized.actor_2_facebook_likes = mat2gray(tblMovieNoOutliers.actor_2_facebook_likes); % Column 25
 tblMovieNormalized.imdb_score = mat2gray(tblMovieNoOutliers.imdb_score); % Column 26
 tblMovieNormalized.movie_facebook_likes_ = mat2gray(tblMovieNoOutliers.movie_facebook_likes_); % Column 28
-
-
-

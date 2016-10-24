@@ -13,6 +13,8 @@ clear testSize
 clear trainingSize
 clear trainingSetSize
 
+modelspec = 'revenue ~ ';
+modelspec = strcat(modelspec,'duration + director_facebook_likes + actor_3_facebook_likes + actor_2_facebook_likes+actor_1_facebook_likes+cast_total_facebook_likes+facenumber_in_poster');
 
 genres1 = '';
 for i=1:size(tblMovie);
@@ -21,7 +23,6 @@ for i=1:size(tblMovie);
 end;
 genres1 = unique(genres1);
 
-modelspec = 'revenue ~ duration';
 %modelspec = '+ director_facebook_likes + actor_3_facebook_likes + actor_2_facebook_likes+actor_1_facebook_likes+cast_total_facebook_likes+facenumber_in_poster';
 %modelspec = strcat(modelspec, '+movie_title+director_name+actor_3_name+actor_2_name+actor_1_name');
 %modelspec = strcat(modelspec, '+budget');
