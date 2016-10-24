@@ -28,17 +28,17 @@ tblMovie.content_rating(tblMovie.content_rating == 'Passed') = 'No rating';
 
 % Change genres to categorical data
 %Find all genres
-genres1 = '';
+allGenres = '';
 for i=1:size(tblMovie)
     genres=regexp(tblMovie{i,10},'[|]+','split');
-    genres1 = [genres1, categorical(genres{1})];
+    allGenres = [allGenres, categorical(genres{1})];
 end;
-genres1 = unique(genres1);
+allGenres = unique(allGenres);
 
 %Create genre table for temp generes
 genresCells = '';
-for i=1:length(genres1)
-    genresCells = [genresCells table(0,'VariableNames',{strcat('genre_',strrep(char(genres1(i)),'-',''))})];
+for i=1:length(allGenres)
+    genresCells = [genresCells table(0,'VariableNames',{strcat('genre_',strrep(char(allGenres(i)),'-',''))})];
 end;
 
 %Write 1 to temp gener table
@@ -46,7 +46,7 @@ for i=1:size(tblMovie)
     genres=regexp(tblMovie{i,10},'[|]+','split');
     for n=1:length(genres{1})
         warning('off','all')
-        genresCells(i,find(genres1 == genres{1}(n))) = {1};
+        genresCells(i,find(allGenres == genres{1}(n))) = {1};
     end;
 end;
 warning('on','all')
@@ -55,7 +55,7 @@ warning('on','all')
 tblMovie = [tblMovie genresCells];
 clear genres
 clear genresCells
-clear genres1
+clear allGenres
 %genres = '';
 %genres = [genres, tblMovie.genres{:}];
 
@@ -68,7 +68,7 @@ clear genres1
 %clear plot_keywords
 %plot_keywords = '';
 %plot_keywords = [plot_keywords, tblMovie.plot_keywords{:}];
-clear i
+
 clear n
 
 %remove movies with order currency
@@ -76,6 +76,8 @@ tblMovieToRemove=readtable('foreign_movie_links.csv', 'Delimiter', ',');
 for i=1:length(tblMovieToRemove.link)
     tblMovie = tblMovie(cellfun(@isempty,strfind(tblMovie.movie_imdb_link,tblMovieToRemove.link(i))),:);
 end;
+clear tblMovieToRemove
+clear i
 
 %Remove catagories that is 0 of
 tblMovie.color = removecats(tblMovie.color);
