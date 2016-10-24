@@ -71,6 +71,10 @@ clear genres1
 clear i
 clear n
 
+%remove movies with order currency
+tblMovieToRemove=readtable('final_currency_validation.csv');
+tblMovie = tblMovie(cellfun(@isempty,strfind(tblMovie.movie_imdb_link,tblMovieToRemove.tblMovieToRemove.imdb)));
+
 %Remove catagories that is 0 of
 tblMovie.color = removecats(tblMovie.color);
 tblMovie.aspect_ratio = removecats(tblMovie.aspect_ratio);
