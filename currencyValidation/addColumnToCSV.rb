@@ -8,7 +8,7 @@ def addColumn
   
   CSV.open(temp, "w") do |temp_csv|
     CSV.foreach("csv/foreign_movie_metadata.csv", :row_sep => :auto) do |orig|
-      temp_csv << orig + ["gross"] + ["foreign_currency"]
+      temp_csv << orig + ["budget"] + ["gross"] + ["foreign_currency"]
     end
   end
   
