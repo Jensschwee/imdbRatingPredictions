@@ -152,3 +152,4 @@ tblMovieNormalized.budget = mat2gray(tblMovieNoOutliers.budget); % Column 23
 tblMovieNormalized.actor_2_facebook_likes = mat2gray(tblMovieNoOutliers.actor_2_facebook_likes); % Column 25
 tblMovieNormalized.imdb_score = mat2gray(tblMovieNoOutliers.imdb_score); % Column 26
 tblMovieNormalized.movie_facebook_likes_ = mat2gray(tblMovieNoOutliers.movie_facebook_likes_); % Column 28
+tblMovieNormalized.revenue = mat2gray(tblMovieNoOutliers.revenue); % Column 30
