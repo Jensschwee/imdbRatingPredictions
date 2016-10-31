@@ -12,7 +12,7 @@ allCategories = unique(allCategories);
 
 %Create genre table for temp generes
 categoryCells = '';
-for i=1:length(allCategories) % TODO replace genre below with columnname
+for i=1:length(allCategories)
     namePart1 = tblMovie.Properties.VariableNames(columnId);
     namePart2 = strrep(char(allCategories(i)),'-','');
     categoryCells = [categoryCells table(0,'VariableNames',strcat(namePart1,'_',namePart2))];
