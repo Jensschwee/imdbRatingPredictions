@@ -17,6 +17,11 @@ tblMovie.country(tblMovie.country == 'Official site') = 'USA';
 tblMovie = tblMovie(ind,:);
 clear ind
 
+%Black and white to 0 and 1
+tblMovie.color(tblMovie.color == 'Black and White') = '0';
+tblMovie.color(tblMovie.color == 'Color') = '1';
+tblMovie.color = num2cell(tblMovie.color);
+
 %content rating in same std.
 tblMovie.content_rating(tblMovie.content_rating == 'M') = 'PG-13';
 tblMovie.content_rating(tblMovie.content_rating == 'GP') = 'PG';
@@ -80,7 +85,7 @@ clear tblMovieToRemove
 clear i
 
 %Remove catagories that is 0 of
-tblMovie.color = removecats(tblMovie.color);
+%tblMovie.color = removecats(tblMovie.color);
 tblMovie.aspect_ratio = removecats(tblMovie.aspect_ratio);
 tblMovie.language = removecats(tblMovie.language);
 tblMovie.country = removecats(tblMovie.country);
