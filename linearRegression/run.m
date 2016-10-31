@@ -1,8 +1,9 @@
 % Run script for Linear Regression
+%https://github.com/quinnliu/machineLearning/tree/master/supervisedLearning/linearRegressionInMultipleVariables
 tblMovieCleaned1=readtable('../movie_metadata_cleaned.csv');
 
 NumberOfReperts = 50;
-NumberOfIterations = 100:100:1000;
+NumberOfIterations = 100:100:3000;
 
 for k=1:size(NumberOfIterations,2)
     for i=1:NumberOfReperts;
@@ -10,18 +11,19 @@ for k=1:size(NumberOfIterations,2)
         % Gradient Descent
         X = table2array(tblTraining(:, 1)); %Color
         X = [X, table2array(tblTraining(:, 4))]; %Duration
-        X = [X, table2array(tblTraining(:, 5))]; %director_facebook_likes
-        X = [X,table2array(tblTraining(:, 6))]; %actor_3_facebook_likes
-        X = [X,table2array(tblTraining(:, 8))]; %actor_1_facebook_likes
+        %X = [X, table2array(tblTraining(:, 5))]; %director_facebook_likes
+        %X = [X,table2array(tblTraining(:, 6))]; %actor_3_facebook_likes
+        %X = [X,table2array(tblTraining(:, 8))]; %actor_1_facebook_likes
         X = [X,table2array(tblTraining(:, 14))]; %cast_total_facebook_likes
-        X = [X, table2array(tblTraining(:, 16))]; %facenumber_in_poster
+        X = [X, table2array(tblTraining(:, 226:244))]; %facenumber_in_poster
+        %X = [X, table2array(tblTraining(:, 25))]; %actor_2_facebook_likes
         X = [X, table2array(tblTraining(:, 29:50))]; %genre
         X = [X, table2array(tblTraining(:, 51:84))]; %language
         X = [X, table2array(tblTraining(:, 85:127))]; %country
         X = [X, table2array(tblTraining(:, 128:133))]; %content_rating
         X = [X, table2array(tblTraining(:, 134:207))]; %title_year
         X = [X, table2array(tblTraining(:, 208:225))]; %aspect_ratio
-        y = table2array(tblTraining(:, 226));
+        y = table2array(tblTraining(:, 245));
         alpha = 0.05;
         num_iters = NumberOfIterations(k);
 

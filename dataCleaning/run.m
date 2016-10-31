@@ -1,7 +1,7 @@
 clc; clear all;
 
 % Read uncleaned data.
-tblMovie=readtable('../movie_metadata.csv','Format','%C%s%f%f%f%f%s%f%f%s%s%s%f%f%s%f%s%s%f%C%C%C%f%C%f%f%C%f');
+tblMovie=readtable('../movie_metadata.csv','Format','%C%s%f%f%f%f%s%f%f%s%s%s%f%f%s%C%s%s%f%C%C%C%f%C%f%f%C%f');
 
 % Clean data.
 tblMovieCleaned = removeMissing(tblMovie);
@@ -14,6 +14,7 @@ tblMovieCleaned = normalizeCategoricalDataFromColumn(tblMovieCleaned, 21);
 tblMovieCleaned = normalizeCategoricalDataFromColumn(tblMovieCleaned, 22);
 tblMovieCleaned = normalizeCategoricalDataFromColumn(tblMovieCleaned, 24);
 tblMovieCleaned = normalizeCategoricalDataFromColumn(tblMovieCleaned, 27);
+tblMovieCleaned = normalizeCategoricalDataFromColumn(tblMovieCleaned, 16);
 tblMovieCleaned = removeIncorrectCurrencies(tblMovieCleaned, '../foreign_movie_links.csv');
 tblMovieCleaned = removeUnusedCategories(tblMovieCleaned);
 tblMovieCleaned = addRevenue(tblMovieCleaned);
