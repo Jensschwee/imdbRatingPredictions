@@ -13,7 +13,7 @@ X = [X,table2array(tblTraining(:, 14))]; %cast_total_facebook_likes
 X = [X, table2array(tblTraining(:, 16))]; %facenumber_in_poster
 X = [X, table2array(tblTraining(:, 29:50))]; %genre
 y = table2array(tblTraining(:, 51));
-alpha = 0.01;
+alpha = 0.05;
 num_iters = 400;
 
 % Init Theta and Run Gradient Descent 
@@ -25,3 +25,16 @@ theta = zeros(size(X,2), 1);
 RSS = evaluateRegression(tblTest,theta);
 
 % Plot
+
+clear RSS
+clear alpha
+clear num_iters
+clear theta
+clear X
+clear y
+clear tblTest
+clear tblTraining
+
+
+
+
