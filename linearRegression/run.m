@@ -1,6 +1,6 @@
 % Run script for Linear Regression
 %run('../Datacleaning.m')
-[tblTest, tblTraining] = dataSpilit(tblMovieCleaned);
+[tblTest, tblTraining] = dataSplit(tblMovieCleaned);
 
 % Gradient Descent
 %X = table2array(tblTraining(:, 1)); %Color
@@ -25,7 +25,6 @@ theta = zeros(size(X,2), 1);
 RSS = evaluateRegression(tblTest,theta);
 
 % Plot
-
 clear RSS
 clear alpha
 clear num_iters
@@ -34,7 +33,4 @@ clear X
 clear y
 clear tblTest
 clear tblTraining
-
-
-
 
