@@ -1,17 +1,6 @@
-% Split data into training and test data
-trainingSetSize = 0.85; %Size of the traning set in %
-tblIndex = randperm(length(tblMovieNormalized.movie_imdb_link));
-testSize = length(tblMovieNormalized.movie_imdb_link)*(1-trainingSetSize);
-trainingSize = length(tblMovieNormalized.movie_imdb_link)*trainingSetSize;
+[tblTest, tblTraining] = dataSpilit(tblMovieNormalized);
 
-%Spilt data ind i tables
-tblTest = tblMovieNormalized(tblIndex(1:testSize),:);
-tblTraining = tblMovieNormalized(tblIndex(testSize+1:testSize+trainingSize),:);
 
-clear tblIndex
-clear testSize
-clear trainingSize
-clear trainingSetSize
 
 %modelspec = 'revenue ~ ';
 %modelspec = strcat(modelspec,'duration + director_facebook_likes + actor_3_facebook_likes + actor_2_facebook_likes+actor_1_facebook_likes+cast_total_facebook_likes+facenumber_in_poster');
