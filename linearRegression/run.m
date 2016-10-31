@@ -1,6 +1,6 @@
 % Run script for Linear Regression
 %run('../Datacleaning.m')
-[tblTest, tblTraining] = dataSpilit(tblMovieNormalized);
+[tblTest, tblTraining] = dataSpilit(tblMovieCleaned);
 
 % Gradient Descent
 %X = table2array(tblTraining(:, 1)); %Color
@@ -18,10 +18,10 @@ num_iters = 400;
 
 % Init Theta and Run Gradient Descent 
 X = [ones(length(y), 1) X];
-theta = zeros(29, 1);
+theta = zeros(size(X,2), 1);
 [theta] = gradientDescent(X, y, theta, alpha, num_iters);
 
 % Eval
-normalizedInput = [1, 0.274193548387097, 0.00483333333333333];
-estimatePriceUsingGradientDescent = normalizedInput * theta; 
+RSS = evaluateRegression(tblTest,theta);
+
 % Plot
