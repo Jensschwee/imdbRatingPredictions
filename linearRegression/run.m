@@ -1,7 +1,7 @@
 % Run script for Linear Regression
 tblMovieCleaned1=readtable('../movie_metadata_cleaned.csv');
 
-NumberOfReperts = 1;
+NumberOfReperts = 50;
 NumberOfIterations = 100:100:1000;
 
 for k=1:size(NumberOfIterations,2)
@@ -36,9 +36,9 @@ for k=1:size(NumberOfIterations,2)
 end;
 
 % Plot
+plotRSS(RSS,NumberOfReperts,NumberOfIterations, size(X,2)-1);
 
-
-%clear RSS
+clear RSS
 clear alpha
 clear num_iters
 clear theta
