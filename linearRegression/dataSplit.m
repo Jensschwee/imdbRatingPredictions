@@ -4,11 +4,13 @@ function [tblTest, tblTraining] = dataSpilit(tbl)
     tblIndex = randperm(length(tbl.movie_imdb_link));
     testSize = length(tbl.movie_imdb_link)*(1-trainingSetSize);
     trainingSize = length(tbl.movie_imdb_link)*trainingSetSize;
+    warning('off','all')
+      
 
     %Spilt data ind i tables
     tblTest = tbl(tblIndex(1:testSize),:);
     tblTraining = tbl(tblIndex(testSize+1:testSize+trainingSize),:);
-
+    warning('on','all')
     clear tblIndex
     clear testSize
     clear trainingSize

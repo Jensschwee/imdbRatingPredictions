@@ -1,31 +1,38 @@
 % Run script for Linear Regression
 %run('../Datacleaning.m')
-[tblTest, tblTraining] = dataSplit(tblMovieCleaned);
 
-% Gradient Descent
-%X = table2array(tblTraining(:, 1)); %Color
-X = table2array(tblTraining(:, 4)); %Duration
-%X = [X, table2array(tblTraining(:, 4))]; %Duration
-X = [X, table2array(tblTraining(:, 5))]; %director_facebook_likes
-X = [X,table2array(tblTraining(:, 6))]; %actor_3_facebook_likes
-X = [X,table2array(tblTraining(:, 8))]; %actor_1_facebook_likes
-X = [X,table2array(tblTraining(:, 14))]; %cast_total_facebook_likes
-X = [X, table2array(tblTraining(:, 16))]; %facenumber_in_poster
-X = [X, table2array(tblTraining(:, 29:50))]; %genre
-y = table2array(tblTraining(:, 51));
-alpha = 0.05;
-num_iters = 400;
+NumberOfReperts = 50;
+NumberOfIterations = 100:100:1000;
 
-% Init Theta and Run Gradient Descent 
-X = [ones(length(y), 1) X];
-theta = zeros(size(X,2), 1);
-[theta] = gradientDescent(X, y, theta, alpha, num_iters);
+for k=1:size(NumberOfIterations,2)
+    for i=1:NumberOfReperts;
+        [tblTest, tblTraining] = dataSplit(tblMovieCleaned);
+        % Gradient Descent
+        %X = table2array(tblTraining(:, 1)); %Color
+        X = table2array(tblTraining(:, 4)); %Duration
+        %X = [X, table2array(tblTraining(:, 4))]; %Duration
+        X = [X, table2array(tblTraining(:, 5))]; %director_facebook_likes
+        X = [X,table2array(tblTraining(:, 6))]; %actor_3_facebook_likes
+        X = [X,table2array(tblTraining(:, 8))]; %actor_1_facebook_likes
+        X = [X,table2array(tblTraining(:, 14))]; %cast_total_facebook_likes
+        X = [X, table2array(tblTraining(:, 16))]; %facenumber_in_poster
+        X = [X, table2array(tblTraining(:, 29:50))]; %genre
+        y = table2array(tblTraining(:, 51));
+        alpha = 0.05;
+        num_iters = NumberOfIterations(k);
 
-% Eval
-RSS = evaluateRegression(tblTest,theta);
+        % Init Theta and Run Gradient Descent 
+        X = [ones(length(y), 1) X];
+        theta = zeros(size(X,2), 1);
+        [theta] = gradientDescent(X, y, theta, alpha, num_iters);
+
+        % Eval
+        RSS(i,k) = evaluateRegression(tblTest,theta);
+    end;
+end;
 
 % Plot
-clear RSS
+%clear RSS
 clear alpha
 clear num_iters
 clear theta
