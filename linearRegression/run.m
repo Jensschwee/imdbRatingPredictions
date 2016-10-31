@@ -1,6 +1,6 @@
 % Run script for Linear Regression
 %run('../Datacleaning.m')
-[tblTest, tblTraining] = dataSpilit(tblMovieCleaned);
+[tblTest, tblTraining] = dataSplit(tblMovieCleaned);
 
 % Gradient Descent
 %X = table2array(tblTraining(:, 1)); %Color
