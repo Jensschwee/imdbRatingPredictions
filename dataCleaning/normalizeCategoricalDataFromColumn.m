@@ -10,6 +10,8 @@ categoryCells = [];
 for i=1:height(allCategories)
     namePart1 = tblMovie.Properties.VariableNames(columnId);
     namePart2 = strrep(char(allCategories{i,1}),'-','');
+    namePart2 = strrep(namePart2,' ','_');
+    namePart2 = strrep(namePart2,'.','_');
     categoryCells = [categoryCells table(0,'VariableNames',strcat(namePart1,'_',namePart2))];
 end;
 

@@ -17,7 +17,12 @@ for k=1:size(NumberOfIterations,2)
         X = [X,table2array(tblTraining(:, 14))]; %cast_total_facebook_likes
         X = [X, table2array(tblTraining(:, 16))]; %facenumber_in_poster
         X = [X, table2array(tblTraining(:, 29:50))]; %genre
-        y = table2array(tblTraining(:, 51));
+        X = [X, table2array(tblTraining(:, 51:84))]; %language
+        X = [X, table2array(tblTraining(:, 85:127))]; %country
+        X = [X, table2array(tblTraining(:, 128:133))]; %content_rating
+        X = [X, table2array(tblTraining(:, 134:207))]; %title_year
+        X = [X, table2array(tblTraining(:, 208:225))]; %title_year
+        y = table2array(tblTraining(:, 226));
         alpha = 0.05;
         num_iters = NumberOfIterations(k);
 
