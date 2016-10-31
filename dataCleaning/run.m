@@ -15,4 +15,5 @@ tblMovieCleaned = addRevenue(tblMovieCleaned);
 tblMovieCleaned = removeOutliers(tblMovieCleaned);
 tblMovieCleaned = normalizeNumericalData(tblMovieCleaned);
 
-% Do whatever
+% Write cleaned table
+writetable(tblMovieCleaned, '../movie_metadata_cleaned.csv');
