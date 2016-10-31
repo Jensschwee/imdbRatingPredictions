@@ -20,10 +20,9 @@ tblMovieCleaned = addRevenue(tblMovieCleaned);
 tblMovieCleaned = removeOutliers(tblMovieCleaned);
 tblMovieCleaned = normalizeNumericalData(tblMovieCleaned);
 
-tblMovieCleaned.color(tblMovieCleaned.color == 'Black and White') = '0';
-tblMovieCleaned.color(tblMovieCleaned.color == 'Color') = '1';
-
+tblMovieCleaned.color = grp2idx(tblMovieCleaned.color);
+tblMovieCleaned.color = tblMovieCleaned.color - 2;
 
 
 % Write cleaned table
-%writetable(tblMovieCleaned, '../movie_metadata_cleaned.csv');
+writetable(tblMovieCleaned, '../movie_metadata_cleaned.csv');
