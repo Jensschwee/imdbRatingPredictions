@@ -1,16 +1,16 @@
 % Run script for Linear Regression
 %run('../Datacleaning.m')
 
-NumberOfReperts = 50;
+NumberOfReperts = 1;
 NumberOfIterations = 100:100:1000;
 
 for k=1:size(NumberOfIterations,2)
     for i=1:NumberOfReperts;
         [tblTest, tblTraining] = dataSplit(tblMovieCleaned);
         % Gradient Descent
-        %X = table2array(tblTraining(:, 1)); %Color
-        X = table2array(tblTraining(:, 4)); %Duration
-        %X = [X, table2array(tblTraining(:, 4))]; %Duration
+        X = table2array(tblTraining(:, 1)); %Color
+        %X = table2array(tblTraining(:, 4)); %Duration
+        X = [X, table2array(tblTraining(:, 4))]; %Duration
         X = [X, table2array(tblTraining(:, 5))]; %director_facebook_likes
         X = [X,table2array(tblTraining(:, 6))]; %actor_3_facebook_likes
         X = [X,table2array(tblTraining(:, 8))]; %actor_1_facebook_likes
@@ -21,7 +21,7 @@ for k=1:size(NumberOfIterations,2)
         X = [X, table2array(tblTraining(:, 85:127))]; %country
         X = [X, table2array(tblTraining(:, 128:133))]; %content_rating
         X = [X, table2array(tblTraining(:, 134:207))]; %title_year
-        X = [X, table2array(tblTraining(:, 208:225))]; %title_year
+        X = [X, table2array(tblTraining(:, 208:225))]; %aspect_ratio
         y = table2array(tblTraining(:, 226));
         alpha = 0.05;
         num_iters = NumberOfIterations(k);
@@ -37,6 +37,8 @@ for k=1:size(NumberOfIterations,2)
 end;
 
 % Plot
+
+
 %clear RSS
 clear alpha
 clear num_iters
