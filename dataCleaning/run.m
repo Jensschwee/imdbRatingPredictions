@@ -18,7 +18,6 @@ tblMovieCleaned = normalizeNumericalData(tblMovieCleaned);
 
 tblMovieCleaned.color(tblMovieCleaned.color == 'Black and White') = '0';
 tblMovieCleaned.color(tblMovieCleaned.color == 'Color') = '1';
-tblMovieCleaned.color(tblMovieCleaned.color{:,1});
 
 
 
