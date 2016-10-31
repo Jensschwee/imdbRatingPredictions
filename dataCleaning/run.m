@@ -21,8 +21,7 @@ tblMovieCleaned = removeOutliers(tblMovieCleaned);
 tblMovieCleaned = normalizeNumericalData(tblMovieCleaned);
 
 tblMovieCleaned.color = grp2idx(tblMovieCleaned.color);
-tblMovieCleaned.color = tblMovieCleaned.color - 2;
-
+tblMovieCleaned.color = tblMovieCleaned.color - 1;
 
 % Write cleaned table
 writetable(tblMovieCleaned, '../movie_metadata_cleaned.csv');

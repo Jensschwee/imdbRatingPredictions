@@ -2,7 +2,6 @@ function [RSS] = evaluateRegression(tblTest,theta)
         %EVAL This function evaluates results from linear regression
         %   Detailed stuff..
         X = table2array(tblTest(:, 1)); %Color
-        %X = table2array(tblTest(:, 4)); %Duration
         X = [X, table2array(tblTest(:, 4))]; %Duration
         X = [X, table2array(tblTest(:, 5))]; %director_facebook_likes
         X = [X,table2array(tblTest(:, 6))]; %actor_3_facebook_likes

@@ -1,5 +1,5 @@
 % Run script for Linear Regression
-%run('../Datacleaning.m')
+tblMovieCleaned1=readtable('../movie_metadata_cleaned.csv');
 
 NumberOfReperts = 1;
 NumberOfIterations = 100:100:1000;
@@ -9,7 +9,6 @@ for k=1:size(NumberOfIterations,2)
         [tblTest, tblTraining] = dataSplit(tblMovieCleaned);
         % Gradient Descent
         X = table2array(tblTraining(:, 1)); %Color
-        %X = table2array(tblTraining(:, 4)); %Duration
         X = [X, table2array(tblTraining(:, 4))]; %Duration
         X = [X, table2array(tblTraining(:, 5))]; %director_facebook_likes
         X = [X,table2array(tblTraining(:, 6))]; %actor_3_facebook_likes
