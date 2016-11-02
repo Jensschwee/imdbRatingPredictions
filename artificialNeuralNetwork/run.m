@@ -49,6 +49,7 @@ clear MSE_tr
 clear MSE_v
 clear MSE_t
 clear amountOfSampels
+clear testNetwork
 clear net
 clear X
 clear y
