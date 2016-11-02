@@ -24,8 +24,8 @@ outlieTable = [outlieTable logical(outlier)];
 outlier = abs(tblMovie.cast_total_facebook_likes-mean(tblMovie.cast_total_facebook_likes)) > (zFactor * std(tblMovie.cast_total_facebook_likes));
 outlieTable = [outlieTable logical(outlier)];
 %facenumber_in_poster
-outlier = abs(tblMovie.facenumber_in_poster-mean(tblMovie.facenumber_in_poster)) > (zFactor * std(tblMovie.facenumber_in_poster));
-outlieTable = [outlieTable logical(outlier)];
+%outlier = abs(tblMovie.facenumber_in_poster-mean(tblMovie.facenumber_in_poster)) > (zFactor * std(tblMovie.facenumber_in_poster));
+%outlieTable = [outlieTable logical(outlier)];
 %num_user_for_reviews
 outlier = abs(tblMovie.num_user_for_reviews-mean(tblMovie.num_user_for_reviews)) > (zFactor * std(tblMovie.num_user_for_reviews));
 outlieTable = [outlieTable logical(outlier)];
