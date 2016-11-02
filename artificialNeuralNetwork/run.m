@@ -24,7 +24,7 @@ y = table2array(tblMovieCleaned(1:amountOfSampels, 245));
 net = feedforwardnet([50]);%initialise network
 %net.divideFcn = 'dividetrain'; %this will only train on the whole dataset (no validation)
 net.divideFcn = 'divideind'; %divide data into training, validation and test sets
-[trainInd,valInd,testInd] = dividerand(size(X,1)    ,0.7,0.15,0.15);%select data randomly
+[trainInd,valInd,testInd] = dividerand(size(X,1),0.7,0.15,0.15);%select data randomly
 net.divideParam.trainInd = trainInd;
 net.divideParam.valInd = valInd;
 net.divideParam.testInd = testInd;
@@ -36,10 +36,10 @@ t1 = tic;%initilise counter
 net = train(net,X',y');%train network
 toc(t1)%compute elapsed time
 
-%testNetwork = sim(net,X');%test network on the whole data set
-MSE_tr=mean((y(trainInd)'-testNetwork(trainInd)).^2)%compute Mean Squared Error on the training set
-MSE_v=mean((y(valInd)'-testNetwork(valInd)).^2)%compute Mean Squared Error on the validation set
-MSE_t=mean((y(testInd)'-testNetwork(testInd)).^2)%compute Mean Squared Error on the test set
+testNetwork = sim(net,X');%test network on the whole data set
+MSE_tr=mean((y(trainInd)'-testNetwork(trainInd)).^2);%compute Mean Squared Error on the training set
+MSE_v=mean((y(valInd)'-testNetwork(valInd)).^2);%compute Mean Squared Error on the validation set
+MSE_t=mean((y(testInd)'-testNetwork(testInd)).^2);%compute Mean Squared Error on the test set
 
 clear t1
 clear testInd
