@@ -3,6 +3,8 @@ clear all
 %read data soruce
 tblMovieCleaned=readtable('../movie_metadata_cleaned.csv');
 
+
+[trainInd,valInd,testInd] = dividerand(size(tblMovieCleaned,1),0.7,0.15,0.15);%select data randomly
 amountOfSampels=size(tblMovieCleaned,1);
 
 % Input and output parameteres
@@ -23,25 +25,22 @@ input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 208:225))]; %aspe
 output = table2array(tblMovieCleaned(1:amountOfSampels, 245));
 
 %---Set training parameters
-iterations = 5000;
-errorThreshhold = 0.1;
-learningRate = 0.5;
+iterations = 10;
+errorThreshhold = 0.01;
+learningRate = 0.75;
 %---Set hidden layer type, for example: [4, 3, 2]
-hiddenNeurons = [3 2];
+hiddenNeurons = [200 150 100 50 25 10 5 4 3 2];
 
 %---'Xor' training data
-trainInp = input;
-trainOut = output;
-testInp = input;
-testRealOut = output;
+trainInp = input(trainInd,:);
+trainOut = output(trainInd);
+validationInp = input(valInd,:);
+validationOut = output(valInd);
+testInp = input(testInd,:);
+testRealOut = output(testInd);
 
 % %---'And' training data
-% trainInp = [1 1; 1 0; 0 1; 0 0];
-% trainOut = [1; 0; 0; 0];
-% testInp = trainInp;
-% testRealOut = trainOut;
-assert(size(trainInp,1)==size(trainOut, 1),...
-    'Counted different sets of input and output.');
+assert(size(trainInp,1)==size(trainOut, 1),'Counted different sets of input and output.');
 %---Initialize Network attributes
 inArgc = size(trainInp, 2);
 outArgc = size(trainOut, 2);
@@ -78,17 +77,16 @@ for iter = 1:iterations
         sampleIn = trainInp(choice, :);
         sampleTarget = trainOut(choice, :);
         [realOutput, layerOutputCells] = ForwardNetwork(sampleIn, layerOfNeurons, weightCell, biasCell);
-        [weightCell, biasCell] = BackPropagate(learningRate, sampleIn, realOutput, sampleTarget, layerOfNeurons, ...
-            weightCell, biasCell, layerOutputCells);
+        [weightCell, biasCell] = BackPropagate(learningRate, sampleIn, realOutput, sampleTarget, layerOfNeurons, weightCell, biasCell, layerOutputCells);
     end
     %plot overall network error at end of each iteration
-    error = zeros(trainsetCount, outArgc);
-    for t = 1:trainsetCount
-        [predict, layeroutput] = ForwardNetwork(trainInp(t, :), layerOfNeurons, weightCell, biasCell);
+    error = zeros(size(validationInp,1), outArgc);
+    for t = 1:size(validationInp,1)
+        [predict, layeroutput] = ForwardNetwork(validationInp(t, :), layerOfNeurons, weightCell, biasCell);
         p(t) = predict;
-        error(t, : ) = predict - trainOut(t, :);
+        error(t, : ) = predict - validationOut(t, :);
     end
-    err(iter) = (sum(error.^2)/trainsetCount)^0.5;
+    err(iter) = (sum(error.^2)/size(validationInp,1))^0.5;
     figure(1);
     plot(err);
     %---Stop if reach error threshold
@@ -110,7 +108,7 @@ fprintf('Ended with %d iterations.\n', iter);
 a = testInp;
 b = testRealOut;
 c = p';
-x1_x2_act_pred_err = [a b c c-b]
+%x1_x2_act_pred_err = [a b c c-b]
 %---Plot Surface of network predictions
 testInpx1 = [-1:0.1:1];
 testInpx2 = [-1:0.1:1];
