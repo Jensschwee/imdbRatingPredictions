@@ -1,3 +1,4 @@
+%http://hugofeng.info/2014/06/05/bp_ann_in_matlab/
 clc
 clear all
 %read data soruce
@@ -25,7 +26,7 @@ input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 208:225))]; %aspe
 output = table2array(tblMovieCleaned(1:amountOfSampels, 245));
 
 %---Set training parameters
-iterations = 10;
+iterations = 5;
 errorThreshhold = 0.01;
 learningRate = 0.75;
 %---Set hidden layer type, for example: [4, 3, 2]
@@ -108,29 +109,8 @@ fprintf('Ended with %d iterations.\n', iter);
 a = testInp;
 b = testRealOut;
 c = p';
-%x1_x2_act_pred_err = [a b c c-b]
-%---Plot Surface of network predictions
-testInpx1 = [-1:0.1:1];
-testInpx2 = [-1:0.1:1];
-[X1, X2] = meshgrid(testInpx1, testInpx2);
-testOutRows = size(X1, 1);
-testOutCols = size(X1, 2);
-testOut = zeros(testOutRows, testOutCols);
-for row = [1:testOutRows]
-    for col = [1:testOutCols]
-        test = [X1(row, col), X2(row, col)];
-        [out, l] = ForwardNetwork(test, layerOfNeurons, weightCell, biasCell);
-        testOut(row, col) = out;
-    end
-end
-figure(2);
-surf(X1, X2, testOut);
-
-
-
-
-
-
+x1_x2_act_pred_err = [a b c c-b];
+hist(x1_x2_act_pred_err(:,size(x1_x2_act_pred_err,2)));
 clear input
 clear output
 clear tblMovieCleaned
