@@ -1,7 +1,7 @@
 # Regression on IMDB sample set using Matlab
 
-##Liner
+##Linear regression
 
-#NN with Feedforward
+##NN with Feedforward regression
 
 ##PCA
