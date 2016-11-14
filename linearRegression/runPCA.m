@@ -14,6 +14,7 @@ for k=1:size(NumberOfIterations,2)
         [tblTest, tblTraining] = dataSplit(tblMovieCleaned);
         % Gradient Descent
         X = table2array(tblTraining(:, 1:size(tblTraining,2)-1));
+        X = table2array(tblTraining(:, 1));
         y = table2array(tblTraining(:, size(tblTraining,2)));
         alpha = 0.05;
         num_iters = NumberOfIterations(k);
@@ -29,7 +30,7 @@ for k=1:size(NumberOfIterations,2)
 end;
 
 % Plot
-plotRSS(rsquared,NumberOfReperts,NumberOfIterations, size(X,2));
+plotRSS(rsquared,NumberOfReperts,NumberOfIterations, size(X,2)-1);
 
 %clear RSS
 %clear alpha
