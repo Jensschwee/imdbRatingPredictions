@@ -1,9 +1,13 @@
 % Run script for Linear Regression
 %https://github.com/quinnliu/machineLearning/tree/master/supervisedLearning/linearRegressionInMultipleVariables
+clc
+%close all
+clear all
+
 tblMovieCleaned=readtable('../movie_metadata_cleaned.csv');
 
 NumberOfReperts = 50;
-NumberOfIterations = 1:1:3;
+NumberOfIterations = 1:1:25;
 
 for k=1:size(NumberOfIterations,2)
     for i=1:NumberOfReperts;
@@ -24,7 +28,7 @@ for k=1:size(NumberOfIterations,2)
         X = [X, table2array(tblTraining(:, 134:207))]; %title_year
         %X = [X, table2array(tblTraining(:, 208:225))]; %aspect_ratio
         y = table2array(tblTraining(:, 245));
-        alpha = 0.35;
+        alpha = 0.05;
         num_iters = NumberOfIterations(k);
 
         % Init Theta and Run Gradient Descent 
@@ -38,14 +42,14 @@ for k=1:size(NumberOfIterations,2)
 end;
 
 % Plot
-plotRSS(rsquared,NumberOfReperts,NumberOfIterations, size(X,2)-1);
+plotRSS(rsquared,NumberOfReperts,NumberOfIterations, size(X,2));
 
-clear RSS
-clear alpha
-clear num_iters
+%clear RSS
+%clear alpha
+%clear num_iters
 %clear theta
-clear X
-clear y
-clear tblTest
-clear tblTraining
+%celear X
+%clear y
+%clear tblTest
+%clear tblTraining
 

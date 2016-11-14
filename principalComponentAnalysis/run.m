@@ -3,7 +3,7 @@ clear all
 close all
 
 showFigures = 1;
-cvTacket = 80;
+cvTacket = 90;
 
 tblMovieCleaned=readtable('../movie_metadata_cleaned.csv');
 
@@ -22,6 +22,7 @@ X = [X, table2array(tblMovieCleaned(:, 85:127))]; %country
 X = [X, table2array(tblMovieCleaned(:, 128:133))]; %content_rating
 X = [X, table2array(tblMovieCleaned(:, 134:207))]; %title_year
 X = [X, table2array(tblMovieCleaned(:, 208:225))]; %aspect_ratio
+X = [X, table2array(tblMovieCleaned(:, 226:244))]; %facenumber_in_poster
 
 C=cov(X);
 [V,L]=eig(C);
@@ -43,14 +44,14 @@ if showFigures == 1
     set(gca,'fontsize',20)
     xlabel('Number of PCs')
     ylabel('Cumulative variance (%)')
-    title(strcat('PCA with a Cumulative variance of ',num2str(cvTacket), ' needs ', num2str(nc), ' featers') )
+    title(strcat({'PCA with a Cumulative variance of '},num2str(cvTacket), {' % needs '}, num2str(nc), ' featers') )
     hold off
 end;
 
 ev=C(:,1:nc);
 y=X*ev;%transform to PCA space
+y = [y, table2array(tblMovieCleaned(:, 245))];
 
-
-
-
-
+%Export
+tbl = array2table(y);
+writetable(tbl, '../movie_metadata_cleaned_pca.csv');

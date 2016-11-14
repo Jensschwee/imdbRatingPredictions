@@ -19,11 +19,14 @@ function [rsquared] = evaluateRegression(tblTest,theta)
         X = [ones(length(y), 1) X];
         estimateRevenue = X * theta; 
 
-        SSE=sum((y-estimateRevenue).^2);
-        SST=sum((y-mean(y)).^2);
+        %RSS=sum((y-estimateRevenue).^2);
+        %SST=sum(y-mean(y));
 
         %error = y - estimateRevenue;
 
-        rsquared = 1-(SSE/SST);
+        %rsquared = 1-(RSS/SST);
+        
+        rsquared = 1 - sum((y - estimateRevenue).^2)/sum((y - mean(y)).^2);
+
 
 end

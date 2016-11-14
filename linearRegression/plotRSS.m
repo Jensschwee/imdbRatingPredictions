@@ -13,10 +13,10 @@ end;
     xlabel('Number Of Iterations')
     ylabel('r squared')
     test = 'Linear Regression of  ';
-    test = strcat(test,num2str(NumberOfParameters));
-    test = strcat(test,' parameters with ');
+    test = strcat({test},num2str(NumberOfParameters));
+    test = strcat(test,{' parameters with '});
     test = strcat(test,num2str(NumberOfReperts));
-    test = strcat(test,' reperts');
+    test = strcat(test,{' reperts'});
     title(test)
     print('LinerRegression','-dpng');
 end

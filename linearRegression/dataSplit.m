@@ -1,9 +1,9 @@
 function [tblTest, tblTraining] = dataSpilit(tbl)
     % Split data into training and test data
     trainingSetSize = 0.85; %Size of the traning set in %
-    tblIndex = randperm(length(tbl.movie_imdb_link));
-    testSize = length(tbl.movie_imdb_link)*(1-trainingSetSize);
-    trainingSize = length(tbl.movie_imdb_link)*trainingSetSize;
+    tblIndex = randperm(height(tbl));
+    testSize = height(tbl)*(1-trainingSetSize);
+    trainingSize = height(tbl)*trainingSetSize;
     warning('off','all')
       
 
