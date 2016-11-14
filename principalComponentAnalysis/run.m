@@ -2,6 +2,9 @@ clc
 clear all
 close all
 
+showFigures = 1;
+cvTacket = 80;
+
 tblMovieCleaned=readtable('../movie_metadata_cleaned.csv');
 
 %Fild data set
@@ -24,6 +27,30 @@ C=cov(X);
 [V,L]=eig(C);
 L=diag(L);
 [Y,I]=sort(L,'descend');
+cv=cumsum(100*Y/sum(Y));
+for nc=1: size(Y,1)
+    cvCurrent=cumsum(100*Y(1:nc)/sum(Y));
+    if max(cvCurrent) >= cvTacket
+        break
+    end;
+end;
+
+if showFigures == 1
+    figure
+    hold on
+    plot(cv,'linewidth',2)
+    line([nc nc],[0 max(cvCurrent)], 'Color', [1 0 0 ])
+    set(gca,'fontsize',20)
+    xlabel('Number of PCs')
+    ylabel('Cumulative variance (%)')
+    title(strcat('PCA with a Cumulative variance of ',num2str(cvTacket), ' needs ', num2str(nc), ' featers') )
+    hold off
+end;
+
+ev=C(:,1:nc);
+y=X*ev;%transform to PCA space
+
+
 
 
 
