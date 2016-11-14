@@ -4,7 +4,6 @@ clear all
 %read data soruce
 tblMovieCleaned=readtable('../movie_metadata_cleaned.csv');
 
-
 [trainInd,valInd,testInd] = dividerand(size(tblMovieCleaned,1),0.7,0.15,0.15);%select data randomly
 amountOfSampels=size(tblMovieCleaned,1);
 

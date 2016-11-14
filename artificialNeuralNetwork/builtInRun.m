@@ -29,7 +29,7 @@ net.divideParam.trainInd = trainInd;
 net.divideParam.valInd = valInd;
 net.divideParam.testInd = testInd;
 net.trainParam.epochs = 1000;
-net.trainParam.goal = 0.00001;
+net.trainParam.goal = 0.000000001;
 net.trainParam.max_fail = 5;
 
 t1 = tic;%initilise counter
