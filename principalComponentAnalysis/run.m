@@ -14,7 +14,6 @@ X = [X, table2array(tblMovieCleaned(:, 5))]; %director_facebook_likes
 X = [X,table2array(tblMovieCleaned(:, 6))]; %actor_3_facebook_likes
 X = [X,table2array(tblMovieCleaned(:, 8))]; %actor_1_facebook_likes
 X = [X,table2array(tblMovieCleaned(:, 14))]; %cast_total_facebook_likes
-X = [X, table2array(tblMovieCleaned(:, 226:244))]; %facenumber_in_poster
 X = [X, table2array(tblMovieCleaned(:, 25))]; %actor_2_facebook_likes
 X = [X, table2array(tblMovieCleaned(:, 29:50))]; %genre
 X = [X, table2array(tblMovieCleaned(:, 51:84))]; %language
@@ -49,7 +48,7 @@ if showFigures == 1
 end;
 
 ev=C(:,1:nc);
-y=X*ev;%transform to PCA space
+y=X*ev; %transform to PCA space
 y = [y, table2array(tblMovieCleaned(:, 245))];
 
 %Export

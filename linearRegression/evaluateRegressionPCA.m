@@ -1,6 +1,7 @@
 function [rsquared] = evaluateRegression(tblTest,theta)
         %EVAL This function evaluates results from linear regression
         X = table2array(tblTest(:, 1:size(tblTest,2)-1));
+        %X = table2array(tblTest(:, 1));
         y = table2array(tblTest(:, size(tblTest,2)));
         X = [ones(length(y), 1) X];
         estimateRevenue = X * theta; 

@@ -10,7 +10,7 @@ end;
 %   Detailed stuff..
     errorbar(NumberOfIterations,rsquaredMean,rsquaredSd)
     set(gca,'fontsize',18)
-    xlabel('Number Of Iterations')
+    xlabel('Number Of Epochs')
     ylabel('r squared')
     test = 'Linear Regression of  ';
     test = strcat({test},num2str(NumberOfParameters));

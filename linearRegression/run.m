@@ -42,7 +42,7 @@ for k=1:size(NumberOfIterations,2)
 end;
 
 % Plot
-plotRSS(rsquared,NumberOfReperts,NumberOfIterations, size(X,2));
+plotRSS(rsquared,NumberOfReperts,NumberOfIterations, size(X,2)-1);
 
 %clear RSS
 %clear alpha
