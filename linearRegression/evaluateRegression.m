@@ -27,6 +27,4 @@ function [rsquared] = evaluateRegression(tblTest,theta)
         %rsquared = 1-(RSS/SST);
         
         rsquared = 1 - sum((y - estimateRevenue).^2)/sum((y - mean(y)).^2);
-
-
 end
