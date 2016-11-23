@@ -5,8 +5,12 @@ function [realOutput, layerOutputCells] = ForwardNetwork(in, layer, weightCell, 
     out = in;
     for layerIndex = 1:layerCount
         X = out;
-        bias = biasCell{layerIndex};
-        out = sigmoid(X * weightCell{layerIndex} + bias);
+        %bias = biasCell{layerIndex};
+        if(layerCount==layerIndex)
+            out = sigmoid(X * weightCell{layerIndex});
+        else
+            out = sigmoid(X * weightCell{layerIndex});
+        end
         layerOutputCells{layerIndex} = out;
     end
     realOutput = out;    
