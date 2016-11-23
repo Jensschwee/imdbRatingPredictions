@@ -4,7 +4,7 @@ clc
 %close all
 clear all
 
-tblMovieCleaned=readtable('../movie_metadata_cleaned_PCA.csv');
+tblMovieCleaned=readtable('../movie_metadata_cleaned_pca.csv');
 
 NumberOfReperts = 50;
 NumberOfIterations = 10:10:200;
@@ -13,8 +13,13 @@ for k=1:size(NumberOfIterations,2)
     for i=1:NumberOfReperts;
         [tblTest, tblTraining] = dataSplit(tblMovieCleaned);
         % Gradient Descent
-        X = table2array(tblTraining(:, 1:size(tblTraining,2)-1));
-        y = table2array(tblTraining(:, size(tblTraining,2)));
+        %X = table2array(tblTraining(:, 1:size(tblTraining,2)-1));
+        %y = table2array(tblTraining(:, size(tblTraining,2)));
+        n = 100;
+        sigma = 1
+        X=linspace(0,1,n);
+        y=(0.5*X-2)+sigma*randn(1,n);
+        
         alpha = 0.05;
         num_iters = NumberOfIterations(k);
 
