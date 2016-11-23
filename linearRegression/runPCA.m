@@ -7,16 +7,16 @@ clear all
 tblMovieCleaned=readtable('../movie_metadata_cleaned_PCA.csv');
 
 NumberOfReperts = 50;
-NumberOfIterations = 10:10:200;
+NumberOfIterations = 10:100:1000;
 
 for k=1:size(NumberOfIterations,2)
     for i=1:NumberOfReperts;
         [tblTest, tblTraining] = dataSplit(tblMovieCleaned);
         % Gradient Descent
         X = table2array(tblTraining(:, 1:size(tblTraining,2)-1));
-        X = table2array(tblTraining(:, 1));
+        %X = table2array(tblTraining(:, 1));
         y = table2array(tblTraining(:, size(tblTraining,2)));
-        alpha = 0.05;
+        alpha = 0.75;
         num_iters = NumberOfIterations(k);
 
         % Init Theta and Run Gradient Descent 
