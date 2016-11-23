@@ -4,7 +4,7 @@ clear all
 close all
 
 %read data soruce
-tblMovieCleaned=readtable('../movie_metadata_cleaned_PCA.csv');
+tblMovieCleaned=readtable('../movie_metadata_cleaned_pca.csv');
 
 [trainInd,valInd,testInd] = dividerand(size(tblMovieCleaned,1),0.7,0.15,0.15);%select data randomly
 amountOfSampels=size(tblMovieCleaned,1);
@@ -52,11 +52,6 @@ for i = 1:layerCount
         weightCell{i} = unifrnd(b, e, layerOfNeurons(i-1),layerOfNeurons(i));
     end
 end
-%---Set initial biases
-biasCell = cell(1, layerCount);
-for i = 1:layerCount
-    biasCell{i} = unifrnd(b, e, 1, layerOfNeurons(i));
-end
 
 %----------------------
 %---Begin training
@@ -67,12 +62,12 @@ for iter = 1:iterations
         choice = i;
         sampleIn = trainInp(choice, :);
         sampleTarget = trainOut(choice, :);
-        [realOutput, layerOutputCells] = ForwardNetwork(sampleIn, layerOfNeurons, weightCell, biasCell);
-        [weightCell] = BackPropagate(learningRate, sampleIn, realOutput, sampleTarget, layerOfNeurons, weightCell, biasCell, layerOutputCells);
+        [realOutput, layerOutputCells] = ForwardNetwork(sampleIn, layerOfNeurons, weightCell);
+        [weightCell] = BackPropagate(learningRate, sampleIn, realOutput, sampleTarget, layerOfNeurons, weightCell, layerOutputCells);
     end
     
     for t = 1:trainsetCount
-        [predict, layeroutput] = ForwardNetwork(trainInp(t, :), layerOfNeurons, weightCell, biasCell);
+        [predict, layeroutput] = ForwardNetwork(trainInp(t, :), layerOfNeurons, weightCell);
         pre(t) = predict;
     end
     
@@ -81,14 +76,14 @@ for iter = 1:iterations
     %plot overall network error at end of each iteration
     error = zeros(size(validationInp,1), outArgc);
     for t = 1:size(validationInp,1)
-        [predict, layeroutput] = ForwardNetwork(validationInp(t, :), layerOfNeurons, weightCell, biasCell);
+        [predict, layeroutput] = ForwardNetwork(validationInp(t, :), layerOfNeurons, weightCell);
         p(t) = predict;
         error(t, : ) = predict - validationOut(t, :);
     end
     rSquredValidation(iter) = rSquareValue(validationOut, p');
     
     for t = 1:testsetCount
-        [predict, layeroutput] = ForwardNetwork(testInp(t, :), layerOfNeurons, weightCell, biasCell);
+        [predict, layeroutput] = ForwardNetwork(testInp(t, :), layerOfNeurons, weightCell);
         p(t) = predict;
     end
     
@@ -105,10 +100,12 @@ end
 %--Test the trained network with a test set
 error = zeros(testsetCount, outArgc);
 for t = 1:testsetCount
-    [predict, layeroutput] = ForwardNetwork(testInp(t, :), layerOfNeurons, weightCell, biasCell);
+    [predict, layeroutput] = ForwardNetwork(testInp(t, :), layerOfNeurons, weightCell);
     p(t) = predict;
     error(t, : ) = predict - testRealOut(t, :);
 end
+
+rsquare(testRealOut, p')
 
 %---Print predictions
 fprintf('Ended with %d iterations.\n', iter);
