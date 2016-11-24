@@ -43,7 +43,9 @@ if showFigures == 1
     set(gca,'fontsize',20)
     xlabel('Number of PCs')
     ylabel('Cumulative variance (%)')
-    title(strcat({'PCA with a Cumulative variance of '},num2str(cvTacket), {' % needs '}, num2str(nc), ' featers') )
+    title(strcat({'PCA with a Cumulative variance of '},num2str(cvTacket), {' %'}) )
+    t = text(nc+1,nc,strcat(num2str(nc), {' features'}));
+    t.FontSize = 20;
     hold off
 end;
 
