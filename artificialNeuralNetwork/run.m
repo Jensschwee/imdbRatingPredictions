@@ -22,16 +22,19 @@ input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 4))]; %Duration
  input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 128:133))]; %content_rating
  input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 134:207))]; %title_year
  input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 208:225))]; %aspect_ratio
-output = table2array(tblMovieCleaned(1:amountOfSampels, 245));
+output = table2array(tblMovieCleaned(1:amountOfSampels, 26));
 
 %---Set training parameters
-iterations = 100;
+iterations = 300;
 errorThreshhold = 0.001;
-learningRate = 0.1;
+learningRate = 0.0005;
 %---Set hidden layer type, for example: [4, 3, 2]
-hiddenNeurons = [10 8 2];
+hiddenNeurons = [25 10 3];
 
-%---'Xor' training data
+%learningRate = 0.005;
+%---Set hidden layer type, for example: [4, 3, 2]
+%hiddenNeurons = [25 10];
+
 trainInp = input(trainInd,:);
 trainOut = output(trainInd);
 validationInp = input(valInd,:);
@@ -48,8 +51,8 @@ trainsetCount = size(trainInp, 1);
 testsetCount = size(testInp, 1);
 
 %---Add output layer
-layerOfNeurons = [hiddenNeurons, outArgc]
-layerCount = size(layerOfNeurons, 2)
+layerOfNeurons = [hiddenNeurons, outArgc];
+layerCount = size(layerOfNeurons, 2);
 
 %---Weight and bias random range
 e = 1;
@@ -70,7 +73,6 @@ end
 for iter = 1:iterations
     sqens = datasample(1:trainsetCount,trainsetCount,'Replace',false);
     for i = 1:trainsetCount
-        % choice = randi([1 trainsetCount]);
         %choice = i;
         choice = sqens(i);
         sampleIn = trainInp(choice, :);
@@ -104,9 +106,7 @@ for iter = 1:iterations
     rSquredTest(iter) = rSquareValue(p',testRealOut);
         
     err(iter) = (sum(error.^2)/(size(validationInp,1)-size(validationInp,2)))^0.5;
-    figure(1);
-    plot(err);
-    
+  
     %plot overall network error at end of each iteration
     %error = zeros(size(validationInp,1), outArgc);
     %for t = 1:size(validationInp,1)
@@ -136,8 +136,6 @@ for t = 1:testsetCount
     error(t, : ) = predict - testRealOut(t, :);
 end
 
-rsquare(testRealOut, p')
-
 figure
 hold on
 set(gca,'fontsize',18)
@@ -147,6 +145,7 @@ line(1:size(rSquredTrain,2),rSquredTrain, 'Color', [1 0 0 ])
 line(1:size(rSquredValidation,2),rSquredValidation,'Color', [0 1 0 ])
 line(1:size(rSquredTest,2),rSquredTest, 'Color', [0 0 1])
 legend('Train','Validation','Test','Location','northwest')
+title(strcat({'ANN with '}, num2str(hiddenNeurons), {' neurons '}, num2str(learningRate), {' Learning Rate'} ))
 hold off
 
 

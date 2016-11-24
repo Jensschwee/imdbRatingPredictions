@@ -16,9 +16,9 @@ output = table2array(tblMovieCleaned(:, size(tblMovieCleaned,2)));
 %---Set training parameters
 iterations = 50;
 errorThreshhold = 0.000001;
-learningRate = 0.01;
+learningRate = 0.001;
 %---Set hidden layer type, for example: [4, 3, 2]
-hiddenNeurons = [10 8 2];
+hiddenNeurons = [25 10];
 
 trainInp = input(trainInd,:);
 trainOut = output(trainInd);
@@ -90,8 +90,6 @@ for iter = 1:iterations
     rSquredTest(iter) = rSquareValue(p',testRealOut);
         
     err(iter) = sum(error.^2)/(size(validationInp,1)-size(validationInp,2));
-    figure(1);
-    plot(err(iter));
     
     %---Stop if reach error threshold
     if err(iter) < errorThreshhold
@@ -99,9 +97,7 @@ for iter = 1:iterations
     end
 end
 
-figure(1);
-plot(err);
-
+%plot(err);
 
 %--Test the trained network with a test set
 error = zeros(testsetCount, outArgc);
@@ -133,9 +129,10 @@ line(1:size(rSquredTrain,2),rSquredTrain, 'Color', [1 0 0 ])
 line(1:size(rSquredValidation,2),rSquredValidation,'Color', [0 1 0 ])
 line(1:size(rSquredTest,2),rSquredTest, 'Color', [0 0 1])
 legend('Train','Validation','Test','Location','northwest')
+title(strcat({'ANN with '}, num2str(hiddenNeurons), {' neurons '}, num2str(learningRate), {' Learning Rate'} ))
 hold off
 
-clear input
-clear output
-clear tblMovieCleaned
+%clear input
+%clear output
+%clear tblMovieCleaned
 
