@@ -25,7 +25,7 @@ input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 4))]; %Duration
 output = table2array(tblMovieCleaned(1:amountOfSampels, 26));
 
 %---Set training parameters
-iterations = 300;
+iterations = 50;
 errorThreshhold = 0.001;
 learningRate = 0.0005;
 %---Set hidden layer type, for example: [4, 3, 2]
@@ -136,6 +136,11 @@ for t = 1:testsetCount
     error(t, : ) = predict - testRealOut(t, :);
 end
 
+plot(err)
+
+tblMedian(1:size(tblMovieCleaned,1)) = median(tblMovieCleaned.imdb_score);
+tblMedianOfSet(1:size(rSquredTrain,2)) = rSquareValue(tblMedian,tblMovieCleaned.imdb_score);
+
 figure
 hold on
 set(gca,'fontsize',18)
@@ -144,10 +149,10 @@ ylabel('r squared')
 line(1:size(rSquredTrain,2),rSquredTrain, 'Color', [1 0 0 ])
 line(1:size(rSquredValidation,2),rSquredValidation,'Color', [0 1 0 ])
 line(1:size(rSquredTest,2),rSquredTest, 'Color', [0 0 1])
-legend('Train','Validation','Test','Location','northwest')
+line(1:size(rSquredTest,2),tblMedianOfSet, 'Color', [0.6 0.6 0.6])
+legend('Train','Validation','Test','Median','Location','northwest')
 title(strcat({'ANN with '}, num2str(hiddenNeurons), {' neurons '}, num2str(learningRate), {' Learning Rate'} ))
 hold off
-
 
 %---Print predictions
 fprintf('Ended with %d iterations.\n', iter);
@@ -156,7 +161,7 @@ b = testRealOut;
 c = p';
 x1_x2_act_pred_err = [a b c c-b];
 %hist(x1_x2_act_pred_err(:,size(x1_x2_act_pred_err,2)));
-clear input
-clear output
-clear tblMovieCleaned
+%clear input
+%clear output
+%clear tblMovieCleaned
 
