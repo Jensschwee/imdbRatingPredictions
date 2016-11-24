@@ -7,12 +7,15 @@ function [rsquared] = evaluateRegression(tblTest,theta)
         estimateRevenue = X * theta; 
 
         %RSS=sum((y-estimateRevenue).^2);
-        %SST=sum(y-mean(y));
+        %REG=sum((y-mean(y)).^2);
 
         %error = y - estimateRevenue;
 
-        %rsquared = 1-(RSS/SST);
+        %rsquared = 1-(RSS/REG);
         
-        rsquared = 1 - sum((y - estimateRevenue).^2)/sum((y - mean(y)).^2);
+        R = (cov(estimateRevenue,y) / [(var(y)).^0.5 (var(y)).^0.5]);
+        rsquared = R(2).^2;
+    
+        %rsquared = 1 - sum((y - estimateRevenue).^2)/sum((y - mean(y)).^2);
 
 end

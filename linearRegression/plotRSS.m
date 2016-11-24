@@ -1,14 +1,24 @@
-function plotRSS(rsquared,NumberOfReperts,NumberOfIterations, NumberOfParameters )
-rsquaredMean = [];
-rsquaredSd = [];
+function plotRSS(rsquaredTest,rsquaredTran,NumberOfReperts,NumberOfIterations, NumberOfParameters, tbl )
+rsquaredTestMean = [];
+rsquaredTestSd = [];
+rsquaredTranMean = [];
+rsquaredTranSd = [];
 for i=1:size(NumberOfIterations,2)
-    rsquaredMean(i) = mean2(rsquared(:,i));
-    rsquaredSd(i) = std(rsquared(:,i));
+    rsquaredTestMean(i) = mean2(rsquaredTest(:,i));
+    rsquaredTestSd(i) = std(rsquaredTest(:,i));
+    rsquaredTranMean(i) = mean2(rsquaredTran(:,i));
+    rsquaredTranSd(i) = std(rsquaredTran(:,i));
 end;
+medianOfVaules(1:size(tbl)) = median(tbl);
+rSquredMedian(1:size(NumberOfIterations,2)) = rSquareValue(medianOfVaules,tbl);
+rSquredSD(1:size(NumberOfIterations,2)) = std(medianOfVaules,tbl);
 
 %PLOT This function plots linear regression
 %   Detailed stuff..
-    errorbar(NumberOfIterations,rsquaredMean,rsquaredSd)
+    hold on
+    errorbar(NumberOfIterations,rsquaredTestMean,rsquaredTestSd,'color', [0 1 0])
+    errorbar(NumberOfIterations,rsquaredTranMean,rsquaredTranSd,'color', [1 0 0])
+    errorbar(NumberOfIterations,rSquredMedian,rSquredSD,'color', [0 0 1])
     set(gca,'fontsize',18)
     xlabel('Number Of Epochs')
     ylabel('r squared')
@@ -18,6 +28,8 @@ end;
     test = strcat(test,num2str(NumberOfReperts));
     test = strcat(test,{' reperts'});
     title(test)
+    legend('Test','Traning','Median','Location','northwest')
+    hold off
     print('LinerRegression','-dpng');
 end
 

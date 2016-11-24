@@ -7,7 +7,8 @@ clear all
 tblMovieCleaned=readtable('../movie_metadata_cleaned_pca.csv');
 
 NumberOfReperts = 50;
-NumberOfIterations = 10:10:100;
+NumberOfIterations = 1:10:1500;
+alpha = 0.15;
 
 for k=1:size(NumberOfIterations,2)
     for i=1:NumberOfReperts;
@@ -20,11 +21,10 @@ for k=1:size(NumberOfIterations,2)
         %X=linspace(0,1,n);
         %y=(0.5*X-2)+sigma*randn(1,n);
         
-        alpha = 0.05;
-        X = table2array(tblTraining(:, 1:size(tblTraining,2)-1));
+        X = table2array(tblTraining(:, 1:size(tblTraining,2)-2));
         %X = table2array(tblTraining(:, 1));
         y = table2array(tblTraining(:, size(tblTraining,2)));
-        alpha = 0.75;
+        
         num_iters = NumberOfIterations(k);
 
         % Init Theta and Run Gradient Descent 
@@ -33,12 +33,13 @@ for k=1:size(NumberOfIterations,2)
         [theta] = gradientDescent(X, y, theta, alpha, num_iters);
 
         % Eval
-        rsquared(i,k) = evaluateRegressionPCA(tblTest,theta);
+        rsquaredTest(i,k) = evaluateRegressionPCA(tblTest,theta);
+        rsquaredTraning(i,k) = evaluateRegressionPCA(tblTraining,theta);
     end;
 end;
 
 % Plot
-plotRSS(rsquared,NumberOfReperts,NumberOfIterations, size(X,2)-1);
+plotRSS(rsquaredTest,rsquaredTraning,NumberOfReperts,NumberOfIterations, size(X,2)-1, tblMovieCleaned.y50);
 
 %clear RSS
 %clear alpha
