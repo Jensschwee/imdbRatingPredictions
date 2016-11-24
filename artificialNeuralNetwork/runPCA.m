@@ -14,11 +14,11 @@ input = table2array(tblMovieCleaned(:, 1:size(tblMovieCleaned,2)-2));
 output = table2array(tblMovieCleaned(:, size(tblMovieCleaned,2)));
 
 %---Set training parameters
-iterations = 5;
-errorThreshhold = 0.1;
-learningRate = 0.05;
+iterations = 20;
+errorThreshhold = 0.001;
+learningRate = 0.01;
 %---Set hidden layer type, for example: [4, 3, 2]
-hiddenNeurons = [25];
+hiddenNeurons = [25 5];
 
 trainInp = input(trainInd,:);
 trainOut = output(trainInd);
@@ -80,7 +80,7 @@ for iter = 1:iterations
         p(t) = predict;
         error(t, : ) = predict - validationOut(t, :);
     end
-    rSquredValidation(iter) = rSquareValue( p',validationOut);
+    rSquredValidation(iter) = rSquareValue(p',validationOut);
     
     for t = 1:testsetCount
         [predict, layeroutput] = ForwardNetwork(testInp(t, :), layerOfNeurons, weightCell);
@@ -96,6 +96,7 @@ for iter = 1:iterations
         break;
     end
 end
+
 
 %--Test the trained network with a test set
 error = zeros(testsetCount, outArgc);
@@ -114,6 +115,9 @@ b = testRealOut;
 c = p';
 x1_x2_act_pred_err = [a b c c-b];
 hist(x1_x2_act_pred_err(:,size(x1_x2_act_pred_err,2)));
+
+plot(error)
+
 
 figure
 hold on
