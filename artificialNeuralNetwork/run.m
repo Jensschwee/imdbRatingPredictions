@@ -27,9 +27,9 @@ output = table2array(tblMovieCleaned(1:amountOfSampels, 245));
 %---Set training parameters
 iterations = 100;
 errorThreshhold = 0.001;
-learningRate = 0.001;
+learningRate = 0.1;
 %---Set hidden layer type, for example: [4, 3, 2]
-hiddenNeurons = [10 8];
+hiddenNeurons = [10 8 2];
 
 %---'Xor' training data
 trainInp = input(trainInd,:);
@@ -45,6 +45,7 @@ assert(size(trainInp,1)==size(trainOut, 1),'Counted different sets of input and 
 inArgc = size(trainInp, 2);
 outArgc = size(trainOut, 2);
 trainsetCount = size(trainInp, 1);
+testsetCount = size(testInp, 1);
 
 %---Add output layer
 layerOfNeurons = [hiddenNeurons, outArgc]
@@ -67,26 +68,58 @@ end
 %---Begin training
 %----------------------
 for iter = 1:iterations
+    sqens = datasample(1:trainsetCount,trainsetCount,'Replace',false);
     for i = 1:trainsetCount
         % choice = randi([1 trainsetCount]);
-        choice = i;
+        %choice = i;
+        choice = sqens(i);
         sampleIn = trainInp(choice, :);
         sampleTarget = trainOut(choice, :);
         [realOutput, layerOutputCells] = ForwardNetwork(sampleIn, layerOfNeurons, weightCell);
         weightCell = BackPropagate(learningRate, sampleIn, realOutput, sampleTarget, layerOfNeurons, weightCell, layerOutputCells);
     end
     
+    
+    for t = 1:trainsetCount
+        [predict, layeroutput] = ForwardNetwork(trainInp(t, :), layerOfNeurons, weightCell);
+        pre(t) = predict;
+    end
+    
+    rSquredTrain(iter) = rSquareValue(pre',trainOut);
+    
     %plot overall network error at end of each iteration
     error = zeros(size(validationInp,1), outArgc);
     for t = 1:size(validationInp,1)
         [predict, layeroutput] = ForwardNetwork(validationInp(t, :), layerOfNeurons, weightCell);
         p(t) = predict;
-        
         error(t, : ) = predict - validationOut(t, :);
     end
-    err(iter) = (sum(error.^2)/(size(validationInp,1) - size(validationInp,2) - 1))^0.5;
+    rSquredValidation(iter) = rSquareValue(p',validationOut);
+    
+    for t = 1:testsetCount
+        [predict, layeroutput] = ForwardNetwork(testInp(t, :), layerOfNeurons, weightCell);
+        p(t) = predict;
+    end
+    
+    rSquredTest(iter) = rSquareValue(p',testRealOut);
+        
+    err(iter) = (sum(error.^2)/(size(validationInp,1)-size(validationInp,2)))^0.5;
     figure(1);
     plot(err);
+    
+    %plot overall network error at end of each iteration
+    %error = zeros(size(validationInp,1), outArgc);
+    %for t = 1:size(validationInp,1)
+    %    [predict, layeroutput] = ForwardNetwork(validationInp(t, :), layerOfNeurons, weightCell);
+    %    p(t) = predict;
+    %    
+    %    error(t, : ) = predict - validationOut(t, :);
+    %end
+    %err(iter) = (sum(error.^2)/(size(validationInp,1) - size(validationInp,2) - 1))^0.5;
+    %figure(1);
+    %plot(err);
+    
+    
     %---Stop if reach error threshold
     if err(iter) < errorThreshhold
         break;
@@ -104,6 +137,18 @@ for t = 1:testsetCount
 end
 
 rsquare(testRealOut, p')
+
+figure
+hold on
+set(gca,'fontsize',18)
+xlabel('Number Of Epochs')
+ylabel('r squared')
+line(1:size(rSquredTrain,2),rSquredTrain, 'Color', [1 0 0 ])
+line(1:size(rSquredValidation,2),rSquredValidation,'Color', [0 1 0 ])
+line(1:size(rSquredTest,2),rSquredTest, 'Color', [0 0 1])
+legend('Train','Validation','Test','Location','northwest')
+hold off
+
 
 %---Print predictions
 fprintf('Ended with %d iterations.\n', iter);

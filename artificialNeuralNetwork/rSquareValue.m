@@ -5,6 +5,8 @@ function [rSquare ] = rSquareValue(predict,realOut)
     %rSquare = 1 - sum((realVaule -perdited).^2)/sum((realVaule - mean(realVaule)).^2);
     
     
+    % This formula return two values, we only use one of them. That might
+    % not be good. TODO
     R = (cov(predict,realOut) / [(var(realOut)).^0.5 (var(realOut)).^0.5]);
     rSquare = R(2).^2;
     
