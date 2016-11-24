@@ -1,6 +1,6 @@
 function [tblTest, tblTraining] = dataSpilit(tbl)
     % Split data into training and test data
-    trainingSetSize = 0.85; %Size of the traning set in %
+    trainingSetSize = 0.7; %Size of the traning set in %
     tblIndex = randperm(height(tbl));
     testSize = height(tbl)*(1-trainingSetSize);
     trainingSize = height(tbl)*trainingSetSize;
