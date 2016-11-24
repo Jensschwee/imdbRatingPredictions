@@ -5,8 +5,7 @@ function weightCell = BackPropagate(rate, in, realOutput, sampleTarget, layer, w
     D_weight = cell(1, layerCount);
     %---From Output layer, it has different formula
     output = layerOutputCells{layerCount};
-    %delta{layerCount} = output .* (1-output.^2) .* (sampleTarget - output);
-    delta{layerCount} = (1-output.^2) .* (sampleTarget - output);
+    delta{layerCount} = (sampleTarget - output); % Linear learning rule
     preoutput = layerOutputCells{layerCount-1};
     D_weight{layerCount} = rate .* preoutput' * delta{layerCount};
     %---Back propagate for Hidden layers
@@ -19,8 +18,8 @@ function weightCell = BackPropagate(rate, in, realOutput, sampleTarget, layer, w
         end
         weight = weightCell{layerIndex+1};
         sumup = (weight * delta{layerIndex+1}')';
-        %delta{layerIndex} = output .* (1 - output.^2) .* sumup;
-        delta{layerIndex} = (1 - output.^2) .* sumup;
+        %delta{layerIndex} = output .* (1 - output) .* sumup;
+        delta{layerIndex} = (1 - output.^2) .* sumup;  % Tansig learning rule
         D_weight{layerIndex} = rate .* preoutput' * delta{layerIndex};
     end
     %---Update weightCell
