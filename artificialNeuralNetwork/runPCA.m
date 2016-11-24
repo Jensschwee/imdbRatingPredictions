@@ -14,11 +14,11 @@ input = table2array(tblMovieCleaned(:, 1:size(tblMovieCleaned,2)-2));
 output = table2array(tblMovieCleaned(:, size(tblMovieCleaned,2)));
 
 %---Set training parameters
-iterations = 20;
-errorThreshhold = 0.001;
-learningRate = 0.01;
+iterations = 100;
+errorThreshhold = 1;
+learningRate = 0.1;
 %---Set hidden layer type, for example: [4, 3, 2]
-hiddenNeurons = [25 5];
+hiddenNeurons = [10 8 2];
 
 trainInp = input(trainInd,:);
 trainOut = output(trainInd);
@@ -63,7 +63,7 @@ for iter = 1:iterations
         sampleIn = trainInp(choice, :);
         sampleTarget = trainOut(choice, :);
         [realOutput, layerOutputCells] = ForwardNetwork(sampleIn, layerOfNeurons, weightCell);
-        [weightCell] = BackPropagate(learningRate, sampleIn, realOutput, sampleTarget, layerOfNeurons, weightCell, layerOutputCells);
+        weightCell = BackPropagate(learningRate, sampleIn, realOutput, sampleTarget, layerOfNeurons, weightCell, layerOutputCells);
     end
     
     for t = 1:trainsetCount
@@ -90,6 +90,8 @@ for iter = 1:iterations
     rSquredTest(iter) = rSquareValue(p',testRealOut);
         
     err(iter) = (sum(error.^2)/(size(validationInp,1)-size(validationInp,2)))^0.5;
+    figure(1);
+    plot(err);
     
     %---Stop if reach error threshold
     if err(iter) < errorThreshhold
