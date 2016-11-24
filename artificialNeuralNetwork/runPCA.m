@@ -10,7 +10,7 @@ tblMovieCleaned=readtable('../movie_metadata_cleaned_pca.csv');
 amountOfSampels=size(tblMovieCleaned,1);
 
 % Input and output parameteres
-input = table2array(tblMovieCleaned(:, 1:size(tblMovieCleaned,2)-1));
+input = table2array(tblMovieCleaned(:, 1:size(tblMovieCleaned,2)-2));
 output = table2array(tblMovieCleaned(:, size(tblMovieCleaned,2)));
 
 %---Set training parameters
@@ -18,7 +18,7 @@ iterations = 5;
 errorThreshhold = 0.1;
 learningRate = 0.05;
 %---Set hidden layer type, for example: [4, 3, 2]
-hiddenNeurons = [25 10 5];
+hiddenNeurons = [25];
 
 trainInp = input(trainInd,:);
 trainOut = output(trainInd);

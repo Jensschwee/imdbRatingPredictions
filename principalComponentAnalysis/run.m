@@ -49,7 +49,8 @@ end;
 
 ev=C(:,1:nc);
 y=X*ev; %transform to PCA space
-y = [y, table2array(tblMovieCleaned(:, 245))];
+y = [y, table2array(tblMovieCleaned(:, 9))]; %Gross
+y = [y, table2array(tblMovieCleaned(:, 26))]; %IMDB score
 
 %Export
 tbl = array2table(y);
