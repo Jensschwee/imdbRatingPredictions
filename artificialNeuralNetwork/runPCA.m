@@ -14,12 +14,11 @@ repeats = 2;
 errorbarGap = 1;
 
 %---Set training parameters
-epochs = 200;
 errorThreshhold = 0.0001;
-learningRate = 0.005;
-validationCheck = 5; %How manny times may the model not get better?
-%---Set hidden layer type, for example: [4, 3, 2]
-hiddenNeurons = [25 10];
+learningRate = 0.00001;
+validationCheck = 5; %How many times may the model not get better?
+errorbarGap = 1;
+hiddenNeurons = [50 20 25 15 10];
 
 %epochs = 50;
 %errorThreshhold = 0.000001;

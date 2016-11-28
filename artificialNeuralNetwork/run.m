@@ -6,11 +6,13 @@ tblMovieCleaned=readtable('../movie_metadata_cleaned.csv');
 
 % Plot config
 repeats = 2;
+%epochs = 100;
 errorbarGap = 1;
 
 %---Set training parameters
 epochs = 50;
 errorThreshhold = 0;
+%errorThreshhold = 0.001;
 validationCheck = 5; %How manny times may the model not get better?
 learningRate = 0.005;
 %---Set hidden layer type, for example: [4, 3, 2]
