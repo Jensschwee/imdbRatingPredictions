@@ -24,10 +24,14 @@ input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 4))]; %Duration
  input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 208:225))]; %aspect_ratio
 output = table2array(tblMovieCleaned(1:amountOfSampels, 26));
 
-%---Set training parameters
+
+% Plot config
 repeats = 2;
-errorbarGap = 10;
 epochs = 300;
+errorbarGap = 10
+
+%---Set training parameters
+epochs = 200;
 errorThreshhold = 0.001;
 validationCheck = 5; %How manny times may the model not get better?
 learningRate = 0.00005;
@@ -185,9 +189,6 @@ errorbar(1:errorbarGap:size(rSquaredTest,2),rSquaredTestMean,rSquaredTestSd,'col
 line(1:size(rSquaredTest,2),tblMedianOfSet, 'Color', [0.6 0.6 0.6])
 xlabel('Number Of Epochs')
 ylabel('r squared')
-%line(1:size(rSquaredTrain,2),rSquaredTrain, 'Color', [1 0 0 ])
-%line(1:size(rSquaredValidation,2),rSquaredValidation,'Color', [0 1 0 ])
-%line(1:size(rSquaredTest,2),rSquaredTest, 'Color', [0 0 1])
 legend('Train','Validation','Test','Median','Location','northwest')
 set(gca, 'Xlim', [-1 epochs+5])
 title(strcat({'ANN with '}, num2str(hiddenNeurons), {' neurons '}, num2str(learningRate), {' Learning Rate'} ))
@@ -199,7 +200,7 @@ a = testInp;
 b = testRealOut;
 c = p';
 x1_x2_act_pred_err = [a b c c-b];
-%hist(x1_x2_act_pred_err(:,size(x1_x2_act_pred_err,2)));
+
 %clear input
 %clear output
 %clear tblMovieCleaned
