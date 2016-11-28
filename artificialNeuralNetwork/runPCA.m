@@ -14,16 +14,16 @@ input = table2array(tblMovieCleaned(:, 1:size(tblMovieCleaned,2)-2));
 output = table2array(tblMovieCleaned(:, size(tblMovieCleaned,2)));
 
 % Plot config
-repeats = 20;
+repeats = 10;
 errorbarGap = 1;
 
 %---Set training parameters
 epochs = 100;
 errorThreshhold = 0.0001;
-learningRate = 0.005;
-validationCheck = 5; %How manny times may the model not get better?
-%---Set hidden layer type, for example: [4, 3, 2]
-hiddenNeurons = [25 15 20];
+learningRate = 0.00001;
+validationCheck = 5; %How many times may the model not get better?
+errorbarGap = 1;
+hiddenNeurons = [50 20 25 15 10];
 
 %epochs = 50;
 %errorThreshhold = 0.000001;
@@ -51,7 +51,7 @@ layerCount = size(layerOfNeurons, 2);
 
 
 for repeat = 1:repeats;
-
+    validationCurrent = validationCheck;
     %---Weight and bias random range using tansig scale
     e = 1;
     b = -e;
@@ -106,9 +106,9 @@ for repeat = 1:repeats;
 
         %---Stop if reach error threshold
         if (iter > 1)
-            if(errorThreshhold > abs(err(iter) - err(iter-1)))
-                if(validationCheck ~= 0)
-                    validationCheck = validationCheck-1;
+            if(errorThreshhold < (err(iter) - err(iter-1)))
+                if(validationCurrent ~= 0)
+                    validationCurrent = validationCurrent-1;
                 else
                     break;
                 end
@@ -168,7 +168,7 @@ errorbar(1:errorbarGap:size(rSquaredTest, 2),rSquaredValidationMean,rSquaredVali
 errorbar(1:errorbarGap:size(rSquaredTest, 2),rSquaredTestMean,rSquaredTestSd,'color', [0 0 1])
 line(1:size(rSquaredTest,2),tblMedianOfSet, 'Color', [0.6 0.6 0.6])
 legend('Train','Validation','Test','Median','Location','northwest')
-set(gca, 'Xlim', [-1 epochs+5])
+set(gca, 'Xlim', [-1 size(rSquaredTest, 2)+5])
 title(strcat({'ANN with '}, num2str(hiddenNeurons), {' neurons '}, num2str(learningRate), {' Learning Rate'} ))
 hold off
 
