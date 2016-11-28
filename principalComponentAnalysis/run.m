@@ -23,6 +23,7 @@ X = [X, table2array(tblMovieCleaned(:, 128:133))]; %content_rating
 X = [X, table2array(tblMovieCleaned(:, 134:207))]; %title_year
 X = [X, table2array(tblMovieCleaned(:, 208:225))]; %aspect_ratio
 X = [X, table2array(tblMovieCleaned(:, 226:244))]; %facenumber_in_poster
+t1 = tic;%initilise counter
 
 C=cov(X);
 [V,L]=eig(C);
@@ -54,6 +55,8 @@ ev=C(:,1:nc);
 y=X*ev; %transform to PCA space
 y = [y, table2array(tblMovieCleaned(:, 9))]; %Gross
 y = [y, table2array(tblMovieCleaned(:, 26))]; %IMDB score
+
+toc(t1)%compute elapsed time
 
 %Export
 tbl = array2table(y);

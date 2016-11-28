@@ -18,7 +18,7 @@ rSquredSD(1:size(NumberOfIterations,2)) = std(medianOfVaules,tbl);
     hold on
     errorbar(NumberOfIterations,rsquaredTestMean,rsquaredTestSd,'color', [0 1 0])
     errorbar(NumberOfIterations,rsquaredTranMean,rsquaredTranSd,'color', [1 0 0])
-    errorbar(NumberOfIterations,rSquredMedian,rSquredSD,'color', [0 0 1])
+    errorbar(NumberOfIterations,rSquredMedian,rSquredSD,'color', [0.6 0.6 0.6])
     set(gca,'fontsize',18)
     xlabel('Number Of Epochs')
     ylabel('r squared')
@@ -26,9 +26,9 @@ rSquredSD(1:size(NumberOfIterations,2)) = std(medianOfVaules,tbl);
     test = strcat({test},num2str(NumberOfParameters));
     test = strcat(test,{' parameters with '});
     test = strcat(test,num2str(NumberOfReperts));
-    test = strcat(test,{' repertas'});
+    test = strcat(test,{' repeats'});
     title(test)
-    legend('Test','Traning','Median','Location','northwest')
+    legend('Test','Training','Median','Location','northwest')
     set(gca, 'Xlim', [-1 max(NumberOfIterations)])
     hold off
     print('LinerRegression','-dpng');
