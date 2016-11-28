@@ -14,13 +14,13 @@ input = table2array(tblMovieCleaned(:, 1:size(tblMovieCleaned,2)-2));
 output = table2array(tblMovieCleaned(:, size(tblMovieCleaned,2)));
 
 % Plot config
-repeats = 2;
-errorbarGap = 10
+repeats = 20;
+errorbarGap = 1;
 
 %---Set training parameters
-epochs = 200;
-errorThreshhold = 0.01;
-learningRate = 0.001;
+epochs = 100;
+errorThreshhold = 0.0001;
+learningRate = 0.005;
 validationCheck = 5; %How manny times may the model not get better?
 %---Set hidden layer type, for example: [4, 3, 2]
 hiddenNeurons = [25 15 20];

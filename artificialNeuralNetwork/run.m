@@ -28,7 +28,7 @@ output = table2array(tblMovieCleaned(1:amountOfSampels, 26));
 % Plot config
 repeats = 2;
 epochs = 300;
-errorbarGap = 10
+errorbarGap = 1;
 
 %---Set training parameters
 epochs = 200;
