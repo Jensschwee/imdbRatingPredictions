@@ -28,7 +28,7 @@ output = table2array(tblMovieCleaned(1:amountOfSampels, 26));
 % Plot config
 repeats = 2;
 epochs = 300;
-errorbarGap = 10
+errorbarGap = 1;
 
 %---Set training parameters
 epochs = 200;
@@ -190,7 +190,7 @@ line(1:size(rSquaredTest,2),tblMedianOfSet, 'Color', [0.6 0.6 0.6])
 xlabel('Number Of Epochs')
 ylabel('r squared')
 legend('Train','Validation','Test','Median','Location','northwest')
-set(gca, 'Xlim', [-1 epochs+5])
+set(gca, 'Xlim', [-1 size(rSquaredTest, 2)+5])
 title(strcat({'ANN with '}, num2str(hiddenNeurons), {' neurons '}, num2str(learningRate), {' Learning Rate'} ))
 hold off
 
