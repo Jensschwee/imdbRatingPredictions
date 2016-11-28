@@ -6,19 +6,14 @@ close all
 %read data soruce
 tblMovieCleaned=readtable('../movie_metadata_cleaned_pca.csv');
 
-[trainInd,valInd,testInd] = dividerand(size(tblMovieCleaned,1),0.7,0.15,0.15);%select data randomly
 amountOfSampels=size(tblMovieCleaned,1);
 
-% Input and output parameteres
-input = table2array(tblMovieCleaned(:, 1:size(tblMovieCleaned,2)-2));
-output = table2array(tblMovieCleaned(:, size(tblMovieCleaned,2)));
 
 % Plot config
-repeats = 10;
+repeats = 2;
 errorbarGap = 1;
 
 %---Set training parameters
-epochs = 100;
 errorThreshhold = 0.0001;
 learningRate = 0.00001;
 validationCheck = 5; %How many times may the model not get better?
@@ -30,29 +25,34 @@ hiddenNeurons = [50 20 25 15 10];
 %learningRate = 0.001;
 %hiddenNeurons = [25 10];
 
-trainInp = input(trainInd,:);
-trainOut = output(trainInd);
-validationInp = input(valInd,:);
-validationOut = output(valInd);
-testInp = input(testInd,:);
-testRealOut = output(testInd);
 
-assert(size(trainInp,1)==size(trainOut, 1),'Counted different sets of input and output.');
-
-%---Initialize Network attributes
-inArgc = size(trainInp, 2);
-outArgc = size(trainOut, 2);
-trainsetCount = size(trainInp, 1);
-testsetCount = size(testInp, 1);
 
 %---Add output layer
-layerOfNeurons = [hiddenNeurons, outArgc];
+layerOfNeurons = [hiddenNeurons, 1];
 layerCount = size(layerOfNeurons, 2);
 
 
 for repeat = 1:repeats;
     validationCurrent = validationCheck;
     %---Weight and bias random range using tansig scale
+    % Input and output parameteres
+    [trainInd,valInd,testInd] = dividerand(size(tblMovieCleaned,1),0.7,0.15,0.15);%select data randomly
+    input = table2array(tblMovieCleaned(:, 1:size(tblMovieCleaned,2)-2));
+    output = table2array(tblMovieCleaned(:, size(tblMovieCleaned,2)));
+
+    trainInp = input(trainInd,:);
+    trainOut = output(trainInd);
+    validationInp = input(valInd,:);
+    validationOut = output(valInd);
+    testInp = input(testInd,:);
+    testRealOut = output(testInd);
+
+    %---Initialize Network attributes
+    inArgc = size(trainInp, 2);
+    outArgc = size(trainOut, 2);
+    trainsetCount = size(trainInp, 1);
+    testsetCount = size(testInp, 1);
+
     e = 1;
     b = -e;
     %---Set initial random weights

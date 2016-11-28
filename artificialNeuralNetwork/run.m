@@ -4,34 +4,12 @@ clear all
 %read data soruce
 tblMovieCleaned=readtable('../movie_metadata_cleaned.csv');
 
-[trainInd,valInd,testInd] = dividerand(size(tblMovieCleaned,1),0.7,0.15,0.15);%select data randomly
-amountOfSampels=size(tblMovieCleaned,1);
-
-% Input and output parameteres
-input = table2array(tblMovieCleaned(1:amountOfSampels, 1)); %Color
-input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 4))]; %Duration
-%input = [input, table2array(tblMovieCleaned(:, 5))]; %director_facebook_likes
-%input = [input,table2array(tblMovieCleaned(:, 6))]; %actor_3_facebook_likes
-%input = [input,table2array(tblMovieCleaned(:, 8))]; %actor_1_facebook_likes
- input = [input,table2array(tblMovieCleaned(1:amountOfSampels, 14))]; %cast_total_facebook_likes
- input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 226:244))]; %facenumber_in_poster
-%input = [input, table2array(tblMovieCleaned(:, 25))]; %actor_2_facebook_likes
- input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 29:50))]; %genre
- input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 51:84))]; %language
- input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 85:127))]; %country
- input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 128:133))]; %content_rating
- input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 134:207))]; %title_year
- input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 208:225))]; %aspect_ratio
-output = table2array(tblMovieCleaned(1:amountOfSampels, 26));
-
-
 % Plot config
 repeats = 2;
 epochs = 100;
 errorbarGap = 1;
 
 %---Set training parameters
-epochs = 200;
 errorThreshhold = 0.001;
 validationCheck = 5; %How manny times may the model not get better?
 learningRate = 0.00005;
@@ -48,28 +26,44 @@ hiddenNeurons = [25];
 %---Set hidden layer type, for example: [4, 3, 2]
 %hiddenNeurons = [25 10];
 
-trainInp = input(trainInd,:);
-trainOut = output(trainInd);
-validationInp = input(valInd,:);
-validationOut = output(valInd);
-testInp = input(testInd,:);
-testRealOut = output(testInd);
-
-
-assert(size(trainInp,1)==size(trainOut, 1),'Counted different sets of input and output.');
-
-
-%---Initialize Network attributes
-inArgc = size(trainInp, 2);
-outArgc = size(trainOut, 2);
-trainsetCount = size(trainInp, 1);
-testsetCount = size(testInp, 1);
-
 %---Add output layer
-layerOfNeurons = [hiddenNeurons, outArgc];
+layerOfNeurons = [hiddenNeurons, 1];
 layerCount = size(layerOfNeurons, 2);
 
 for repeat = 1:repeats;
+    validationCurrent = validationCheck;
+    %---Weight and bias random range using tansig scale
+    [trainInd,valInd,testInd] = dividerand(size(tblMovieCleaned,1),0.7,0.15,0.15);%select data randomly
+    amountOfSampels=size(tblMovieCleaned,1);
+
+    % Input and output parameteres
+    input = table2array(tblMovieCleaned(1:amountOfSampels, 1)); %Color
+    input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 4))]; %Duration
+    %input = [input, table2array(tblMovieCleaned(:, 5))]; %director_facebook_likes
+    %input = [input,table2array(tblMovieCleaned(:, 6))]; %actor_3_facebook_likes
+    %input = [input,table2array(tblMovieCleaned(:, 8))]; %actor_1_facebook_likes
+    input = [input,table2array(tblMovieCleaned(1:amountOfSampels, 14))]; %cast_total_facebook_likes
+    input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 226:244))]; %facenumber_in_poster
+    %input = [input, table2array(tblMovieCleaned(:, 25))]; %actor_2_facebook_likes
+    input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 29:50))]; %genre
+    input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 51:84))]; %language
+    input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 85:127))]; %country
+    input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 128:133))]; %content_rating
+    input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 134:207))]; %title_year
+    input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 208:225))]; %aspect_ratio
+    output = table2array(tblMovieCleaned(1:amountOfSampels, 26));
+    trainInp = input(trainInd,:);
+    trainOut = output(trainInd);
+    validationInp = input(valInd,:);
+    validationOut = output(valInd);
+    testInp = input(testInd,:);
+    testRealOut = output(testInd);
+
+    %---Initialize Network attributes
+    inArgc = size(trainInp, 2);
+    outArgc = size(trainOut, 2);
+    trainsetCount = size(trainInp, 1);
+    testsetCount = size(testInp, 1);
     %---Weight and bias random range
     e = 1;
     b = -e;
