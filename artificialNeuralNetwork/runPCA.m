@@ -14,11 +14,11 @@ input = table2array(tblMovieCleaned(:, 1:size(tblMovieCleaned,2)-2));
 output = table2array(tblMovieCleaned(:, size(tblMovieCleaned,2)));
 
 %---Set training parameters
-iterations = 50;
-errorThreshhold = 0.000001;
-learningRate = 0.01;
+iterations = 400;
+errorThreshhold = 0.0001;
+learningRate = 0.001;
 %---Set hidden layer type, for example: [4, 3, 2]
-hiddenNeurons = [10 8 2];
+hiddenNeurons = [30 50 10 30 20 5];
 
 trainInp = input(trainInd,:);
 trainOut = output(trainInd);
