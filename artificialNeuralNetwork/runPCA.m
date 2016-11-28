@@ -19,11 +19,11 @@ errorbarGap = 10
 
 %---Set training parameters
 epochs = 200;
-errorThreshhold = 0.0001;
+errorThreshhold = 0.01;
 learningRate = 0.001;
+validationCheck = 5; %How manny times may the model not get better?
 %---Set hidden layer type, for example: [4, 3, 2]
-hiddenNeurons = [10];
-
+hiddenNeurons = [25 15 20];
 
 %epochs = 50;
 %errorThreshhold = 0.000001;
@@ -105,9 +105,16 @@ for repeat = 1:repeats;
         err(iter) = sum(error.^2)/(size(validationInp,1)-size(validationInp,2));
 
         %---Stop if reach error threshold
-        if err(iter) < errorThreshhold
-            break;
+        if (iter > 1)
+            if(errorThreshhold > abs(err(iter) - err(iter-1)))
+                if(validationCheck ~= 0)
+                    validationCheck = validationCheck-1;
+                else
+                    break;
+                end
+            end
         end
+        
     end
 
     %plot(err);
@@ -119,14 +126,16 @@ for repeat = 1:repeats;
         p(t) = predict;
         error(t, : ) = predict - testRealOut(t, :);
     end
+       
+end
 
-    rSquareValue(p',testRealOut);
-    
-end;
+%plot(err);
+
+rSquareValue(p',testRealOut);
 
 % Shitty code
 count = 1;
-for e = 1:errorbarGap:epochs
+for e = 1:errorbarGap:size(rSquaredTest, 2)
     rSquaredTrainMean(count) = mean(rSquaredTrain(:,e));
     rSquaredTrainSd(count) = std(rSquaredTrain(:,e));
     rSquaredValidationMean(count) = mean(rSquaredValidation(:,e));
@@ -154,9 +163,9 @@ hold on
 set(gca,'fontsize',18)
 xlabel('Number Of Epochs')
 ylabel('r squared')
-errorbar(1:errorbarGap:epochs,rSquaredTrainMean,rSquaredTrainSd,'color', [1 0 0])
-errorbar(1:errorbarGap:epochs,rSquaredValidationMean,rSquaredValidationSd,'color', [0 1 0])
-errorbar(1:errorbarGap:epochs,rSquaredTestMean,rSquaredTestSd,'color', [0 0 1])
+errorbar(1:errorbarGap:size(rSquaredTest, 2),rSquaredTrainMean,rSquaredTrainSd,'color', [1 0 0])
+errorbar(1:errorbarGap:size(rSquaredTest, 2),rSquaredValidationMean,rSquaredValidationSd,'color', [0 1 0])
+errorbar(1:errorbarGap:size(rSquaredTest, 2),rSquaredTestMean,rSquaredTestSd,'color', [0 0 1])
 line(1:size(rSquaredTest,2),tblMedianOfSet, 'Color', [0.6 0.6 0.6])
 legend('Train','Validation','Test','Median','Location','northwest')
 set(gca, 'Xlim', [-1 epochs+5])
