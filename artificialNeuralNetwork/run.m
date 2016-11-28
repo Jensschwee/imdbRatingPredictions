@@ -33,6 +33,15 @@ learningRate = 0.00005;
 %---Set hidden layer type, for example: [4, 3, 2]
 hiddenNeurons = [25 15 20];
 
+%iterations = 50;
+%errorThreshhold = 0.001;
+%learningRate = 0.0005;
+%---Set hidden layer type, for example: [4, 3, 2]
+%hiddenNeurons = [25 10 3];
+
+%learningRate = 0.005;
+%---Set hidden layer type, for example: [4, 3, 2]
+%hiddenNeurons = [25 10];
 
 trainInp = input(trainInd,:);
 trainOut = output(trainInd);
@@ -52,8 +61,8 @@ trainsetCount = size(trainInp, 1);
 testsetCount = size(testInp, 1);
 
 %---Add output layer
-layerOfNeurons = [hiddenNeurons, outArgc]
-layerCount = size(layerOfNeurons, 2)
+layerOfNeurons = [hiddenNeurons, outArgc];
+layerCount = size(layerOfNeurons, 2);
 
 
 
@@ -157,20 +166,24 @@ for e = 1:errorbarGap:epochs
 end
 
 
+tblMedian(1:size(tblMovieCleaned,1)) = median(tblMovieCleaned.imdb_score);
+tblMedianOfSet(1:size(rSquredTrain,2)) = rSquareValue(tblMedian,tblMovieCleaned.imdb_score);
+
 figure
 hold on
 set(gca,'fontsize',18)
 errorbar(1:errorbarGap:epochs,rSquaredTrainMean,rSquaredTrainSd,'color', [1 0 0])
 errorbar(1:errorbarGap:epochs,rSquaredValidationMean,rSquaredValidationSd,'color', [0 1 0])
 errorbar(1:errorbarGap:epochs,rSquaredTestMean,rSquaredTestSd,'color', [0 0 1])
+line(1:size(rSquredTest,2),tblMedianOfSet, 'Color', [0.6 0.6 0.6])
 xlabel('Number Of Epochs')
 ylabel('r squared')
 %line(1:size(rSquaredTrain,2),rSquaredTrain, 'Color', [1 0 0 ])
 %line(1:size(rSquaredValidation,2),rSquaredValidation,'Color', [0 1 0 ])
 %line(1:size(rSquaredTest,2),rSquaredTest, 'Color', [0 0 1])
-legend('Train','Validation','Test','Location','northwest')
+legend('Train','Validation','Test','Median','Location','northwest')
+title(strcat({'ANN with '}, num2str(hiddenNeurons), {' neurons '}, num2str(learningRate), {' Learning Rate'} ))
 hold off
-
 
 %---Print predictions
 fprintf('Ended with %d epochs.\n', iter);
@@ -179,7 +192,7 @@ b = testRealOut;
 c = p';
 x1_x2_act_pred_err = [a b c c-b];
 %hist(x1_x2_act_pred_err(:,size(x1_x2_act_pred_err,2)));
-clear input
-clear output
-clear tblMovieCleaned
+%clear input
+%clear output
+%clear tblMovieCleaned
 

@@ -29,6 +29,7 @@ rSquredSD(1:size(NumberOfIterations,2)) = std(medianOfVaules,tbl);
     test = strcat(test,{' reperts'});
     title(test)
     legend('Test','Traning','Median','Location','northwest')
+    set(gca, 'Xlim', [-1 max(NumberOfIterations)])
     hold off
     print('LinerRegression','-dpng');
 end

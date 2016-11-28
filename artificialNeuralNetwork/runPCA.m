@@ -20,6 +20,12 @@ learningRate = 0.001;
 %---Set hidden layer type, for example: [4, 3, 2]
 hiddenNeurons = [30 50 10 30 20 5];
 
+
+%iterations = 50;
+%errorThreshhold = 0.000001;
+%learningRate = 0.001;
+%hiddenNeurons = [25 10];
+
 trainInp = input(trainInd,:);
 trainOut = output(trainInd);
 validationInp = input(valInd,:);
@@ -90,8 +96,6 @@ for iter = 1:iterations
     rSquredTest(iter) = rSquareValue(p',testRealOut);
         
     err(iter) = sum(error.^2)/(size(validationInp,1)-size(validationInp,2));
-    figure(1);
-    plot(err(iter));
     
     %---Stop if reach error threshold
     if err(iter) < errorThreshhold
@@ -99,9 +103,7 @@ for iter = 1:iterations
     end
 end
 
-figure(1);
-plot(err);
-
+%plot(err);
 
 %--Test the trained network with a test set
 error = zeros(testsetCount, outArgc);
@@ -111,7 +113,7 @@ for t = 1:testsetCount
     error(t, : ) = predict - testRealOut(t, :);
 end
 
-rSquareValue(p',testRealOut)
+rSquareValue(p',testRealOut);
 
 %---Print predictions
 fprintf('Ended with %d iterations.\n', iter);
@@ -123,6 +125,8 @@ hist(x1_x2_act_pred_err(:,size(x1_x2_act_pred_err,2)));
 
 plot(error)
 
+tblMedian(1:size(tblMovieCleaned,1)) = median(tblMovieCleaned.y50);
+tblMedianOfSet(1:size(rSquredTrain,2)) = rSquareValue(tblMedian,tblMovieCleaned.y50);
 
 figure
 hold on
@@ -132,10 +136,12 @@ ylabel('r squared')
 line(1:size(rSquredTrain,2),rSquredTrain, 'Color', [1 0 0 ])
 line(1:size(rSquredValidation,2),rSquredValidation,'Color', [0 1 0 ])
 line(1:size(rSquredTest,2),rSquredTest, 'Color', [0 0 1])
-legend('Train','Validation','Test','Location','northwest')
+line(1:size(rSquredTest,2),tblMedianOfSet, 'Color', [0.6 0.6 0.6])
+legend('Train','Validation','Test','Median','Location','northwest')
+title(strcat({'ANN with '}, num2str(hiddenNeurons), {' neurons '}, num2str(learningRate), {' Learning Rate'} ))
 hold off
 
-clear input
-clear output
-clear tblMovieCleaned
+%clear input
+%clear output
+%clear tblMovieCleaned
 
