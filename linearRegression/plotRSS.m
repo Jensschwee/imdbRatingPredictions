@@ -26,7 +26,7 @@ rSquredSD(1:size(NumberOfIterations,2)) = std(medianOfVaules,tbl);
     test = strcat({test},num2str(NumberOfParameters));
     test = strcat(test,{' parameters with '});
     test = strcat(test,num2str(NumberOfReperts));
-    test = strcat(test,{' reperts'});
+    test = strcat(test,{' repertas'});
     title(test)
     legend('Test','Traning','Median','Location','northwest')
     set(gca, 'Xlim', [-1 max(NumberOfIterations)])

@@ -6,11 +6,11 @@ clear all
 
 tblMovieCleaned=readtable('../movie_metadata_cleaned.csv');
 
-NumberOfReperts = 50;
-NumberOfIterations = 200:10:350;
+NumberOfReperts = 1;
+NumberOfIterations = 1:100:1500;
 alpha = 0.25;
 
-deltaRSqured = 0.001;
+deltaRSqured = 0.0001;
 validationCheck = 5; %How manny times may the model not get better?
 
 epochsTryed = []; %Epochs tryed in
@@ -63,6 +63,27 @@ end;
 
 % Plot
 plotRSS(rsquaredTest,rsquaredTraning,NumberOfReperts,epochsTryed, size(X,2)-1, tblMovieCleaned.imdb_score);
+
+
+X = table2array(tblMovieCleaned(2900, 1)); %Color
+X = [X, table2array(tblMovieCleaned(2900, 4))]; %Duration
+%X = [X, table2array(tblTest(:, 5))]; %director_facebook_likes
+%X = [X,table2array(tblTest(:, 6))]; %actor_3_facebook_likes
+%X = [X,table2array(tblTest(:, 8))]; %actor_1_facebook_likes
+X = [X,table2array(tblMovieCleaned(2900, 14))]; %cast_total_facebook_likes
+%X = [X,table2array(tblTest(:, 23))]; %Budget
+%X = [X, table2array(tblTest(:, 226:244))]; %facenumber_in_poster
+%X = [X, table2array(tblTest(:, 25))]; %actor_2_facebook_likes
+X = [X, table2array(tblMovieCleaned(2900, 29:50))]; %genre
+X = [X, table2array(tblMovieCleaned(2900, 51:84))]; %language
+X = [X, table2array(tblMovieCleaned(2900, 85:127))]; %country
+%X = [X, table2array(tblTest(:, 128:133))]; %content_rating
+X = [X, table2array(tblMovieCleaned(2900, 134:207))]; %title_year
+%X = [X, table2array(tblTest(:, 208:225))]; %aspect_ratio
+y = table2array(tblMovieCleaned(2900, 26));
+
+X = [ones(length(y), 1) X];
+sum(X' .* theta)
 
 %clear RSS
 %clear alpha
