@@ -23,6 +23,9 @@ tblMovieCleaned = normalizeNumericalData(tblMovieCleaned);
 
 tblMovieCleaned.color = grp2idx(tblMovieCleaned.color);
 tblMovieCleaned.color = tblMovieCleaned.color - 1;
+tblManualTesting = tblMovieCleaned([2900,2999],:);
+%tblMovieCleaned([2900,2999],:) = [];
 
 % Write cleaned table
 writetable(tblMovieCleaned, '../movie_metadata_cleaned.csv');
+writetable(tblManualTesting, '../movie_manualTesting_cleaned.csv');

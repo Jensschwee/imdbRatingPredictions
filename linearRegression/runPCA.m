@@ -6,21 +6,19 @@ clear all
 
 tblMovieCleaned=readtable('../movie_metadata_cleaned_pca.csv');
 
-NumberOfReperts = 50;
-NumberOfIterations = 1:10:1500;
+NumberOfReperts = 20;
+NumberOfIterations = 1:1:1500;
 alpha = 0.25;
 
-deltaRSqured = 0.001;
-validationCheck = 5; %How manny times may the model not get better?
+deltaRSqured = 0.0001;
+validationCheck = 15; %How manny times may the model not get better?
 
 epochsTryed = []; %Epochs tryed in
-
 
 for k=1:size(NumberOfIterations,2)
     epochsTryed = [epochsTryed NumberOfIterations(k)] ;
     for i=1:NumberOfReperts;
         [tblTest, tblTraining] = dataSplit(tblMovieCleaned);
-        
         
         X = table2array(tblTraining(:, 1:size(tblTraining,2)-2));
         %X = table2array(tblTraining(:, 1));
@@ -39,10 +37,9 @@ for k=1:size(NumberOfIterations,2)
         rsquaredTest(i,k) = evaluateRegressionPCA(tblTest,theta);
         rsquaredTraning(i,k) = evaluateRegressionPCA(tblTraining,theta);
     end;
-    
     %Has the model become better?
     if (k > 1)
-        if(deltaRSqured > abs(mean2(rsquaredTest(:,k-1)) - mean2(rsquaredTest(:,k))))
+        if(deltaRSqured > (mean2(rsquaredTest(:,k)) - mean2(rsquaredTest(:,k-1))))
             if(validationCheck ~= 0)
                 validationCheck = validationCheck-1;
             else

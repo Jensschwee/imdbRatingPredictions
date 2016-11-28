@@ -135,15 +135,15 @@ for repeat = 1:repeats;
 
 
         %---Stop if reach error threshold
-        %if (iter > 1)
-        %    if(errorThreshhold > abs(err(iter) - err(iter-1)))
-        %        if(validationCheck ~= 0)
-        %            validationCheck = validationCheck-1;
-        %        else
-        %            break;
-        %        end
-        %    end
-        %end
+        if (iter > 1)
+            if(errorThreshhold > abs(err(iter) - err(iter-1)))
+                if(validationCheck ~= 0)
+                    validationCheck = validationCheck-1;
+                else
+                    break;
+                end
+            end
+        end
     end
     
     %--Test the trained network with a test set
