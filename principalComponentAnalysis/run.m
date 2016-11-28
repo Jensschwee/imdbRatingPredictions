@@ -6,6 +6,7 @@ showFigures = 1;
 cvTacket = 90;
 
 tblMovieCleaned=readtable('../movie_metadata_cleaned.csv');
+tblMovieMaunelTesting=readtable('../movie_manualTesting_cleaned.csv');
 
 %Fild data set
 X = table2array(tblMovieCleaned(:, 1)); %Color
@@ -57,3 +58,28 @@ y = [y, table2array(tblMovieCleaned(:, 26))]; %IMDB score
 %Export
 tbl = array2table(y);
 writetable(tbl, '../movie_metadata_cleaned_pca.csv');
+
+%Maunal testing
+%Fild data set
+X = table2array(tblMovieMaunelTesting(:, 1)); %Color
+X = [X, table2array(tblMovieMaunelTesting(:, 4))]; %Duration
+X = [X, table2array(tblMovieMaunelTesting(:, 5))]; %director_facebook_likes
+X = [X,table2array(tblMovieMaunelTesting(:, 6))]; %actor_3_facebook_likes
+X = [X,table2array(tblMovieMaunelTesting(:, 8))]; %actor_1_facebook_likes
+X = [X,table2array(tblMovieMaunelTesting(:, 14))]; %cast_total_facebook_likes
+X = [X, table2array(tblMovieMaunelTesting(:, 25))]; %actor_2_facebook_likes
+X = [X, table2array(tblMovieMaunelTesting(:, 29:50))]; %genre
+X = [X, table2array(tblMovieMaunelTesting(:, 51:84))]; %language
+X = [X, table2array(tblMovieMaunelTesting(:, 85:127))]; %country
+X = [X, table2array(tblMovieMaunelTesting(:, 128:133))]; %content_rating
+X = [X, table2array(tblMovieMaunelTesting(:, 134:207))]; %title_year
+X = [X, table2array(tblMovieMaunelTesting(:, 208:225))]; %aspect_ratio
+X = [X, table2array(tblMovieMaunelTesting(:, 226:244))]; %facenumber_in_poster
+
+y=X*ev; %transform to PCA space
+y = [y, table2array(tblMovieMaunelTesting(:, 9))]; %Gross
+y = [y, table2array(tblMovieMaunelTesting(:, 26))]; %IMDB score
+
+%Export
+tblManual = array2table(y);
+writetable(tblManual, '../movie_manualTesting_cleaned_pca.csv');
