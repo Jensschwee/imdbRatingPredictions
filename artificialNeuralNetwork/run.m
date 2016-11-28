@@ -27,11 +27,11 @@ output = table2array(tblMovieCleaned(1:amountOfSampels, 26));
 %---Set training parameters
 repeats = 2;
 errorbarGap = 10
-epochs = 300;
+epochs = 200;
 errorThreshhold = 0.001;
 learningRate = 0.00005;
 %---Set hidden layer type, for example: [4, 3, 2]
-hiddenNeurons = [25 15 20];
+hiddenNeurons = [25];
 
 %iterations = 50;
 %errorThreshhold = 0.001;
@@ -121,8 +121,8 @@ for repeat = 1:repeats;
         rSquaredTest(repeat, iter) = rSquareValue(p',testRealOut);
 
         err(iter) = (sum(error.^2)/(size(validationInp,1)-size(validationInp,2)))^0.5;
-        figure(1);
-        plot(err);
+        %figure(1);
+        %plot(err);
 
         %plot overall network error at end of each iteration
         %error = zeros(size(validationInp,1), outArgc);
@@ -155,19 +155,22 @@ for repeat = 1:repeats;
 
 end;
 
-
+% Shitty code
+count = 1;
 for e = 1:errorbarGap:epochs
-    rSquaredTrainMean(e) = mean(rSquaredTrain(:,e));
-    rSquaredTrainSd(e) = std(rSquaredTrain(:,e));
-    rSquaredValidationMean(e) = mean(rSquaredValidation(:,e));
-    rSquaredValidationSd(e) = std(rSquaredValidation(:,e));
-    rSquaredTestMean(e) = mean(rSquaredTest(:,e));
-    rSquaredTestSd(e) = std(rSquaredTest(:,e));
+    rSquaredTrainMean(count) = mean(rSquaredTrain(:,e));
+    rSquaredTrainSd(count) = std(rSquaredTrain(:,e));
+    rSquaredValidationMean(count) = mean(rSquaredValidation(:,e));
+    rSquaredValidationSd(count) = std(rSquaredValidation(:,e));
+    rSquaredTestMean(count) = mean(rSquaredTest(:,e));
+    rSquaredTestSd(count) = std(rSquaredTest(:,e));
+    count = count + 1;
 end
 
 
+
 tblMedian(1:size(tblMovieCleaned,1)) = median(tblMovieCleaned.imdb_score);
-tblMedianOfSet(1:size(rSquredTrain,2)) = rSquareValue(tblMedian,tblMovieCleaned.imdb_score);
+tblMedianOfSet(1:size(rSquaredTrain,2)) = rSquareValue(tblMedian,tblMovieCleaned.imdb_score);
 
 figure
 hold on
@@ -175,13 +178,14 @@ set(gca,'fontsize',18)
 errorbar(1:errorbarGap:epochs,rSquaredTrainMean,rSquaredTrainSd,'color', [1 0 0])
 errorbar(1:errorbarGap:epochs,rSquaredValidationMean,rSquaredValidationSd,'color', [0 1 0])
 errorbar(1:errorbarGap:epochs,rSquaredTestMean,rSquaredTestSd,'color', [0 0 1])
-line(1:size(rSquredTest,2),tblMedianOfSet, 'Color', [0.6 0.6 0.6])
+line(1:size(rSquaredTest,2),tblMedianOfSet, 'Color', [0.6 0.6 0.6])
 xlabel('Number Of Epochs')
 ylabel('r squared')
 %line(1:size(rSquaredTrain,2),rSquaredTrain, 'Color', [1 0 0 ])
 %line(1:size(rSquaredValidation,2),rSquaredValidation,'Color', [0 1 0 ])
 %line(1:size(rSquaredTest,2),rSquaredTest, 'Color', [0 0 1])
 legend('Train','Validation','Test','Median','Location','northwest')
+set(gca, 'Xlim', [-1 epochs+5])
 title(strcat({'ANN with '}, num2str(hiddenNeurons), {' neurons '}, num2str(learningRate), {' Learning Rate'} ))
 hold off
 
