@@ -11,18 +11,13 @@ amountOfSampels=size(tblMovieCleaned,1);
 
 % Plot config
 repeats = 20;
-errorbarGap = 5;
-
-%---Set training parameters
-errorThreshhold = 0.001;
-validationCheck = 5; %How many times may the model not get better?
-%---Set hidden layer type, for example: [4, 3, 2]
-hiddenNeurons = [25 10];
-errorThreshhold = 0.0001;
+errorbarGap = 2;
+showManualInput = 1; % 1 = true, 0 = false
+validationCheck = 5; % How many times may the model not get better?
 learningRate = 0.001;
-
-
-epochs = 100;
+hiddenNeurons = [25 35 15];
+errorThreshhold = 0.0001;
+epochs = 25;
 %errorThreshhold = 0.000001;
 %learningRate = 0.001;
 %hiddenNeurons = [25 10];
@@ -33,6 +28,11 @@ epochs = 100;
 layerOfNeurons = [hiddenNeurons, 1];
 layerCount = size(layerOfNeurons, 2);
 
+
+%---Setup manual test-data for later
+tblManual = readtable('../movie_manualTesting_cleaned_pca.csv');
+inputManual1 = table2array(tblManual(1, 1:size(tblManual,2)-2));
+inputManual2 = table2array(tblManual(2, 1:size(tblManual,2)-2));
 
 for repeat = 1:repeats;
     validationCurrent = validationCheck;
@@ -105,7 +105,7 @@ for repeat = 1:repeats;
         rSquaredTest(repeat, iter) = rSquareValue(p',testRealOut);
 
         err(iter) = sum(error.^2)/(size(validationInp,1)-size(validationInp,2));
-
+        
         %---Stop if reach error threshold
         %if (iter > 1)
         %    if(errorThreshhold < (err(iter) - err(iter-1)))
@@ -120,6 +120,12 @@ for repeat = 1:repeats;
     end
 
     %plot(err);
+    
+    % Test manual inputs.
+    if showManualInput == 1
+        m1(repeat) = ForwardNetwork(inputManual1, layerOfNeurons, weightCell);
+        m2(repeat) = ForwardNetwork(inputManual2, layerOfNeurons, weightCell);
+    end
 
     %--Test the trained network with a test set
     error = zeros(testsetCount, outArgc);
@@ -149,13 +155,13 @@ end
 
 %---Print predictions
 fprintf('Ended with %d epochs.\n', iter);
-a = testInp;
-b = testRealOut;
-c = p';
-x1_x2_act_pred_err = [a b c c-b];
-hist(x1_x2_act_pred_err(:,size(x1_x2_act_pred_err,2)));
 
-plot(error)
+if showManualInput == 1
+    fprintf('M1 mean: %f.\n', mean(m1));
+    fprintf('M2 mean: %f.\n', mean(m2));
+end;
+
+%plot(error)
 
 tblMedian(1:size(tblMovieCleaned,1)) = median(tblMovieCleaned.y50);
 tblMedianOfSet(1:size(rSquaredTrain,2)) = rSquareValue(tblMedian,tblMovieCleaned.y50);
