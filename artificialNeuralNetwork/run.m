@@ -26,9 +26,10 @@ output = table2array(tblMovieCleaned(1:amountOfSampels, 26));
 
 %---Set training parameters
 repeats = 2;
-errorbarGap = 10
-epochs = 200;
+errorbarGap = 10;
+epochs = 300;
 errorThreshhold = 0.001;
+validationCheck = 5; %How manny times may the model not get better?
 learningRate = 0.00005;
 %---Set hidden layer type, for example: [4, 3, 2]
 hiddenNeurons = [25];
@@ -63,9 +64,6 @@ testsetCount = size(testInp, 1);
 %---Add output layer
 layerOfNeurons = [hiddenNeurons, outArgc];
 layerCount = size(layerOfNeurons, 2);
-
-
-
 
 for repeat = 1:repeats;
     %---Weight and bias random range
@@ -138,11 +136,17 @@ for repeat = 1:repeats;
 
 
         %---Stop if reach error threshold
-        if err(iter) < errorThreshhold
-            break;
+        if (iter > 1)
+            if(errorThreshhold > abs(err(iter) - err(iter-1)))
+                if(validationCheck ~= 0)
+                    validationCheck = validationCheck-1;
+                else
+                    break;
+                end
+            end
         end
     end
-
+    
     %--Test the trained network with a test set
     testsetCount = size(testInp, 1);
     error = zeros(testsetCount, outArgc);
@@ -152,22 +156,22 @@ for repeat = 1:repeats;
         p(t) = predict;
         error(t, :) = predict - testRealOut(t, :);
     end
-
+    
+    
 end;
+
 
 % Shitty code
 count = 1;
-for e = 1:errorbarGap:epochs
-    rSquaredTrainMean(count) = mean(rSquaredTrain(:,e));
-    rSquaredTrainSd(count) = std(rSquaredTrain(:,e));
-    rSquaredValidationMean(count) = mean(rSquaredValidation(:,e));
-    rSquaredValidationSd(count) = std(rSquaredValidation(:,e));
-    rSquaredTestMean(count) = mean(rSquaredTest(:,e));
-    rSquaredTestSd(count) = std(rSquaredTest(:,e));
+for e = 1:errorbarGap:size(rSquaredTest,2)
+    rSquaredTrainMean(count) = mean(rSquaredTrain(find(rSquaredTrain(:,e) ~= 0),e));
+    rSquaredTrainSd(count) = std(rSquaredTrain(find(rSquaredTrain(:,e) ~= 0),e));
+    rSquaredValidationMean(count) = mean(rSquaredValidation(find(rSquaredValidation(:,e) ~= 0),e));
+    rSquaredValidationSd(count) = std(rSquaredValidation(find(rSquaredValidation(:,e) ~= 0),e));
+    rSquaredTestMean(count) = mean(rSquaredTest(find(rSquaredTest(:,e) ~= 0),e));
+    rSquaredTestSd(count) = std(rSquaredTest(find(rSquaredTest(:,e) ~= 0),e));
     count = count + 1;
 end
-
-
 
 tblMedian(1:size(tblMovieCleaned,1)) = median(tblMovieCleaned.imdb_score);
 tblMedianOfSet(1:size(rSquaredTrain,2)) = rSquareValue(tblMedian,tblMovieCleaned.imdb_score);
@@ -175,9 +179,9 @@ tblMedianOfSet(1:size(rSquaredTrain,2)) = rSquareValue(tblMedian,tblMovieCleaned
 figure
 hold on
 set(gca,'fontsize',18)
-errorbar(1:errorbarGap:epochs,rSquaredTrainMean,rSquaredTrainSd,'color', [1 0 0])
-errorbar(1:errorbarGap:epochs,rSquaredValidationMean,rSquaredValidationSd,'color', [0 1 0])
-errorbar(1:errorbarGap:epochs,rSquaredTestMean,rSquaredTestSd,'color', [0 0 1])
+errorbar(1:errorbarGap:size(rSquaredTest,2),rSquaredTrainMean,rSquaredTrainSd,'color', [1 0 0])
+errorbar(1:errorbarGap:size(rSquaredTest,2),rSquaredValidationMean,rSquaredValidationSd,'color', [0 1 0])
+errorbar(1:errorbarGap:size(rSquaredTest,2),rSquaredTestMean,rSquaredTestSd,'color', [0 0 1])
 line(1:size(rSquaredTest,2),tblMedianOfSet, 'Color', [0.6 0.6 0.6])
 xlabel('Number Of Epochs')
 ylabel('r squared')
