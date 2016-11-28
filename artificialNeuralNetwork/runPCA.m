@@ -14,12 +14,12 @@ input = table2array(tblMovieCleaned(:, 1:size(tblMovieCleaned,2)-2));
 output = table2array(tblMovieCleaned(:, size(tblMovieCleaned,2)));
 
 %---Set training parameters
-iterations = 400;
-errorThreshhold = 0.0001;
+iterations = 100;
+errorThreshhold = 0.01;
 learningRate = 0.001;
+validationCheck = 5; %How manny times may the model not get better?
 %---Set hidden layer type, for example: [4, 3, 2]
-hiddenNeurons = [30 50 10 30 20 5];
-
+hiddenNeurons = [25 15 20];
 
 %iterations = 50;
 %errorThreshhold = 0.000001;
@@ -98,8 +98,14 @@ for iter = 1:iterations
     err(iter) = sum(error.^2)/(size(validationInp,1)-size(validationInp,2));
     
     %---Stop if reach error threshold
-    if err(iter) < errorThreshhold
-        break;
+    if (iter > 1)
+        if(errorThreshhold > abs(err(iter) - err(iter-1)))
+            if(validationCheck ~= 0)
+                validationCheck = validationCheck-1;
+            else
+                break;
+            end
+        end
     end
 end
 
