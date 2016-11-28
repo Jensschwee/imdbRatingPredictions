@@ -10,17 +10,19 @@ amountOfSampels=size(tblMovieCleaned,1);
 
 
 % Plot config
-repeats = 2;
-errorbarGap = 1;
+repeats = 20;
+errorbarGap = 5;
 
 %---Set training parameters
-errorThreshhold = 0.0001;
-learningRate = 0.00001;
+errorThreshhold = 0.001;
 validationCheck = 5; %How many times may the model not get better?
-errorbarGap = 1;
-hiddenNeurons = [50 20 25 15 10];
+%---Set hidden layer type, for example: [4, 3, 2]
+hiddenNeurons = [25 10];
+errorThreshhold = 0.0001;
+learningRate = 0.001;
 
-%epochs = 50;
+
+epochs = 100;
 %errorThreshhold = 0.000001;
 %learningRate = 0.001;
 %hiddenNeurons = [25 10];
@@ -105,15 +107,15 @@ for repeat = 1:repeats;
         err(iter) = sum(error.^2)/(size(validationInp,1)-size(validationInp,2));
 
         %---Stop if reach error threshold
-        if (iter > 1)
-            if(errorThreshhold < (err(iter) - err(iter-1)))
-                if(validationCurrent ~= 0)
-                    validationCurrent = validationCurrent-1;
-                else
-                    break;
-                end
-            end
-        end
+        %if (iter > 1)
+        %    if(errorThreshhold < (err(iter) - err(iter-1)))
+        %        if(validationCurrent ~= 0)
+        %            validationCurrent = validationCurrent-1;
+        %        else
+        %            break;
+        %        end
+        %    end
+        %end
         
     end
 

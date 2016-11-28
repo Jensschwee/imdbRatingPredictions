@@ -5,16 +5,16 @@ clear all
 tblMovieCleaned=readtable('../movie_metadata_cleaned.csv');
 
 % Plot config
-repeats = 2;
+repeats = 20;
 epochs = 100;
-errorbarGap = 1;
+errorbarGap = 20;
 
 %---Set training parameters
 errorThreshhold = 0.001;
-validationCheck = 5; %How manny times may the model not get better?
-learningRate = 0.00005;
+validationCheck = 5; %How many times may the model not get better?
+learningRate = 0.0001;
 %---Set hidden layer type, for example: [4, 3, 2]
-hiddenNeurons = [25];
+hiddenNeurons = [25 40 15];
 
 %iterations = 50;
 %errorThreshhold = 0.001;
@@ -37,19 +37,20 @@ for repeat = 1:repeats;
     amountOfSampels=size(tblMovieCleaned,1);
 
     % Input and output parameteres
-    input = table2array(tblMovieCleaned(1:amountOfSampels, 1)); %Color
+    input = table2array(table());
+    %input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 1))]; %Color
     input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 4))]; %Duration
-    %input = [input, table2array(tblMovieCleaned(:, 5))]; %director_facebook_likes
-    %input = [input,table2array(tblMovieCleaned(:, 6))]; %actor_3_facebook_likes
-    %input = [input,table2array(tblMovieCleaned(:, 8))]; %actor_1_facebook_likes
-    input = [input,table2array(tblMovieCleaned(1:amountOfSampels, 14))]; %cast_total_facebook_likes
+    %---input = [input, table2array(tblMovieCleaned(:, 5))]; %director_facebook_likes
+    %---input = [input,table2array(tblMovieCleaned(:, 6))]; %actor_3_facebook_likes
+    %---input = [input,table2array(tblMovieCleaned(:, 8))]; %actor_1_facebook_likes
+    %input = [input,table2array(tblMovieCleaned(1:amountOfSampels, 14))]; %cast_total_facebook_likes
     input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 226:244))]; %facenumber_in_poster
-    %input = [input, table2array(tblMovieCleaned(:, 25))]; %actor_2_facebook_likes
+    %---input = [input, table2array(tblMovieCleaned(:, 25))]; %actor_2_facebook_likes
     input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 29:50))]; %genre
     input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 51:84))]; %language
     input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 85:127))]; %country
     input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 128:133))]; %content_rating
-    input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 134:207))]; %title_year
+    %input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 134:207))]; %title_year
     input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 208:225))]; %aspect_ratio
     output = table2array(tblMovieCleaned(1:amountOfSampels, 26));
     trainInp = input(trainInd,:);
@@ -134,15 +135,15 @@ for repeat = 1:repeats;
 
 
         %---Stop if reach error threshold
-        if (iter > 1)
-            if(errorThreshhold > abs(err(iter) - err(iter-1)))
-                if(validationCheck ~= 0)
-                    validationCheck = validationCheck-1;
-                else
-                    break;
-                end
-            end
-        end
+        %if (iter > 1)
+        %    if(errorThreshhold > abs(err(iter) - err(iter-1)))
+        %        if(validationCheck ~= 0)
+        %            validationCheck = validationCheck-1;
+        %        else
+        %            break;
+        %        end
+        %    end
+        %end
     end
     
     %--Test the trained network with a test set
