@@ -13,15 +13,19 @@ amountOfSampels=size(tblMovieCleaned,1);
 input = table2array(tblMovieCleaned(:, 1:size(tblMovieCleaned,2)-2));
 output = table2array(tblMovieCleaned(:, size(tblMovieCleaned,2)));
 
+% Plot config
+repeats = 2;
+errorbarGap = 10
+
 %---Set training parameters
-iterations = 400;
+epochs = 200;
 errorThreshhold = 0.0001;
 learningRate = 0.001;
 %---Set hidden layer type, for example: [4, 3, 2]
-hiddenNeurons = [30 50 10 30 20 5];
+hiddenNeurons = [10];
 
 
-%iterations = 50;
+%epochs = 50;
 %errorThreshhold = 0.000001;
 %learningRate = 0.001;
 %hiddenNeurons = [25 10];
@@ -45,78 +49,95 @@ testsetCount = size(testInp, 1);
 layerOfNeurons = [hiddenNeurons, outArgc];
 layerCount = size(layerOfNeurons, 2);
 
-%---Weight and bias random range using tansig scale
-e = 1;
-b = -e;
-%---Set initial random weights
-weightCell = cell(1, layerCount);
-for i = 1:layerCount
-    if i == 1
-        weightCell{1} = unifrnd(b, e, inArgc,layerOfNeurons(1));
-    else
-        weightCell{i} = unifrnd(b, e, layerOfNeurons(i-1),layerOfNeurons(i));
-    end
-end
 
-%----------------------
-%---Begin training
-%----------------------
-for iter = 1:iterations
-    sqens = datasample(1:trainsetCount,trainsetCount,'Replace',false);
-    for i = 1:trainsetCount
-        choice = sqens(i);
-        %choice = i;
-        sampleIn = trainInp(choice, :);
-        sampleTarget = trainOut(choice, :);
-        [realOutput, layerOutputCells] = ForwardNetwork(sampleIn, layerOfNeurons, weightCell);
-        weightCell = BackPropagate(learningRate, sampleIn, realOutput, sampleTarget, layerOfNeurons, weightCell, layerOutputCells);
+for repeat = 1:repeats;
+
+    %---Weight and bias random range using tansig scale
+    e = 1;
+    b = -e;
+    %---Set initial random weights
+    weightCell = cell(1, layerCount);
+    for i = 1:layerCount
+        if i == 1
+            weightCell{1} = unifrnd(b, e, inArgc,layerOfNeurons(1));
+        else
+            weightCell{i} = unifrnd(b, e, layerOfNeurons(i-1),layerOfNeurons(i));
+        end
     end
-    
-    for t = 1:trainsetCount
-        [predict, layeroutput] = ForwardNetwork(trainInp(t, :), layerOfNeurons, weightCell);
-        pre(t) = predict;
+
+    %----------------------
+    %---Begin training
+    %----------------------
+    for iter = 1:epochs
+        sqens = datasample(1:trainsetCount,trainsetCount,'Replace',false);
+        for i = 1:trainsetCount
+            choice = sqens(i);
+            %choice = i;
+            sampleIn = trainInp(choice, :);
+            sampleTarget = trainOut(choice, :);
+            [realOutput, layerOutputCells] = ForwardNetwork(sampleIn, layerOfNeurons, weightCell);
+            weightCell = BackPropagate(learningRate, sampleIn, realOutput, sampleTarget, layerOfNeurons, weightCell, layerOutputCells);
+        end
+
+        for t = 1:trainsetCount
+            [predict, layeroutput] = ForwardNetwork(trainInp(t, :), layerOfNeurons, weightCell);
+            pre(t) = predict;
+        end
+
+        rSquaredTrain(repeat, iter) = rSquareValue(pre',trainOut);
+
+        %plot overall network error at end of each iteration
+        error = zeros(size(validationInp,1), outArgc);
+        for t = 1:size(validationInp,1)
+            [predict, layeroutput] = ForwardNetwork(validationInp(t, :), layerOfNeurons, weightCell);
+            p(t) = predict;
+            error(t, : ) = predict - validationOut(t, :);
+        end
+        rSquaredValidation(repeat, iter) = rSquareValue(p',validationOut);
+
+        for t = 1:testsetCount
+            [predict, layeroutput] = ForwardNetwork(testInp(t, :), layerOfNeurons, weightCell);
+            p(t) = predict;
+        end
+
+        rSquaredTest(repeat, iter) = rSquareValue(p',testRealOut);
+
+        err(iter) = sum(error.^2)/(size(validationInp,1)-size(validationInp,2));
+
+        %---Stop if reach error threshold
+        if err(iter) < errorThreshhold
+            break;
+        end
     end
-    
-    rSquredTrain(iter) = rSquareValue(pre',trainOut);
-    
-    %plot overall network error at end of each iteration
-    error = zeros(size(validationInp,1), outArgc);
-    for t = 1:size(validationInp,1)
-        [predict, layeroutput] = ForwardNetwork(validationInp(t, :), layerOfNeurons, weightCell);
-        p(t) = predict;
-        error(t, : ) = predict - validationOut(t, :);
-    end
-    rSquredValidation(iter) = rSquareValue(p',validationOut);
-    
+
+    %plot(err);
+
+    %--Test the trained network with a test set
+    error = zeros(testsetCount, outArgc);
     for t = 1:testsetCount
         [predict, layeroutput] = ForwardNetwork(testInp(t, :), layerOfNeurons, weightCell);
         p(t) = predict;
+        error(t, : ) = predict - testRealOut(t, :);
     end
+
+    rSquareValue(p',testRealOut);
     
-    rSquredTest(iter) = rSquareValue(p',testRealOut);
-        
-    err(iter) = sum(error.^2)/(size(validationInp,1)-size(validationInp,2));
-    
-    %---Stop if reach error threshold
-    if err(iter) < errorThreshhold
-        break;
-    end
+end;
+
+% Shitty code
+count = 1;
+for e = 1:errorbarGap:epochs
+    rSquaredTrainMean(count) = mean(rSquaredTrain(:,e));
+    rSquaredTrainSd(count) = std(rSquaredTrain(:,e));
+    rSquaredValidationMean(count) = mean(rSquaredValidation(:,e));
+    rSquaredValidationSd(count) = std(rSquaredValidation(:,e));
+    rSquaredTestMean(count) = mean(rSquaredTest(:,e));
+    rSquaredTestSd(count) = std(rSquaredTest(:,e));
+    count = count + 1;
 end
-
-%plot(err);
-
-%--Test the trained network with a test set
-error = zeros(testsetCount, outArgc);
-for t = 1:testsetCount
-    [predict, layeroutput] = ForwardNetwork(testInp(t, :), layerOfNeurons, weightCell);
-    p(t) = predict;
-    error(t, : ) = predict - testRealOut(t, :);
-end
-
-rSquareValue(p',testRealOut);
 
 %---Print predictions
-fprintf('Ended with %d iterations.\n', iter);
+fprintf('Ended with %d epochs.\n', iter);
 a = testInp;
 b = testRealOut;
 c = p';
@@ -126,18 +147,19 @@ hist(x1_x2_act_pred_err(:,size(x1_x2_act_pred_err,2)));
 plot(error)
 
 tblMedian(1:size(tblMovieCleaned,1)) = median(tblMovieCleaned.y50);
-tblMedianOfSet(1:size(rSquredTrain,2)) = rSquareValue(tblMedian,tblMovieCleaned.y50);
+tblMedianOfSet(1:size(rSquaredTrain,2)) = rSquareValue(tblMedian,tblMovieCleaned.y50);
 
 figure
 hold on
 set(gca,'fontsize',18)
 xlabel('Number Of Epochs')
 ylabel('r squared')
-line(1:size(rSquredTrain,2),rSquredTrain, 'Color', [1 0 0 ])
-line(1:size(rSquredValidation,2),rSquredValidation,'Color', [0 1 0 ])
-line(1:size(rSquredTest,2),rSquredTest, 'Color', [0 0 1])
-line(1:size(rSquredTest,2),tblMedianOfSet, 'Color', [0.6 0.6 0.6])
+errorbar(1:errorbarGap:epochs,rSquaredTrainMean,rSquaredTrainSd,'color', [1 0 0])
+errorbar(1:errorbarGap:epochs,rSquaredValidationMean,rSquaredValidationSd,'color', [0 1 0])
+errorbar(1:errorbarGap:epochs,rSquaredTestMean,rSquaredTestSd,'color', [0 0 1])
+line(1:size(rSquaredTest,2),tblMedianOfSet, 'Color', [0.6 0.6 0.6])
 legend('Train','Validation','Test','Median','Location','northwest')
+set(gca, 'Xlim', [-1 epochs+5])
 title(strcat({'ANN with '}, num2str(hiddenNeurons), {' neurons '}, num2str(learningRate), {' Learning Rate'} ))
 hold off
 

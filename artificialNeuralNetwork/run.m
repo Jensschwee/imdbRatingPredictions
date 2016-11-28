@@ -24,9 +24,12 @@ input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 4))]; %Duration
  input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 208:225))]; %aspect_ratio
 output = table2array(tblMovieCleaned(1:amountOfSampels, 26));
 
-%---Set training parameters
+
+% Plot config
 repeats = 2;
 errorbarGap = 10
+
+%---Set training parameters
 epochs = 200;
 errorThreshhold = 0.001;
 learningRate = 0.00005;
