@@ -10,7 +10,7 @@ NumberOfReperts = 50;
 NumberOfIterations = 200:10:350;
 alpha = 0.25;
 
-deltaRSqured = -0.01;
+deltaRSqured = 0.001;
 validationCheck = 5; %How manny times may the model not get better?
 
 epochsTryed = []; %Epochs tryed in
@@ -51,7 +51,7 @@ for k=1:size(NumberOfIterations,2)
     
     %Has the model become better?
     if (k > 1)
-        if(deltaRSqured < (mean2(rsquaredTest(:,k-1)) - mean2(rsquaredTest(:,k))))
+        if(deltaRSqured > abs(mean2(rsquaredTest(:,k-1)) - mean2(rsquaredTest(:,k))))
             if(validationCheck ~= 0)
                 validationCheck = validationCheck-1;
             else
