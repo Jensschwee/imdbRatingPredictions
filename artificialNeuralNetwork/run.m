@@ -113,6 +113,8 @@ for repeat = 1:repeats;
         end
     end
 
+    t1(repeat) = tic;
+    
     %----------------------
     %---Begin training
     %----------------------
@@ -169,17 +171,19 @@ for repeat = 1:repeats;
         %plot(err);
 
 
-        %---Stop if reach error threshold
-        %if (iter > 1)
-        %    if(errorThreshhold > abs(err(iter) - err(iter-1)))
-        %        if(validationCheck ~= 0)
-        %            validationCheck = validationCheck-1;
-        %        else
-        %            break;
-        %        end
-        %    end
-        %end
+        %---Stop error threshold is reached
+        if (iter > 1)
+            if(errorThreshhold > abs(err(iter) - err(iter-1)))
+                if(validationCheck ~= 0)
+                    validationCheck = validationCheck-1;
+                else
+                    break;
+                end
+            end
+        end
     end
+    
+    time(repeat) = toc(t1(repeat));
     
     %--Test the trained network with a test set
     testsetCount = size(testInp, 1);

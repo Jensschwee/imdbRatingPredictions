@@ -35,6 +35,7 @@ inputManual1 = table2array(tblManual(1, 1:size(tblManual,2)-2));
 inputManual2 = table2array(tblManual(2, 1:size(tblManual,2)-2));
 
 for repeat = 1:repeats;
+    
     validationCurrent = validationCheck;
     %---Weight and bias random range using tansig scale
     % Input and output parameteres
@@ -67,6 +68,9 @@ for repeat = 1:repeats;
         end
     end
 
+    
+    t1(repeat) = tic;
+    
     %----------------------
     %---Begin training
     %----------------------
@@ -118,6 +122,8 @@ for repeat = 1:repeats;
         %end
         
     end
+    
+    time(repeat) = toc(t1(repeat));
 
     %plot(err);
     
@@ -134,7 +140,7 @@ for repeat = 1:repeats;
         p(t) = predict;
         error(t, : ) = predict - testRealOut(t, :);
     end
-       
+    
 end
 
 %plot(err);
@@ -151,12 +157,12 @@ for e = 1:errorbarGap:size(rSquaredTest,2)
     rSquaredTestMean(count) = mean(rSquaredTest(find(rSquaredTest(:,e) ~= 0),e));
     rSquaredTestSd(count) = std(rSquaredTest(find(rSquaredTest(:,e) ~= 0),e));
     count = count + 1;
-end
+end;
 
 %---Print predictions
 fprintf('Ended with %d epochs.\n', iter);
 
-if showManualInput == 1
+if showManualInput == 1;
     fprintf('M1 mean: %f.\n', mean(m1));
     fprintf('M2 mean: %f.\n', mean(m2));
 end;
