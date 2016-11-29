@@ -10,17 +10,14 @@ amountOfSampels=size(tblMovieCleaned,1);
 
 
 % Plot config
-repeats = 2;
-errorbarGap = 1;
-
-%---Set training parameters
+repeats = 20;
+errorbarGap = 2;
+showManualInput = 1; % 1 = true, 0 = false
+validationCheck = 5; % How many times may the model not get better?
+learningRate = 0.001;
+hiddenNeurons = [25 35 15];
 errorThreshhold = 0.0001;
-learningRate = 0.00001;
-validationCheck = 5; %How many times may the model not get better?
-errorbarGap = 1;
-hiddenNeurons = [50 20 25 15 10];
-
-%epochs = 50;
+epochs = 25;
 %errorThreshhold = 0.000001;
 %learningRate = 0.001;
 %hiddenNeurons = [25 10];
@@ -32,7 +29,13 @@ layerOfNeurons = [hiddenNeurons, 1];
 layerCount = size(layerOfNeurons, 2);
 
 
+%---Setup manual test-data for later
+tblManual = readtable('../movie_manualTesting_cleaned_pca.csv');
+inputManual1 = table2array(tblManual(1, 1:size(tblManual,2)-2));
+inputManual2 = table2array(tblManual(2, 1:size(tblManual,2)-2));
+
 for repeat = 1:repeats;
+    
     validationCurrent = validationCheck;
     %---Weight and bias random range using tansig scale
     % Input and output parameteres
@@ -65,6 +68,9 @@ for repeat = 1:repeats;
         end
     end
 
+    
+    t1(repeat) = tic;
+    
     %----------------------
     %---Begin training
     %----------------------
@@ -103,21 +109,29 @@ for repeat = 1:repeats;
         rSquaredTest(repeat, iter) = rSquareValue(p',testRealOut);
 
         err(iter) = sum(error.^2)/(size(validationInp,1)-size(validationInp,2));
-
+        
         %---Stop if reach error threshold
-        if (iter > 1)
-            if(errorThreshhold < (err(iter) - err(iter-1)))
-                if(validationCurrent ~= 0)
-                    validationCurrent = validationCurrent-1;
-                else
-                    break;
-                end
-            end
-        end
+        %if (iter > 1)
+        %    if(errorThreshhold < (err(iter) - err(iter-1)))
+        %        if(validationCurrent ~= 0)
+        %            validationCurrent = validationCurrent-1;
+        %        else
+        %            break;
+        %        end
+        %    end
+        %end
         
     end
+    
+    time(repeat) = toc(t1(repeat));
 
     %plot(err);
+    
+    % Test manual inputs.
+    if showManualInput == 1
+        m1(repeat) = ForwardNetwork(inputManual1, layerOfNeurons, weightCell);
+        m2(repeat) = ForwardNetwork(inputManual2, layerOfNeurons, weightCell);
+    end
 
     %--Test the trained network with a test set
     error = zeros(testsetCount, outArgc);
@@ -126,7 +140,7 @@ for repeat = 1:repeats;
         p(t) = predict;
         error(t, : ) = predict - testRealOut(t, :);
     end
-       
+    
 end
 
 %plot(err);
@@ -143,17 +157,17 @@ for e = 1:errorbarGap:size(rSquaredTest,2)
     rSquaredTestMean(count) = mean(rSquaredTest(find(rSquaredTest(:,e) ~= 0),e));
     rSquaredTestSd(count) = std(rSquaredTest(find(rSquaredTest(:,e) ~= 0),e));
     count = count + 1;
-end
+end;
 
 %---Print predictions
 fprintf('Ended with %d epochs.\n', iter);
-a = testInp;
-b = testRealOut;
-c = p';
-x1_x2_act_pred_err = [a b c c-b];
-hist(x1_x2_act_pred_err(:,size(x1_x2_act_pred_err,2)));
 
-plot(error)
+if showManualInput == 1;
+    fprintf('M1 mean: %f.\n', mean(m1));
+    fprintf('M2 mean: %f.\n', mean(m2));
+end;
+
+%plot(error)
 
 tblMedian(1:size(tblMovieCleaned,1)) = median(tblMovieCleaned.y50);
 tblMedianOfSet(1:size(rSquaredTrain,2)) = rSquareValue(tblMedian,tblMovieCleaned.y50);
