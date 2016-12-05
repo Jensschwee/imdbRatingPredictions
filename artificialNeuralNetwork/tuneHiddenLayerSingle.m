@@ -5,7 +5,7 @@ clear all
 tblMovieCleaned=readtable('../movie_metadata_cleaned.csv');
 
 % Config
-repeats = 10;
+repeats = 2;
 epochs = 300;
 showManualInput = 0; % 1 = true, 0 = false
 errorThreshhold = 0.0001;
@@ -14,6 +14,12 @@ learningRate = 0.005;
 
 hiddenNeuronRange = 10:10:200;
 
+hiddenLayerTestMean = [];
+hiddenLayerTestSD = [];
+hiddenLayerEpochMean = [];
+hiddenLayerEpochSD = [];
+hiddenLayerFinalMSEMean = [];
+hiddenLayerFinalMSESD = [];
 
 for numHidden = hiddenNeuronRange
     numHidden
@@ -179,6 +185,8 @@ for numHidden = hiddenNeuronRange
 
         time(repeat) = toc(t1(repeat));
         epochNum(repeat) = iter;
+        finalMse(repeat) = err(iter);
+        finalTestRsq(repeat) = rSquaredTest(repeat, iter);
 
         %--Test the trained network with a test set
         testsetCount = size(testInp, 1);
@@ -211,10 +219,13 @@ for numHidden = hiddenNeuronRange
         count = count + 1;
     end
     
-    hiddenLayerTestMean(numHidden) = mean(rSquaredTest(find(rSquaredTest(:,e) ~= 0),e));
-    hiddenLayerTestSD(numHidden) = std(rSquaredTest(find(rSquaredTest(:,e) ~= 0),e));
-    hiddenLayerEpochMean(numHidden) = mean(epochNum(1,:));
-    hiddenLayerEpochSD(numHidden) = std(epochNum(1,:));
+    hiddenLayerTestMean = [hiddenLayerTestMean, mean(finalTestRsq(1, :))];
+    hiddenLayerTestSD = [hiddenLayerTestSD, std(finalTestRsq(1, :))];
+    hiddenLayerEpochMean = [hiddenLayerEpochMean, mean(epochNum(1,:))];
+    hiddenLayerEpochSD = [hiddenLayerEpochSD, std(epochNum(1,:))];
+    hiddenLayerFinalMSEMean = [hiddenLayerFinalMSEMean, mean(finalMse(1,:))];
+    hiddenLayerFinalMSESD = [hiddenLayerFinalMSESD, std(finalMse(1,:))];
+
     
     tblMedian(1:size(tblMovieCleaned,1)) = median(tblMovieCleaned.imdb_score);
     tblMedianOfSet(1:size(rSquaredTrain,2)) = rSquareValue(tblMedian,tblMovieCleaned.imdb_score);

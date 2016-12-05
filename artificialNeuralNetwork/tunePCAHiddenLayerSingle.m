@@ -16,6 +16,13 @@ learningRate = 0.005;
 errorThreshhold = 0.0001;
 epochs = 300;
 
+hiddenLayerTestMean = [];
+hiddenLayerTestSD = [];
+hiddenLayerEpochMean = [];
+hiddenLayerEpochSD = [];
+hiddenLayerFinalMSEMean = [];
+hiddenLayerFinalMSESD = [];
+
 hiddenNeuronRange = 10:10:200;
 
 for numHidden = hiddenNeuronRange
@@ -120,6 +127,8 @@ for numHidden = hiddenNeuronRange
 
         time(repeat) = toc(t1(repeat));
         epochNum(repeat) = iter;
+        finalMse(repeat) = err(iter);
+        finalTestRsq(repeat) = rSquaredTest(repeat, iter);
         
         fprintf('Repeat %d ended with %d epochs.\n', repeat, iter);
 
@@ -157,10 +166,12 @@ for numHidden = hiddenNeuronRange
         count = count + 1;
     end;
     
-    hiddenLayerTestMean(numHidden) = mean(rSquaredTest(find(rSquaredTest(:,e) ~= 0),e));
-    hiddenLayerTestSD(numHidden) = std(rSquaredTest(find(rSquaredTest(:,e) ~= 0),e));
-    hiddenLayerEpochMean(numHidden) = mean(epochNum(1,:));
-    hiddenLayerEpochSD(numHidden) = std(epochNum(1,:));
+    hiddenLayerTestMean = [hiddenLayerTestMean, mean(finalTestRsq(1, :))];
+    hiddenLayerTestSD = [hiddenLayerTestSD, std(finalTestRsq(1, :))];
+    hiddenLayerEpochMean = [hiddenLayerEpochMean, mean(epochNum(1,:))];
+    hiddenLayerEpochSD = [hiddenLayerEpochSD, std(epochNum(1,:))];
+    hiddenLayerFinalMSEMean = [hiddenLayerFinalMSEMean, mean(finalMse(1,:))];
+    hiddenLayerFinalMSESD = [hiddenLayerFinalMSESD, std(finalMse(1,:))];
 
     %---Print predictions
 
