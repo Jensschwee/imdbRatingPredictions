@@ -14,6 +14,7 @@ learningRate = 0.005;
 
 hiddenNeuronRange = 10:10:200;
 
+hiddenLayerName = [];
 hiddenLayerTestMean = [];
 hiddenLayerTestSD = [];
 hiddenLayerEpochMean = [];
@@ -219,6 +220,7 @@ for numHidden = hiddenNeuronRange
         count = count + 1;
     end
     
+    hiddenLayerName = [hiddenLayerName, numHidden];
     hiddenLayerTestMean = [hiddenLayerTestMean, mean(finalTestRsq(1, :))];
     hiddenLayerTestSD = [hiddenLayerTestSD, std(finalTestRsq(1, :))];
     hiddenLayerEpochMean = [hiddenLayerEpochMean, mean(epochNum(1,:))];
