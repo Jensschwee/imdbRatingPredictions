@@ -16,6 +16,8 @@ learningRate = 0.005;
 errorThreshhold = 0.0001;
 epochs = 300;
 
+hiddenNeuronRange = 10:10:200;
+
 for numHidden = hiddenNeuronRange
     numHidden
     hiddenNeurons = [numHidden];
@@ -32,8 +34,6 @@ for numHidden = hiddenNeuronRange
     inputManual2 = table2array(tblManual(2, 1:size(tblManual,2)-2));
 
     for repeat = 1:repeats;
-
-        validationCurrent = validationCheck;
         %---Weight and bias random range using tansig scale
         % Input and output parameteres
         [trainInd,valInd,testInd] = dividerand(size(tblMovieCleaned,1),0.7,0.15,0.15);%select data randomly
@@ -111,7 +111,7 @@ for numHidden = hiddenNeuronRange
             %---Stop if reach error threshold
             if (iter > 1)
                 deltaErr = abs(err(iter) - err(iter-1));
-                if(errorThreshhold < deltaErr)
+                if(errorThreshhold > deltaErr)
                     break;
                 end
             end
@@ -119,6 +119,9 @@ for numHidden = hiddenNeuronRange
         end
 
         time(repeat) = toc(t1(repeat));
+        epochNum(repeat) = iter;
+        
+        fprintf('Repeat %d ended with %d epochs.\n', repeat, iter);
 
         %plot(err);
 
@@ -156,9 +159,10 @@ for numHidden = hiddenNeuronRange
     
     hiddenLayerTestMean(numHidden) = mean(rSquaredTest(find(rSquaredTest(:,e) ~= 0),e));
     hiddenLayerTestSD(numHidden) = std(rSquaredTest(find(rSquaredTest(:,e) ~= 0),e));
+    hiddenLayerEpochMean(numHidden) = mean(epochNum(1,:));
+    hiddenLayerEpochSD(numHidden) = std(epochNum(1,:));
 
     %---Print predictions
-    fprintf('Repeat %d ended with %d epochs.\n', repeat, iter);
 
     if showManualInput == 1;
         fprintf('M1 mean: %f.\n', mean(m1));

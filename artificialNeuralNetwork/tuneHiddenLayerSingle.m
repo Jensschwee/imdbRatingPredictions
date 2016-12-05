@@ -8,7 +8,6 @@ tblMovieCleaned=readtable('../movie_metadata_cleaned.csv');
 repeats = 10;
 epochs = 300;
 showManualInput = 0; % 1 = true, 0 = false
-tuneHiddenNeurons = 0; % 1 = true, 0 = false
 errorThreshhold = 0.0001;
 validationCheck = 5; %How many times may the model not get better?
 learningRate = 0.005;
@@ -169,7 +168,7 @@ for numHidden = hiddenNeuronRange
             %---Stop error threshold is reached
             if (iter > 1)
                 deltaErr = abs(err(iter) - err(iter-1));
-                if(errorThreshhold < deltaErr)
+                if(errorThreshhold > deltaErr)
                     break;
                 end
             end
@@ -179,6 +178,7 @@ for numHidden = hiddenNeuronRange
         fprintf('Repeat %d ended with %d epochs.\n', repeat, iter);
 
         time(repeat) = toc(t1(repeat));
+        epochNum(repeat) = iter;
 
         %--Test the trained network with a test set
         testsetCount = size(testInp, 1);
@@ -213,6 +213,8 @@ for numHidden = hiddenNeuronRange
     
     hiddenLayerTestMean(numHidden) = mean(rSquaredTest(find(rSquaredTest(:,e) ~= 0),e));
     hiddenLayerTestSD(numHidden) = std(rSquaredTest(find(rSquaredTest(:,e) ~= 0),e));
+    hiddenLayerEpochMean(numHidden) = mean(epochNum(1,:));
+    hiddenLayerEpochSD(numHidden) = std(epochNum(1,:));
     
     tblMedian(1:size(tblMovieCleaned,1)) = median(tblMovieCleaned.imdb_score);
     tblMedianOfSet(1:size(rSquaredTrain,2)) = rSquareValue(tblMedian,tblMovieCleaned.imdb_score);
