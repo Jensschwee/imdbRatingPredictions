@@ -5,14 +5,14 @@ clear all
 tblMovieCleaned=readtable('../movie_metadata_cleaned.csv');
 
 % Config
-repeats = 20;
-epochs = 25;
-errorbarGap = 2;
+repeats = 1;
+epochs = 200;
+errorbarGap = 4;
 showManualInput = 1; % 1 = true, 0 = false
 errorThreshhold = 0.001;
 validationCheck = 5; %How many times may the model not get better?
-learningRate = 0.0005;
-hiddenNeurons = [25 35 15];
+learningRate = 0.00005;
+hiddenNeurons = [72 70];
 
 %iterations = 50;
 %errorThreshhold = 0.001;
@@ -154,7 +154,8 @@ for repeat = 1:repeats;
 
         rSquaredTest(repeat, iter) = rSquareValue(p',testRealOut);
 
-        err(iter) = (sum(error.^2)/(size(validationInp,1)-size(validationInp,2)))^0.5;
+        %err(iter) = (sum(error.^2)/(size(validationInp,1)-size(validationInp,2)))^0.5;% RMSE
+        err(iter) = sum(error.^2)/(size(validationInp,1)-size(validationInp,2));% MSE
         %figure(1);
         %plot(err);
 
@@ -173,14 +174,12 @@ for repeat = 1:repeats;
 
         %---Stop error threshold is reached
         if (iter > 1)
+            valErr = abs(err(iter) - err(iter-1));
             if(errorThreshhold > abs(err(iter) - err(iter-1)))
-                if(validationCheck ~= 0)
-                    validationCheck = validationCheck-1;
-                else
-                    break;
-                end
+                break;
             end
         end
+    
     end
     
     time(repeat) = toc(t1(repeat));
