@@ -6,11 +6,11 @@ clear all
 
 tblMovieCleaned=readtable('../movie_metadata_cleaned.csv');
 
-NumberOfReperts = 10;
-NumberOfIterations = 28;
-alpha = 0.25;
+NumberOfReperts = 1;
+NumberOfIterations = 200;
+alpha = 1;
 
-deltaMSE = 0.001;
+deltaMSE = 0.0001;
 validationCheck = 5; %How manny times may the model not get better?
 
 epochsTryed = []; %Epochs tryed in
@@ -102,8 +102,12 @@ for i=1:NumberOfReperts;
         
         errTraning(i,k) = immse(predictions,y');
         
-        if(deltaMSE > mseLast -thisMSE)
-            break;
+        if(deltaMSE > abs(mseLast - thisMSE))
+            if(validationCheck > 0)
+                validationCheck = validationCheck-1;
+            else
+                 break;
+            end
         else
             mseLast = thisMSE;
         end
@@ -127,9 +131,9 @@ end
 toc(t1)%compute elapsed time
 
 % Plot
-plotRSS(rsquaredTest,rsquaredTraning,NumberOfReperts,1:50, size(X,2)-1, tblMovieCleaned.imdb_score);
+plotRSS(rsquaredTest,rsquaredTraning,NumberOfReperts,1:size(errTest,2), size(X,2)-1, tblMovieCleaned.imdb_score);
 
-plotMSE(errTest,errTraning,NumberOfReperts,1:30, size(X,2)-1)
+plotMSE(errTest,errTraning,NumberOfReperts,1:size(errTest,2), size(X,2)-1)
 
 %plot(errTest(1,:));
 

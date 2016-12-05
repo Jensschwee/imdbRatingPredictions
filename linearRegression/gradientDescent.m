@@ -5,9 +5,10 @@ function [theta] = gradientDescent(X, y, theta, alpha, numberOfIterations)
 
 % Initialize some useful values
 m = length(y); % number of training examples
+thetas = size(theta,1);
 %J_history = zeros(numberOfIterations, 1); 
 
-for iteration = 1:numberOfIterations
+%for iteration = 1:numberOfIterations
     % Perform a single gradient step on the parameter vector theta. 
 
     % we minimize the value of J(theta) by changing the values of the 
@@ -18,19 +19,15 @@ for iteration = 1:numberOfIterations
     % hypothesis = mx1 column vector
     % X = mxn matrix
     % theta = nx1 column vector
-    hypothesis = X * theta;
-
-    % errors = mx1 column vector
-    % y = mx1 column vector
-    errors = hypothesis - y;
-
-    newDecrement = (alpha * (1/m) * errors' * X); 
+    %for all the thetas
+    for t = 1:thetas
+        %all the examples
+        for examples = 1:m
+            tempo(examples) = ((theta' * X(examples, :)') - y(examples)) * X(examples,t);
+        end
+        result(t) = sum(tempo);
+        tempo = 0;
+    end
     
-    theta = theta - newDecrement';
-
-    % Save the cost J in every iteration    
-    %J_history(iteration) = computeCostMulti(X, y, theta);
-
-end
-
+    theta = theta - alpha * (1/m) * result';
 end

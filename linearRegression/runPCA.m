@@ -6,11 +6,11 @@ clear all
 
 tblMovieCleaned=readtable('../movie_metadata_cleaned_pca.csv');
 
-NumberOfReperts = 10;
-NumberOfIterations = 13;
-alpha = .25;
+NumberOfReperts = 1;
+NumberOfIterations = 200;
+alpha = 1;
 
-deltaMSE = 0.001;
+deltaMSE = 0.01;
 validationCheck = 5; %How manny times may the model not get better?
 
 epochsTryed = []; %Epochs tryed in
@@ -54,8 +54,12 @@ for i=1:NumberOfReperts;
         rsquaredTest(i,k) = evaluateRegressionPCA(tblTest,theta);
         rsquaredTraning(i,k) = evaluateRegressionPCA(tblTraining,theta);
         thisMSE = immse(testPrediction,yTest');
-        if(deltaMSE > mseLast -thisMSE)
-            break;
+        if(deltaMSE > abs(mseLast - thisMSE))
+            if(validationCheck > 0)
+                validationCheck = validationCheck-1;
+            else
+                 break;
+            end
         else
             mseLast = thisMSE;
         end
@@ -86,10 +90,9 @@ end;
 mean(timeToTrain)
 
 % Plot
-plotRSS(rsquaredTest,rsquaredTraning,NumberOfReperts,1:size(errTest,2), size(X,2)-1, tblMovieCleaned.y50);
+plotRSS(rsquaredTest,rsquaredTraning,NumberOfReperts,1:size(rsquaredTest,2), size(X,2)-1, tblMovieCleaned.y65);
 
-
-plotMSE(errTest,errTraning,NumberOfReperts,1:15, size(X,2)-1)
+plotMSE(errTest,errTraning,NumberOfReperts,1:size(errTest,2), size(X,2)-1)
 
 mean(ManuralTesting(1,:))
 mean(ManuralTesting(2,:))

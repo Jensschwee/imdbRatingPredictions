@@ -3,7 +3,7 @@ clear all
 close all
 
 showFigures = 1;
-cvTacket = 90;
+cvTacket = 95;
 
 tblMovieCleaned=readtable('../movie_metadata_cleaned.csv');
 tblMovieMaunelTesting=readtable('../movie_manualTesting_cleaned.csv');
@@ -46,8 +46,9 @@ if showFigures == 1
     xlabel('Number of PCs')
     ylabel('Cumulative variance (%)')
     title(strcat({'PCA with a Cumulative variance of '},num2str(cvTacket), {' %'}) )
-    t = text(nc+1,nc,strcat(num2str(nc), {' features'}));
+    t = text(nc+1,nc,strcat(num2str(nc), {' PCs'}));
     t.FontSize = 20;
+    set(gca, 'Ylim', [0 100])
     hold off
 end;
 
