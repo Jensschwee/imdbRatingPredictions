@@ -6,10 +6,10 @@ clear all
 
 tblMovieCleaned=readtable('../movie_metadata_cleaned.csv');
 
-NumberOfReperts = 2;
-NumberOfIterations = 300;
-alpha = 1:-0.01:0.99;
-%alpha = 1:-0.01:0;
+NumberOfReperts = 1;
+NumberOfIterations = 100;
+alpha = 0.4:0.05:0.4;
+%alpha = 0.95:-0.1:0;
 
 deltaMSE = 0.0001;
 
@@ -84,7 +84,7 @@ for a=1:length(alpha)
 
         mseLast = 100000;
 
-        %t1 = tic;%initilise counter
+        t1 = tic;%initilise counter
         for k=1:NumberOfIterations
             for j=1:1
                 % Gradient Descent
@@ -94,8 +94,8 @@ for a=1:length(alpha)
                 testPrediction(h) = sum(XTest(h,:)' .* theta);
             end
             % Eval
-            rsquaredTest = evaluateRegression(tblTest,theta);
-            %rsquaredTraning(i,k) = evaluateRegression(tblTraining,theta);
+            rsquaredTest(i,k) = evaluateRegression(tblTest,theta);
+            rsquaredTraning(i,k) = evaluateRegression(tblTraining,theta);
 
             thisMSE = immse(testPrediction,yTest');
 
@@ -110,13 +110,23 @@ for a=1:length(alpha)
             else
                 mseLast = thisMSE;
             end
-            errTest = thisMSE;
+            errTest(i,k) = thisMSE;
         end
+        
         epochsCount(i) = k;
-        errTestCount(i) = errTest;
-        rsquaredTestCount(i) = rsquaredTest;
+        rsquaredTestCount(i) = rsquaredTest(i,k);
+        errTestCount(i) = thisMSE;
+        %Has the model become better?
+        %if (k > 1)
+        %    if(deltaRSqured > abs(mean2(rsquaredTest(:,k-1)) - mean2(rsquaredTest(:,k))))
+        %        if(validationCheck ~= 0)
+        %            validationCheck = validationCheck-1;
+        %        else
+        %            break;
+        %        end
+        %    end
     end
-    
+
     epochsMean = mean2(epochsCount);
     epochsSD = std(epochsCount);
     errTestMean = mean2(errTestCount);
