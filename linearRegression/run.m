@@ -6,11 +6,11 @@ clear all
 
 tblMovieCleaned=readtable('../movie_metadata_cleaned.csv');
 
-NumberOfReperts = 50;
-NumberOfIterations = 1:1:200;
+NumberOfReperts = 10;
+NumberOfIterations = 28;
 alpha = 0.25;
 
-deltaRSqured = 0.0001;
+deltaMSE = 0.001;
 validationCheck = 5; %How manny times may the model not get better?
 
 epochsTryed = []; %Epochs tryed in
@@ -35,7 +35,6 @@ outputManural = [outputManural, table2array(tblMovieManuel(:, 134:207))]; %title
 y = table2array(tblMovieManuel(:, 26));
 
 outputManural = [ones(length(y), 1) outputManural];
-t1 = tic;%initilise counter
 
 epochsTryed = NumberOfIterations;
 for i=1:NumberOfReperts;
@@ -60,7 +59,7 @@ for i=1:NumberOfReperts;
 
     % Init Theta and Run Gradient Descent 
     X = [ones(length(y), 1) X];
-    theta = zeros(size(X,2), 1);
+    theta = [1 rand(1,(size(X,2)-1))]';
     
     XTest = table2array(tblTest(:, 1)); %Color
     XTest = [XTest, table2array(tblTest(:, 4))]; %Duration
@@ -80,20 +79,37 @@ for i=1:NumberOfReperts;
     yTest = table2array(tblTest(:, 26));
     XTest = [ones(length(yTest), 1) XTest];
     
-    for k=1:size(NumberOfIterations,2)
-        for j=1:(NumberOfIterations(2)-NumberOfIterations(1))
+    mseLast = 100000;
+
+    t1 = tic;%initilise counter
+    for k=1:NumberOfIterations
+        for j=1:1
             % Gradient Descent
             [theta] = gradientDescent(X, y, theta, alpha);
+        end
+        for h=1:size(XTest,1)
+            testPrediction(h) = sum(XTest(h,:)' .* theta);
         end
         % Eval
         rsquaredTest(i,k) = evaluateRegression(tblTest,theta);
         rsquaredTraning(i,k) = evaluateRegression(tblTraining,theta);
-        for h=1:size(XTest,1)
-            testPrediction(h) = sum(XTest(h,:) .* theta');
+        
+        thisMSE = immse(testPrediction,yTest');
+        
+        for h=1:size(X,1)
+            predictions(h) = sum(X(h,:)' .* theta);
         end
-        err(i,k) = immse(testPrediction,yTest');
+        
+        errTraning(i,k) = immse(predictions,y');
+        
+        if(deltaMSE > mseLast -thisMSE)
+            break;
+        else
+            mseLast = thisMSE;
+        end
+        errTest(i,k) = thisMSE;
     end
-    
+    timeToTrain(i) = toc(t1);%compute elapsed time
     ManuralTesting(1,i) = sum(outputManural(1,:)' .* theta);
     ManuralTesting(2,i) = sum(outputManural(2,:)' .* theta);
 
@@ -111,13 +127,16 @@ end
 toc(t1)%compute elapsed time
 
 % Plot
-plotRSS(rsquaredTest,rsquaredTraning,NumberOfReperts,epochsTryed, size(X,2)-1, tblMovieCleaned.imdb_score);
+plotRSS(rsquaredTest,rsquaredTraning,NumberOfReperts,1:50, size(X,2)-1, tblMovieCleaned.imdb_score);
 
-plot(err(1,:));
+plotMSE(errTest,errTraning,NumberOfReperts,1:30, size(X,2)-1)
+
+%plot(errTest(1,:));
 
 mean(ManuralTesting(1,:))
 mean(ManuralTesting(2,:))
 
+mean(timeToTrain)
 %clear RSS
 %clear alpha
 %clear num_iters

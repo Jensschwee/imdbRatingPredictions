@@ -6,11 +6,11 @@ clear all
 
 tblMovieCleaned=readtable('../movie_metadata_cleaned_pca.csv');
 
-NumberOfReperts = 50;
-NumberOfIterations = 1:1:250;
+NumberOfReperts = 10;
+NumberOfIterations = 13;
 alpha = .25;
 
-deltaRSqured = 0.01;
+deltaMSE = 0.001;
 validationCheck = 5; %How manny times may the model not get better?
 
 epochsTryed = []; %Epochs tryed in
@@ -37,20 +37,38 @@ for i=1:NumberOfReperts;
 
     % Init Theta and Run Gradient Descent 
     X = [ones(length(y), 1) X];
-    theta = zeros(size(X,2), 1);
-    for k=1:size(NumberOfIterations,2)
-        for j=1:(NumberOfIterations(2)-NumberOfIterations(1))
+    theta = [1 rand(1,(size(X,2)-1))]';
+    
+    mseLast = 100000;
+    
+    t1 = tic;%initilise counter
+    for k=1:NumberOfIterations
+        for j=1:1
             % Gradient Descent
             [theta] = gradientDescent(X, y, theta, alpha);
+        end
+        for h=1:size(XTest,1)
+            testPrediction(h) = sum(XTest(h,:)' .* theta);
         end
         % Eval
         rsquaredTest(i,k) = evaluateRegressionPCA(tblTest,theta);
         rsquaredTraning(i,k) = evaluateRegressionPCA(tblTraining,theta);
-        for h=1:size(XTest,1)
-            testPrediction(h) = sum(XTest(h)' * theta');
+        thisMSE = immse(testPrediction,yTest');
+        if(deltaMSE > mseLast -thisMSE)
+            break;
+        else
+            mseLast = thisMSE;
         end
-        err(i,k) = immse(testPrediction,yTest');
+        errTest(i,k) = thisMSE;
+        
+        for h=1:size(X,1)
+            predictions(h) = sum(X(h,:)' .* theta);
+        end
+        
+        errTraning(i,k) = immse(predictions,y');
     end
+    timeToTrain(i) = toc(t1);%compute elapsed time
+
     ManuralTesting(1,i) = sum(manuralInput(1,:)' .* theta);
     ManuralTesting(2,i) = sum(manuralInput(2,:)' .* theta);   
 end;
@@ -65,14 +83,16 @@ end;
 %        end
 %    end
 
-toc(t1)%compute elapsed time
+mean(timeToTrain)
 
 % Plot
-plotRSS(rsquaredTest,rsquaredTraning,NumberOfReperts,epochsTryed, size(X,2)-1, tblMovieCleaned.y50);
+plotRSS(rsquaredTest,rsquaredTraning,NumberOfReperts,1:size(errTest,2), size(X,2)-1, tblMovieCleaned.y50);
+
+
+plotMSE(errTest,errTraning,NumberOfReperts,1:15, size(X,2)-1)
 
 mean(ManuralTesting(1,:))
 mean(ManuralTesting(2,:))
-
 
 %medianOfVaules = ones(length(tblMovieCleaned.y50),1);
 %medianOfVaules(1:size(tblMovieCleaned.y50)) = median(tblMovieCleaned.y50);
