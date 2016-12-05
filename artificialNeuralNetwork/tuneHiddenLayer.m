@@ -12,7 +12,7 @@ errorThreshhold = 0.0001;
 validationCheck = 5; %How many times may the model not get better?
 learningRate = 0.005;
 
-hiddenNeuronRange = 10:10:200;
+hiddenNeuronRange = 2:1:200;
 
 hiddenLayerName = [];
 hiddenLayerTestMean = [];
@@ -129,8 +129,8 @@ for numHidden = hiddenNeuronRange
                 [realOutput, layerOutputCells] = ForwardNetwork(sampleIn, layerOfNeurons, weightCell);
                 weightCell = BackPropagate(learningRate, sampleIn, realOutput, sampleTarget, layerOfNeurons, weightCell, layerOutputCells);
             end
-
-
+            
+            
             for t = 1:trainsetCount
                 [predict, layeroutput] = ForwardNetwork(trainInp(t, :), layerOfNeurons, weightCell);
                 pre(t) = predict;
