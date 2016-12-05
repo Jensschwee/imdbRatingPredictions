@@ -174,8 +174,8 @@ for repeat = 1:repeats;
 
         %---Stop error threshold is reached
         if (iter > 1)
-            valErr = abs(err(iter) - err(iter-1));
-            if(errorThreshhold > abs(err(iter) - err(iter-1)))
+            deltaErr = abs(err(iter) - err(iter-1));
+            if(errorThreshhold < deltaErr)
                 break;
             end
         end

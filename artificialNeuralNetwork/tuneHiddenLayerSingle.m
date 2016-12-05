@@ -7,34 +7,22 @@ tblMovieCleaned=readtable('../movie_metadata_cleaned.csv');
 % Config
 repeats = 10;
 epochs = 300;
-errorbarGap = 4;
-showManualInput = 1; % 1 = true, 0 = false
+showManualInput = 0; % 1 = true, 0 = false
 tuneHiddenNeurons = 0; % 1 = true, 0 = false
 errorThreshhold = 0.0001;
 validationCheck = 5; %How many times may the model not get better?
 learningRate = 0.005;
+
+hiddenNeuronRange = 10:10:200;
 
 
 for numHidden = hiddenNeuronRange
     numHidden
     hiddenNeurons = [numHidden];
     
-
-    %iterations = 50;
-    %errorThreshhold = 0.001;
-    %learningRate = 0.0005;
-    %---Set hidden layer type, for example: [4, 3, 2]
-    %hiddenNeurons = [25 10 3];
-
-    %learningRate = 0.005;
-    %---Set hidden layer type, for example: [4, 3, 2]
-    %hiddenNeurons = [25 10];
-
     %---Add output layer
     layerOfNeurons = [hiddenNeurons, 1];
     layerCount = size(layerOfNeurons, 2);
-
-
 
     %---Setup manual test-data for later
     tblManual = readtable('../movie_manualTesting_cleaned.csv');
@@ -180,8 +168,8 @@ for numHidden = hiddenNeuronRange
 
             %---Stop error threshold is reached
             if (iter > 1)
-                valErr = abs(err(iter) - err(iter-1));
-                if(errorThreshhold > abs(err(iter) - err(iter-1)))
+                deltaErr = abs(err(iter) - err(iter-1));
+                if(errorThreshhold < deltaErr)
                     break;
                 end
             end
@@ -213,7 +201,7 @@ for numHidden = hiddenNeuronRange
 
     % Shitty code
     count = 1;
-    for e = 1:errorbarGap:size(rSquaredTest,2)
+    for e = 1:size(rSquaredTest,2)
         rSquaredTrainMean(count) = mean(rSquaredTrain(find(rSquaredTrain(:,e) ~= 0),e));
         rSquaredTrainSd(count) = std(rSquaredTrain(find(rSquaredTrain(:,e) ~= 0),e));
         rSquaredValidationMean(count) = mean(rSquaredValidation(find(rSquaredValidation(:,e) ~= 0),e));
@@ -242,9 +230,6 @@ for numHidden = hiddenNeuronRange
     %set(gca, 'Xlim', [-1 size(rSquaredTest, 2)+5])
     %title(strcat({'ANN with '}, num2str(hiddenNeurons), {' hidden neurons, '}, num2str(learningRate), {' learning rate'} ))
     %hold off
-
-    %---Print predictions
-    fprintf('Ended with %d epochs.\n', iter);
 
     if showManualInput == 1
         fprintf('M1 mean: %f.\n', mean(m1));

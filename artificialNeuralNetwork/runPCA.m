@@ -113,8 +113,8 @@ for repeat = 1:repeats;
         
         %---Stop if reach error threshold
         if (iter > 1)
-            valErr = abs(err(iter) - err(iter-1));
-            if(errorThreshhold > abs(err(iter) - err(iter-1)))
+            deltaErr = abs(err(iter) - err(iter-1));
+            if(errorThreshhold < deltaErr)
                 break;
             end
         end
@@ -138,8 +138,6 @@ for repeat = 1:repeats;
         p(t) = predict;
         error(t, : ) = predict - testRealOut(t, :);
     end
-    
-end
 
 %plot(err);
 
@@ -164,6 +162,9 @@ if showManualInput == 1;
     fprintf('M1 mean: %f.\n', mean(m1));
     fprintf('M2 mean: %f.\n', mean(m2));
 end;
+
+
+end
 
 %plot(error)
 
