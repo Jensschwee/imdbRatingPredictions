@@ -108,18 +108,16 @@ for repeat = 1:repeats;
 
         rSquaredTest(repeat, iter) = rSquareValue(p',testRealOut);
 
-        err(iter) = sum(error.^2)/(size(validationInp,1)-size(validationInp,2));
+        %err(iter) = (sum(error.^2)/(size(validationInp,1)-size(validationInp,2)))^0.5;% RMSE
+        err(iter) = sum(error.^2)/(size(validationInp,1)-size(validationInp,2));% MSE
         
         %---Stop if reach error threshold
-        %if (iter > 1)
-        %    if(errorThreshhold < (err(iter) - err(iter-1)))
-        %        if(validationCurrent ~= 0)
-        %            validationCurrent = validationCurrent-1;
-        %        else
-        %            break;
-        %        end
-        %    end
-        %end
+        if (iter > 1)
+            valErr = abs(err(iter) - err(iter-1));
+            if(errorThreshhold > abs(err(iter) - err(iter-1)))
+                break;
+            end
+        end
         
     end
     
