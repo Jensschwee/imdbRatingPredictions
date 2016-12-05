@@ -6,9 +6,9 @@ clear all
 
 tblMovieCleaned=readtable('../movie_metadata_cleaned.csv');
 
-NumberOfReperts = 1;
-NumberOfIterations = 100;
-alpha = 0.4:0.05:0.4;
+NumberOfReperts = 10;
+NumberOfIterations = 300;
+alpha = 0.05:0.05:0.4;
 %alpha = 0.95:-0.1:0;
 
 deltaMSE = 0.0001;
