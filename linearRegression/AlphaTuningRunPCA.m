@@ -8,7 +8,7 @@ tblMovieCleaned=readtable('../movie_metadata_cleaned_pca.csv');
 
 NumberOfReperts = 10;
 NumberOfIterations = 300;
-alpha = 0.05:0.05:0.4;
+alpha = 0.05:0.05:0.7;
 %alpha = 0.05:-0.05:0.4;
 
 deltaMSE = 0.0001;
