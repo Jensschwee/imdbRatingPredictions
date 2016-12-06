@@ -5,12 +5,11 @@ clear all
 tblMovieCleaned=readtable('../movie_metadata_cleaned.csv');
 
 % Config
-repeats = 2;
+repeats = 10;
 epochs = 300;
 showManualInput = 0; % 1 = true, 0 = false
 errorThreshhold = 0.0001;
-validationCheck = 5; %How many times may the model not get better?
-learningRate = 0.005;
+learningRate = 0.0001;
 
 hiddenNeuronRange = 2:1:200;
 
@@ -66,7 +65,6 @@ for numHidden = hiddenNeuronRange
 
 
     for repeat = 1:repeats;
-        validationCurrent = validationCheck;
         %---Weight and bias random range using tansig scale
         [trainInd,valInd,testInd] = dividerand(size(tblMovieCleaned,1),0.7,0.15,0.15);%select data randomly
         amountOfSampels=size(tblMovieCleaned,1);
