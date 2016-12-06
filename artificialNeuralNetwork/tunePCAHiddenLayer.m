@@ -24,7 +24,7 @@ hiddenLayerEpochSD = [];
 hiddenLayerFinalMSEMean = [];
 hiddenLayerFinalMSESD = [];
 
-hiddenNeuronRange = 10:10:200;
+hiddenNeuronRange = 2:1:200;
 
 for numHidden = hiddenNeuronRange
     numHidden
