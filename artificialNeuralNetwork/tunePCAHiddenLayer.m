@@ -11,7 +11,7 @@ amountOfSampels=size(tblMovieCleaned,1);
 
 % Plot config
 repeats = 20;
-showManualInput = 1; % 1 = true, 0 = false
+showManualInput = 0; % 1 = true, 0 = false
 epochs = 300;
 errorThreshhold = 0.0001;
 learningRate = 0.0001;
