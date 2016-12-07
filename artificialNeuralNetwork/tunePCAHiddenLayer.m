@@ -10,11 +10,13 @@ amountOfSampels=size(tblMovieCleaned,1);
 
 
 % Plot config
-repeats = 10;
+repeats = 20;
 showManualInput = 1; % 1 = true, 0 = false
-learningRate = 0.005;
-errorThreshhold = 0.0001;
 epochs = 300;
+errorThreshhold = 0.00001;
+learningRate = 0.005;
+
+hiddenNeuronRange = 2:5:200;
 
 hiddenLayerName = [];
 hiddenLayerTestMean = [];
@@ -23,8 +25,6 @@ hiddenLayerEpochMean = [];
 hiddenLayerEpochSD = [];
 hiddenLayerFinalMSEMean = [];
 hiddenLayerFinalMSESD = [];
-
-hiddenNeuronRange = 2:1:200;
 
 for numHidden = hiddenNeuronRange
     numHidden

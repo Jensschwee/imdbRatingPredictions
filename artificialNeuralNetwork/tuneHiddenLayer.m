@@ -5,13 +5,13 @@ clear all
 tblMovieCleaned=readtable('../movie_metadata_cleaned.csv');
 
 % Config
-repeats = 10;
+repeats = 20;
 epochs = 300;
 showManualInput = 0; % 1 = true, 0 = false
-errorThreshhold = 0.0001;
-learningRate = 0.0001;
+errorThreshhold = 0.00001;
+learningRate = 0.005;
 
-hiddenNeuronRange = 2:1:200;
+hiddenNeuronRange = 2:5:200;
 
 hiddenLayerName = [];
 hiddenLayerTestMean = [];
