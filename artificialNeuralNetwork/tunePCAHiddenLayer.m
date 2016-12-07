@@ -13,10 +13,10 @@ amountOfSampels=size(tblMovieCleaned,1);
 repeats = 20;
 showManualInput = 1; % 1 = true, 0 = false
 epochs = 300;
-errorThreshhold = 0.00001;
-learningRate = 0.005;
+errorThreshhold = 0.0001;
+learningRate = 0.0001;
 
-hiddenNeuronRange = 2:5:200;
+hiddenNeuronRange = 5:5:200;
 
 hiddenLayerName = [];
 hiddenLayerTestMean = [];

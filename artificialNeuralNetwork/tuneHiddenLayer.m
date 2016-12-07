@@ -8,10 +8,10 @@ tblMovieCleaned=readtable('../movie_metadata_cleaned.csv');
 repeats = 20;
 epochs = 300;
 showManualInput = 0; % 1 = true, 0 = false
-errorThreshhold = 0.00001;
-learningRate = 0.005;
+errorThreshhold = 0.0001;
+learningRate = 0.0001;
 
-hiddenNeuronRange = 2:5:200;
+hiddenNeuronRange = 5:5:200;
 
 hiddenLayerName = [];
 hiddenLayerTestMean = [];
