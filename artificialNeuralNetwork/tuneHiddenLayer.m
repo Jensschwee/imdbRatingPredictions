@@ -13,13 +13,13 @@ learningRate = 0.0001;
 % Tuning parameter
 hiddenNeuronRange = 5:5:200;
 
-learningRateName = [];
-learningRateTestMean = [];
-learningRateTestSD = [];
-learningRateEpochMean = [];
-learningRateEpochSD = [];
-learningRateFinalMSEMean = [];
-learningRateFinalMSESD = [];
+hiddenLayerName = [];
+hiddenLayerTestMean = [];
+hiddenLayerTestSD = [];
+hiddenLayerEpochMean = [];
+hiddenLayerEpochSD = [];
+hiddenLayerFinalMSEMean = [];
+hiddenLayerFinalMSESD = [];
 
 for numHidden = hiddenNeuronRange
     numHidden
@@ -172,13 +172,13 @@ for numHidden = hiddenNeuronRange
         count = count + 1;
     end
     
-    learningRateName = [hiddenLayerName, numHidden];
-    learningRateTestMean = [hiddenLayerTestMean, mean(finalTestRsq(1, :))];
-    learningRateTestSD = [hiddenLayerTestSD, std(finalTestRsq(1, :))];
-    learningRateEpochMean = [hiddenLayerEpochMean, mean(epochNum(1,:))];
-    learningRateEpochSD = [hiddenLayerEpochSD, std(epochNum(1,:))];
-    learningRateFinalMSEMean = [hiddenLayerFinalMSEMean, mean(finalMse(1,:))];
-    learningRateFinalMSESD = [hiddenLayerFinalMSESD, std(finalMse(1,:))];
+    hiddenLayerName = [hiddenLayerName, numHidden];
+    hiddenLayerTestMean = [hiddenLayerTestMean, mean(finalTestRsq(1, :))];
+    hiddenLayerTestSD = [hiddenLayerTestSD, std(finalTestRsq(1, :))];
+    hiddenLayerEpochMean = [hiddenLayerEpochMean, mean(epochNum(1,:))];
+    hiddenLayerEpochSD = [hiddenLayerEpochSD, std(epochNum(1,:))];
+    hiddenLayerFinalMSEMean = [hiddenLayerFinalMSEMean, mean(finalMse(1,:))];
+    hiddenLayerFinalMSESD = [hiddenLayerFinalMSESD, std(finalMse(1,:))];
     
     tblMedian(1:size(tblMovieCleaned,1)) = median(tblMovieCleaned.imdb_score);
     tblMedianOfSet(1:size(rSquaredTrain,2)) = rSquareValue(tblMedian,tblMovieCleaned.imdb_score);

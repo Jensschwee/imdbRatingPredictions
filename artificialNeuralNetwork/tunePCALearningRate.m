@@ -18,13 +18,13 @@ hiddenNeurons = [100];
 % Tuning parameter
 learningRates = [0.00001 0.00005 0.0001 0.0005 0.001 0.005 0.01 0.05];
 
-hiddenLayerName = [];
-hiddenLayerTestMean = [];
-hiddenLayerTestSD = [];
-hiddenLayerEpochMean = [];
-hiddenLayerEpochSD = [];
-hiddenLayerFinalMSEMean = [];
-hiddenLayerFinalMSESD = [];
+learningRateName = [];
+learningRateTestMean = [];
+learningRateTestSD = [];
+learningRateEpochMean = [];
+learningRateEpochSD = [];
+learningRateFinalMSEMean = [];
+learningRateFinalMSESD = [];
 
 for learningRate = learningRates
     learningRate
