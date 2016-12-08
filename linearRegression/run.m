@@ -2,13 +2,13 @@
 %https://github.com/quinnliu/machineLearning/tree/master/supervisedLearning/linearRegressionInMultipleVariables
 clc
 %close all
-clear all
+clear alltblMovieCleaned=readtable('../movie_metadata_cleaned.csv');
 
-tblMovieCleaned=readtable('../movie_metadata_cleaned.csv');
+
 
 NumberOfReperts = 1;
 NumberOfIterations = 100;
-alpha = 0.1;
+alpha = 0.0001;
 
 deltaMSE = 0.0001;
 validationCheck = 5; %How manny times may the model not get better?
@@ -74,7 +74,7 @@ for i=1:NumberOfReperts;
         
         errTraning(i,k) = immse(predictions,y');
         
-        if(deltaMSE > abs(mseLast - thisMSE))
+        if(deltaMSE >= abs(mseLast - thisMSE))
             break;
         else
             mseLast = thisMSE;

@@ -25,7 +25,7 @@ thetas = size(theta,1);
     for examples = 1:m
          for t = 1:thetas
             hyp = (theta' * X(sqens(examples), :)');
-            currentT = X(sqens(examples),2);
+            currentT = X(sqens(examples),t);
             error = (y(sqens(examples))- hyp);
             theta(t) = theta(t) + alpha * error * currentT;
         end
