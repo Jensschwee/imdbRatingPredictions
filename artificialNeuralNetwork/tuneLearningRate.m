@@ -9,22 +9,21 @@ repeats = 20;
 epochs = 300;
 showManualInput = 0; % 1 = true, 0 = false
 errorThreshhold = 0.0001;
-learningRate = 0.0001;
+hiddenNeurons = [100];
 
 % Tuning parameter
-hiddenNeuronRange = 1000:5:1000;
+learningRates = [0.00001 0.00005 0.0001 0.0005 0.001 0.005 0.01 0.05];
 
-hiddenLayerName = [];
-hiddenLayerTestMean = [];
-hiddenLayerTestSD = [];
-hiddenLayerEpochMean = [];
-hiddenLayerEpochSD = [];
-hiddenLayerFinalMSEMean = [];
-hiddenLayerFinalMSESD = [];
+learningRateName = [];
+learningRateTestMean = [];
+learningRateTestSD = [];
+learningRateEpochMean = [];
+learningRateEpochSD = [];
+learningRateFinalMSEMean = [];
+learningRateFinalMSESD = [];
 
-for numHidden = hiddenNeuronRange
-    numHidden
-    hiddenNeurons = [numHidden];
+for learningRate = learningRates
+    learningRate
     
     %---Add output layer
     layerOfNeurons = [hiddenNeurons, 1];
@@ -219,13 +218,13 @@ for numHidden = hiddenNeuronRange
         count = count + 1;
     end
     
-    hiddenLayerName = [hiddenLayerName, numHidden];
-    hiddenLayerTestMean = [hiddenLayerTestMean, mean(finalTestRsq(1, :))];
-    hiddenLayerTestSD = [hiddenLayerTestSD, std(finalTestRsq(1, :))];
-    hiddenLayerEpochMean = [hiddenLayerEpochMean, mean(epochNum(1,:))];
-    hiddenLayerEpochSD = [hiddenLayerEpochSD, std(epochNum(1,:))];
-    hiddenLayerFinalMSEMean = [hiddenLayerFinalMSEMean, mean(finalMse(1,:))];
-    hiddenLayerFinalMSESD = [hiddenLayerFinalMSESD, std(finalMse(1,:))];
+    learningRateName = [learningRateName, numHidden];
+    learningRateTestMean = [learningRateTestMean, mean(finalTestRsq(1, :))];
+    learningRateTestSD = [learningRateTestSD, std(finalTestRsq(1, :))];
+    learningRateEpochMean = [learningRateEpochMean, mean(epochNum(1,:))];
+    learningRateEpochSD = [learningRateEpochSD, std(epochNum(1,:))];
+    learningRateFinalMSEMean = [learningRateFinalMSEMean, mean(finalMse(1,:))];
+    learningRateFinalMSESD = [learningRateFinalMSESD, std(finalMse(1,:))];
     
     tblMedian(1:size(tblMovieCleaned,1)) = median(tblMovieCleaned.imdb_score);
     tblMedianOfSet(1:size(rSquaredTrain,2)) = rSquareValue(tblMedian,tblMovieCleaned.imdb_score);
