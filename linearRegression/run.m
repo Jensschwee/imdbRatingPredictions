@@ -4,11 +4,9 @@ clc
 %close all
 clear alltblMovieCleaned=readtable('../movie_metadata_cleaned.csv');
 
-
-
 NumberOfReperts = 1;
-NumberOfIterations = 100;
-alpha = 0.0001;
+NumberOfIterations = 300;
+alpha = 0.001;
 
 deltaMSE = 0.0001;
 validationCheck = 5; %How manny times may the model not get better?
