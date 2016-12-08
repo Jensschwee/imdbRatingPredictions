@@ -5,7 +5,7 @@ tblMovieNumericalDataNormalized = tblMovie;
 
 %tblMovieNumericalDataNormalized.num_critic_for_reviews = mat2gray(tblMovie.num_critic_for_reviews); % Column 3
 tblMovieNumericalDataNormalized.duration = mat2gray(tblMovie.duration); % Column 4
-%tblMovieNumericalDataNormalized.director_facebook_likes = mat2gray(tblMovie.director_facebook_likes); % Column 5
+tblMovieNumericalDataNormalized.director_facebook_likes = mat2gray(tblMovie.director_facebook_likes); % Column 5
 %tblMovieNumericalDataNormalized.actor_3_facebook_likes = mat2gray(tblMovie.actor_3_facebook_likes); % Column 6
 %tblMovieNumericalDataNormalized.actor_1_facebook_likes = mat2gray(tblMovie.actor_1_facebook_likes); % Column 8
 %tblMovieNumericalDataNormalized.num_voted_users = mat2gray(tblMovie.num_voted_users); % Column 13

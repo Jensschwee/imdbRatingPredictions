@@ -33,4 +33,3 @@ rSquredSD(1:size(NumberOfIterations,2)) = std(medianOfVaules,tbl);
     hold off
     print('LinerRegression','-dpng');
 end
-

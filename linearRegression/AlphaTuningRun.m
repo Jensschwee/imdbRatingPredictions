@@ -7,11 +7,11 @@ clear all
 tblMovieCleaned=readtable('../movie_metadata_cleaned.csv');
 
 NumberOfReperts = 10;
-NumberOfIterations = 300;
-alpha = 0.005:0.02:0.2; 
+NumberOfIterations = 500;
+alpha = 0.01:0.01:0.1; 
 %alpha = 0.95:-0.1:0;
 
-deltaMSE = 0.0001;
+deltaMSE = 0.000;
 
 epochsTryed = []; %Epochs tryed in
 
@@ -42,44 +42,35 @@ epochsTryed = NumberOfIterations;
 for a=1:length(alpha)
     for i=1:NumberOfReperts;
         [tblTest, tblTraining] = dataSplit(tblMovieCleaned);
-        % Gradient Descent
-        X = table2array(tblTraining(:, 1)); %Color
-        X = [X, table2array(tblTraining(:, 4))]; %Duration
-        %X = [X, table2array(tblTest(:, 5))]; %director_facebook_likes
-        %X = [X,table2array(tblTest(:, 6))]; %actor_3_facebook_likes
-        %X = [X,table2array(tblTest(:, 8))]; %actor_1_facebook_likes
-        X = [X,table2array(tblTraining(:, 14))]; %cast_total_facebook_likes
-        %X = [X,table2array(tblTest(:, 23))]; %Budget
-        %X = [X, table2array(tblTest(:, 226:244))]; %facenumber_in_poster
-        %X = [X, table2array(tblTest(:, 25))]; %actor_2_facebook_likes
-        X = [X, table2array(tblTraining(:, 29:50))]; %genre
-        X = [X, table2array(tblTraining(:, 51:84))]; %language
-        X = [X, table2array(tblTraining(:, 85:127))]; %country
-        %X = [X, table2array(tblTest(:, 128:133))]; %content_rating
-        X = [X, table2array(tblTraining(:, 134:207))]; %title_year
-        %X = [X, table2array(tblTest(:, 208:225))]; %aspect_ratio
-        y = table2array(tblTraining(:, 26));
+        X = table2array(tblTest(:, 1)); %Color
+        X = [X, table2array(tblTest(:, 2))]; %Duration
+        X = [X, table2array(tblTest(:, 13))]; %director_facebook_likes
+        X = [X, table2array(tblTest(:, 12))]; %cast_total_facebook_likes
+        X = [X, table2array(tblTest(:, 14:36))]; %genre
+        X = [X, table2array(tblTest(:, 55:93))]; %language
+        X = [X, table2array(tblTest(:, 94:155))]; %country
+        X = [X, table2array(tblTest(:, 128:133))]; %content_rating
+        X = [X, table2array(tblTest(:, 156:243))]; %title_year
+        X = [X, table2array(tblTest(:, 244:262))]; %aspect_ratio
+        X = [X, table2array(tblTest(:, 37:54))]; %facenumber_in_poster
+        y = table2array(tblTest(:, 10));
 
         % Init Theta and Run Gradient Descent 
         X = [ones(length(y), 1) X];
         theta = [1 rand(1,(size(X,2)-1))]';
 
-        XTest = table2array(tblTest(:, 1)); %Color
-        XTest = [XTest, table2array(tblTest(:, 4))]; %Duration
-        %X = [X, table2array(tblTest(:, 5))]; %director_facebook_likes
-        %X = [X,table2array(tblTest(:, 6))]; %actor_3_facebook_likes
-        %X = [X,table2array(tblTest(:, 8))]; %actor_1_facebook_likes
-        XTest = [XTest,table2array(tblTest(:, 14))]; %cast_total_facebook_likes
-        %X = [X,table2array(tblTest(:, 23))]; %Budget
-        %X = [X, table2array(tblTest(:, 226:244))]; %facenumber_in_poster
-        %X = [X, table2array(tblTest(:, 25))]; %actor_2_facebook_likes
-        XTest = [XTest, table2array(tblTest(:, 29:50))]; %genre
-        XTest = [XTest, table2array(tblTest(:, 51:84))]; %language
-        XTest = [XTest, table2array(tblTest(:, 85:127))]; %country
-        %X = [X, table2array(tblTest(:, 128:133))]; %content_rating
-        XTest = [XTest, table2array(tblTest(:, 134:207))]; %title_year
-        %X = [X, table2array(tblTest(:, 208:225))]; %aspect_ratio
-        yTest = table2array(tblTest(:, 26));
+        XTest = table2array(tblTraining(:, 1)); %Color
+        XTest = [XTest, table2array(tblTraining(:, 2))]; %Duration
+        XTest = [XTest, table2array(tblTraining(:, 13))]; %director_facebook_likes
+        XTest = [XTest, table2array(tblTraining(:, 12))]; %cast_total_facebook_likes
+        XTest = [XTest, table2array(tblTraining(:, 14:36))]; %genre
+        XTest = [XTest, table2array(tblTraining(:, 55:93))]; %language
+        XTest = [XTest, table2array(tblTraining(:, 94:155))]; %country
+        XTest = [XTest, table2array(tblTraining(:, 128:133))]; %content_rating
+        XTest = [XTest, table2array(tblTraining(:, 156:243))]; %title_year
+        XTest = [XTest, table2array(tblTraining(:, 244:262))]; %aspect_ratio
+        XTest = [XTest, table2array(tblTraining(:, 37:54))]; %facenumber_in_poster
+        yTest = table2array(tblTraining(:, 10));
         XTest = [ones(length(yTest), 1) XTest];
 
         mseLast = 100000;

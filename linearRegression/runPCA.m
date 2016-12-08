@@ -7,19 +7,14 @@ clear all
 tblMovieCleaned=readtable('../movie_metadata_cleaned_pca.csv');
 
 NumberOfReperts = 1;
-NumberOfIterations = 10;
-alpha = 0.2;
+NumberOfIterations = 25;
+alpha = 0.1;
 
-deltaMSE = 0.01;
+deltaMSE = 0.001;
 validationCheck = 5; %How manny times may the model not get better?
 
 epochsTryed = []; %Epochs tryed in
 
-tblMovieManuel=readtable('../movie_manualTesting_cleaned_pca.csv');
-
-manuralInput = table2array(tblMovieManuel(:, 1:size(tblMovieManuel,2)-2));
-
-manuralInput = [ones(length(table2array(tblMovieManuel(:, size(tblMovieManuel,2)))), 1) manuralInput];
 t1 = tic;%initilise counter
 
 epochsTryed = NumberOfIterations;
@@ -31,6 +26,7 @@ for i=1:NumberOfReperts;
 
     XTest = table2array(tblTest(:, 1:size(tblTest,2)-2));
     yTest = table2array(tblTest(:, size(tblTest,2)));
+    
     XTest = [ones(length(yTest), 1) XTest];
 
     %num_iters = NumberOfIterations(k);
@@ -73,8 +69,6 @@ for i=1:NumberOfReperts;
     end
     timeToTrain(i) = toc(t1);%compute elapsed time
 
-    ManuralTesting(1,i) = sum(manuralInput(1,:)' .* theta);
-    ManuralTesting(2,i) = sum(manuralInput(2,:)' .* theta);   
 end;
 %Has the model become better?
 %if (i > 1)
@@ -90,12 +84,9 @@ end;
 mean(timeToTrain)
 
 % Plot
-plotRSS(rsquaredTest,rsquaredTraning,NumberOfReperts,1:size(rsquaredTest,2), size(X,2)-1, tblMovieCleaned.y65);
+plotRSS(rsquaredTest,rsquaredTraning,NumberOfReperts,1:size(rsquaredTest,2), size(X,2)-1, tblMovieCleaned.y70);
 
 plotMSE(errTest,errTraning,NumberOfReperts,1:size(errTest,2), size(X,2)-1)
-
-mean(ManuralTesting(1,:))
-mean(ManuralTesting(2,:))
 
 %medianOfVaules = ones(length(tblMovieCleaned.y50),1);
 %medianOfVaules(1:size(tblMovieCleaned.y50)) = median(tblMovieCleaned.y50);
