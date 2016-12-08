@@ -5,7 +5,7 @@ clear all
 tblMovieCleaned=readtable('../movie_metadata_cleaned.csv');
 
 % Config
-repeats = 1;
+repeats = 20;
 epochs = 300;
 errorThreshhold = 0.0001;
 hiddenNeurons = [100];

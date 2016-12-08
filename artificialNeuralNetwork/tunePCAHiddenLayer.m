@@ -10,7 +10,7 @@ amountOfSampels=size(tblMovieCleaned,1);
 
 
 % Config
-repeats = 1;
+repeats = 20;
 epochs = 300;
 errorThreshhold = 0.0001;
 learningRate = 0.0001;
