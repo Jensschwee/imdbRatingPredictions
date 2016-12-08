@@ -10,8 +10,7 @@ amountOfSampels=size(tblMovieCleaned,1);
 
 
 % Config
-repeats = 20;
-showManualInput = 0; % 1 = true, 0 = false
+repeats = 1;
 epochs = 300;
 errorThreshhold = 0.0001;
 hiddenNeurons = [100];
@@ -33,12 +32,6 @@ for learningRate = learningRates
     %---Add output layer
     layerOfNeurons = [hiddenNeurons, 1];
     layerCount = size(layerOfNeurons, 2);
-
-
-    %---Setup manual test-data for later
-    tblManual = readtable('../movie_manualTesting_cleaned_pca.csv');
-    inputManual1 = table2array(tblManual(1, 1:size(tblManual,2)-2));
-    inputManual2 = table2array(tblManual(2, 1:size(tblManual,2)-2));
 
     for repeat = 1:repeats;
         %---Weight and bias random range using tansig scale
@@ -132,20 +125,12 @@ for learningRate = learningRates
         
         fprintf('Repeat %d ended with %d epochs.\n', repeat, iter);
 
-        %plot(err);
-
-        % Test manual inputs.
-        if showManualInput == 1
-            m1(repeat) = ForwardNetwork(inputManual1, layerOfNeurons, weightCell);
-            m2(repeat) = ForwardNetwork(inputManual2, layerOfNeurons, weightCell);
-        end
-
         %--Test the trained network with a test set
         error = zeros(testsetCount, outArgc);
         for t = 1:testsetCount
             [predict, layeroutput] = ForwardNetwork(testInp(t, :), layerOfNeurons, weightCell);
             p(t) = predict;
-            error(t, : ) = predict - testRealOut(t, :);
+            error(t, :) = predict - testRealOut(t, :);
         end
 
     end
@@ -173,12 +158,6 @@ for learningRate = learningRates
     learningRateEpochSD = [learningRateEpochSD, std(epochNum(1,:))];
     learningRateFinalMSEMean = [learningRateFinalMSEMean, mean(finalMse(1,:))];
     learningRateFinalMSESD = [learningRateFinalMSESD, std(finalMse(1,:))];
-
-    %---Print predictions
-    if showManualInput == 1;
-        fprintf('M1 mean: %f.\n', mean(m1));
-        fprintf('M2 mean: %f.\n', mean(m2));
-    end;
 
     tblMedian(1:size(tblMovieCleaned,1)) = median(tblMovieCleaned.y50);
     tblMedianOfSet(1:size(rSquaredTrain,2)) = rSquareValue(tblMedian,tblMovieCleaned.y50);

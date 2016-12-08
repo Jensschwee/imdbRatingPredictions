@@ -12,7 +12,6 @@ amountOfSampels=size(tblMovieCleaned,1);
 % Plot config
 repeats = 20;
 errorbarGap = 2;
-showManualInput = 1; % 1 = true, 0 = false
 validationCheck = 5; % How many times may the model not get better?
 learningRate = 0.001;
 hiddenNeurons = [25 35 15];
@@ -28,11 +27,6 @@ epochs = 25;
 layerOfNeurons = [hiddenNeurons, 1];
 layerCount = size(layerOfNeurons, 2);
 
-
-%---Setup manual test-data for later
-tblManual = readtable('../movie_manualTesting_cleaned_pca.csv');
-inputManual1 = table2array(tblManual(1, 1:size(tblManual,2)-2));
-inputManual2 = table2array(tblManual(2, 1:size(tblManual,2)-2));
 
 for repeat = 1:repeats;
     
@@ -124,12 +118,6 @@ for repeat = 1:repeats;
     time(repeat) = toc(t1(repeat));
 
     %plot(err);
-    
-    % Test manual inputs.
-    if showManualInput == 1
-        m1(repeat) = ForwardNetwork(inputManual1, layerOfNeurons, weightCell);
-        m2(repeat) = ForwardNetwork(inputManual2, layerOfNeurons, weightCell);
-    end
 
     %--Test the trained network with a test set
     error = zeros(testsetCount, outArgc);
@@ -157,12 +145,6 @@ end;
 
 %---Print predictions
 fprintf('Ended with %d epochs.\n', iter);
-
-if showManualInput == 1;
-    fprintf('M1 mean: %f.\n', mean(m1));
-    fprintf('M2 mean: %f.\n', mean(m2));
-end;
-
 
 end
 
