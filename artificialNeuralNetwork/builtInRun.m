@@ -24,10 +24,10 @@ if(PCA == 0)
     y = table2array(tblMovieCleaned(1:amountOfSampels, 245));
     net = feedforwardnet([50]);%initialise network
 else
-    tblMovieCleaned=readtable('../movie_metadata_cleaned_PCA.csv');
+    tblMovieCleaned=readtable('../movie_metadata_cleaned_pca.csv');
     X = table2array(tblMovieCleaned(1:amountOfSampels, 1:size(tblMovieCleaned,2)-1));
     y = table2array(tblMovieCleaned(1:amountOfSampels, size(tblMovieCleaned,2)));
-    net = feedforwardnet([25]);%initialise network
+    net = feedforwardnet([100]);%initialise network
 end
 %net.divideFcn = 'dividetrain'; %this will only train on the whole dataset (no validation)
 net.divideFcn = 'divideind'; %divide data into training, validation and test sets
