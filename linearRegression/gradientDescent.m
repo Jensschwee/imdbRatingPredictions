@@ -20,14 +20,16 @@ thetas = size(theta,1);
     % X = mxn matrix
     % theta = nx1 column vector
     %for all the thetas
-    for t = 1:thetas
-        %all the examples
-        for examples = 1:m
-            tempo(examples) = ((theta' * X(examples, :)') - y(examples)) * X(examples,t);
+    sqens = datasample(1:m,m,'Replace',false);
+    %all the examples
+    for examples = 1:m
+         for t = 1:thetas
+            hyp = (theta' * X(sqens(examples), :)');
+            currentT = X(sqens(examples),2);
+            error = (y(sqens(examples))- hyp);
+            theta(t) = theta(t) + alpha * error * currentT;
         end
-        result(t) = sum(tempo);
-        tempo = 0;
     end
     
-    theta = theta - alpha * (1/m) * result';
+    %theta = theta - alpha * (1/m) * result';
 end
