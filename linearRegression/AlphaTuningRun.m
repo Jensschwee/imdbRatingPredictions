@@ -8,7 +8,7 @@ tblMovieCleaned=readtable('../movie_metadata_cleaned.csv');
 
 NumberOfReperts = 10;
 NumberOfIterations = 300;
-alpha = 0.05:0.05:0.4;
+alpha = 0.005:0.02:0.2; 
 %alpha = 0.95:-0.1:0;
 
 deltaMSE = 0.0001;
@@ -16,7 +16,7 @@ deltaMSE = 0.0001;
 epochsTryed = []; %Epochs tryed in
 
 AlphaTuning = [ones(length(alpha), 1) ones(length(alpha), 1) ones(length(alpha), 1) ones(length(alpha), 1) ones(length(alpha), 1) ones(length(alpha), 1)];
-
+ 
 tblMovieManuel=readtable('../movie_manualTesting_cleaned.csv');
 
 outputManural = table2array(tblMovieManuel(:, 1)); %Color

@@ -7,8 +7,8 @@ clear all
 tblMovieCleaned=readtable('../movie_metadata_cleaned_pca.csv');
 
 NumberOfReperts = 1;
-NumberOfIterations = 200;
-alpha = 1;
+NumberOfIterations = 10;
+alpha = 0.2;
 
 deltaMSE = 0.01;
 validationCheck = 5; %How manny times may the model not get better?
