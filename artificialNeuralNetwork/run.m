@@ -6,7 +6,7 @@ tblMovieCleaned=readtable('../movie_metadata_cleaned.csv');
 
 % Config
 repeats = 1;
-epochs = 200;
+epochs = 1;
 errorbarGap = 4;
 errorThreshhold = 0.001;
 validationCheck = 5; %How many times may the model not get better?
@@ -34,22 +34,19 @@ for repeat = 1:repeats;
     amountOfSampels=size(tblMovieCleaned,1);
 
     % Input and output parameteres
-    input = table2array(table());
-    %input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 1))]; %Color
-    input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 4))]; %Duration
-    %---input = [input, table2array(tblMovieCleaned(:, 5))]; %director_facebook_likes
-    %---input = [input,table2array(tblMovieCleaned(:, 6))]; %actor_3_facebook_likes
-    %---input = [input,table2array(tblMovieCleaned(:, 8))]; %actor_1_facebook_likes
-    %input = [input,table2array(tblMovieCleaned(1:amountOfSampels, 14))]; %cast_total_facebook_likes
-    input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 226:244))]; %facenumber_in_poster
-    %---input = [input, table2array(tblMovieCleaned(:, 25))]; %actor_2_facebook_likes
-    input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 29:50))]; %genre
-    input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 51:84))]; %language
-    input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 85:127))]; %country
-    input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 128:133))]; %content_rating
-    %input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 134:207))]; %title_year
-    input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 208:225))]; %aspect_ratio
-    output = table2array(tblMovieCleaned(1:amountOfSampels, 26));
+    %input = table2array(table());
+    input = table2array(tblMovieCleaned(:, 1)); %Color
+    input = [input, table2array(tblMovieCleaned(:, 2))]; %Duration
+    input = [input, table2array(tblMovieCleaned(:, 13))]; %director_facebook_likes
+    input = [input, table2array(tblMovieCleaned(:, 12))]; %cast_total_facebook_likes
+    input = [input, table2array(tblMovieCleaned(:, 14:36))]; %genre
+    input = [input, table2array(tblMovieCleaned(:, 55:93))]; %language
+    input = [input, table2array(tblMovieCleaned(:, 94:155))]; %country
+    input = [input, table2array(tblMovieCleaned(:, 128:133))]; %content_rating
+    input = [input, table2array(tblMovieCleaned(:, 156:243))]; %title_year
+    input = [input, table2array(tblMovieCleaned(:, 244:262))]; %aspect_ratio
+    input = [input, table2array(tblMovieCleaned(:, 37:54))]; %facenumber_in_poster
+    output = table2array(tblMovieCleaned(:, 10));
     trainInp = input(trainInd,:);
     trainOut = output(trainInd);
     validationInp = input(valInd,:);
