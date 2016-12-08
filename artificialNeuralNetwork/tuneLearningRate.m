@@ -218,7 +218,7 @@ for learningRate = learningRates
         count = count + 1;
     end
     
-    learningRateName = [learningRateName, numHidden];
+    learningRateName = [learningRateName, learningRate];
     learningRateTestMean = [learningRateTestMean, mean(finalTestRsq(1, :))];
     learningRateTestSD = [learningRateTestSD, std(finalTestRsq(1, :))];
     learningRateEpochMean = [learningRateEpochMean, mean(epochNum(1,:))];
