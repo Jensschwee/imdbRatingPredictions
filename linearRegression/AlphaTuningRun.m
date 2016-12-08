@@ -16,27 +16,6 @@ deltaMSE = 0.000;
 epochsTryed = []; %Epochs tryed in
 
 AlphaTuning = [ones(length(alpha), 1) ones(length(alpha), 1) ones(length(alpha), 1) ones(length(alpha), 1) ones(length(alpha), 1) ones(length(alpha), 1)];
- 
-tblMovieManuel=readtable('../movie_manualTesting_cleaned.csv');
-
-outputManural = table2array(tblMovieManuel(:, 1)); %Color
-outputManural = [outputManural, table2array(tblMovieManuel(:, 4))]; %Duration
-%X = [X, table2array(tblTest(:, 5))]; %director_facebook_likes
-%X = [X,table2array(tblTest(:, 6))]; %actor_3_facebook_likes
-%X = [X,table2array(tblTest(:, 8))]; %actor_1_facebook_likes
-outputManural = [outputManural,table2array(tblMovieManuel(:, 14))]; %cast_total_facebook_likes
-%X = [X,table2array(tblTest(:, 23))]; %Budget
-%X = [X, table2array(tblTest(:, 226:244))]; %facenumber_in_poster
-%X = [X, table2array(tblTest(:, 25))]; %actor_2_facebook_likes
-outputManural = [outputManural, table2array(tblMovieManuel(:, 29:50))]; %genre
-outputManural = [outputManural, table2array(tblMovieManuel(:, 51:84))]; %language
-outputManural = [outputManural, table2array(tblMovieManuel(:, 85:127))]; %country
-%X = [X, table2array(tblTest(:, 128:133))]; %content_rating
-outputManural = [outputManural, table2array(tblMovieManuel(:, 134:207))]; %title_year
-%X = [X, table2array(tblTest(:, 208:225))]; %aspect_ratio
-y = table2array(tblMovieManuel(:, 26));
-
-outputManural = [ones(length(y), 1) outputManural];
 
 epochsTryed = NumberOfIterations;
 for a=1:length(alpha)
