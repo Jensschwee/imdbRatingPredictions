@@ -5,22 +5,21 @@ clear all
 tblMovieCleaned=readtable('../movie_metadata_cleaned.csv');
 
 % Config
-repeats = 20;
+repeats = 1;
 epochs = 300;
-showManualInput = 0; % 1 = true, 0 = false
 errorThreshhold = 0.0001;
 learningRate = 0.0001;
 
 % Tuning parameter
-hiddenNeuronRange = 1000:5:1000;
+hiddenNeuronRange = 5:5:200;
 
-hiddenLayerName = [];
-hiddenLayerTestMean = [];
-hiddenLayerTestSD = [];
-hiddenLayerEpochMean = [];
-hiddenLayerEpochSD = [];
-hiddenLayerFinalMSEMean = [];
-hiddenLayerFinalMSESD = [];
+learningRateName = [];
+learningRateTestMean = [];
+learningRateTestSD = [];
+learningRateEpochMean = [];
+learningRateEpochSD = [];
+learningRateFinalMSEMean = [];
+learningRateFinalMSESD = [];
 
 for numHidden = hiddenNeuronRange
     numHidden
@@ -29,41 +28,6 @@ for numHidden = hiddenNeuronRange
     %---Add output layer
     layerOfNeurons = [hiddenNeurons, 1];
     layerCount = size(layerOfNeurons, 2);
-
-    %---Setup manual test-data for later
-    tblManual = readtable('../movie_manualTesting_cleaned.csv');
-
-    inputManual1 = table2array(table());
-    %input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 1))]; %Color
-    inputManual1 = [inputManual1, table2array(tblManual(1, 4))]; %Duration
-    %---input = [input, table2array(tblMovieCleaned(:, 5))]; %director_facebook_likes
-    %---input = [input,table2array(tblMovieCleaned(:, 6))]; %actor_3_facebook_likes
-    %---input = [input,table2array(tblMovieCleaned(:, 8))]; %actor_1_facebook_likes
-    %input = [input,table2array(tblMovieCleaned(1:amountOfSampels, 14))]; %cast_total_facebook_likes
-    inputManual1 = [inputManual1, table2array(tblManual(1, 226:244))]; %facenumber_in_poster
-    %---input = [input, table2array(tblMovieCleaned(:, 25))]; %actor_2_facebook_likes
-    inputManual1 = [inputManual1, table2array(tblManual(1, 29:50))]; %genre
-    inputManual1 = [inputManual1, table2array(tblManual(1, 51:84))]; %language
-    inputManual1 = [inputManual1, table2array(tblManual(1, 85:127))]; %country
-    inputManual1 = [inputManual1, table2array(tblManual(1, 128:133))]; %content_rating
-    %input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 134:207))]; %title_year
-    inputManual1 = [inputManual1, table2array(tblManual(1, 208:225))]; %aspect_ratio
-    inputManual2 = table2array(table());
-    %input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 1))]; %Color
-    inputManual2 = [inputManual2, table2array(tblManual(2, 4))]; %Duration
-    %---input = [input, table2array(tblMovieCleaned(:, 5))]; %director_facebook_likes
-    %---input = [input,table2array(tblMovieCleaned(:, 6))]; %actor_3_facebook_likes
-    %---input = [input,table2array(tblMovieCleaned(:, 8))]; %actor_1_facebook_likes
-    %input = [input,table2array(tblMovieCleaned(1:amountOfSampels, 14))]; %cast_total_facebook_likes
-    inputManual2 = [inputManual2, table2array(tblManual(2, 226:244))]; %facenumber_in_poster
-    %---input = [input, table2array(tblMovieCleaned(:, 25))]; %actor_2_facebook_likes
-    inputManual2 = [inputManual2, table2array(tblManual(2, 29:50))]; %genre
-    inputManual2 = [inputManual2, table2array(tblManual(2, 51:84))]; %language
-    inputManual2 = [inputManual2, table2array(tblManual(2, 85:127))]; %country
-    inputManual2 = [inputManual2, table2array(tblManual(2, 128:133))]; %content_rating
-    %input = [input, table2array(tblMovieCleaned(1:amountOfSampels, 134:207))]; %title_year
-    inputManual2 = [inputManual2, table2array(tblManual(2, 208:225))]; %aspect_ratio
-
 
     for repeat = 1:repeats;
         %---Weight and bias random range using tansig scale
@@ -197,13 +161,6 @@ for numHidden = hiddenNeuronRange
             p(t) = predict;
             error(t, :) = predict - testRealOut(t, :);
         end
-
-        % Test manual inputs.
-        if showManualInput == 1
-            m1(repeat) = ForwardNetwork(inputManual1, layerOfNeurons, weightCell);
-            m2(repeat) = ForwardNetwork(inputManual2, layerOfNeurons, weightCell);
-        end
-
     end;
 
 
@@ -219,13 +176,13 @@ for numHidden = hiddenNeuronRange
         count = count + 1;
     end
     
-    hiddenLayerName = [hiddenLayerName, numHidden];
-    hiddenLayerTestMean = [hiddenLayerTestMean, mean(finalTestRsq(1, :))];
-    hiddenLayerTestSD = [hiddenLayerTestSD, std(finalTestRsq(1, :))];
-    hiddenLayerEpochMean = [hiddenLayerEpochMean, mean(epochNum(1,:))];
-    hiddenLayerEpochSD = [hiddenLayerEpochSD, std(epochNum(1,:))];
-    hiddenLayerFinalMSEMean = [hiddenLayerFinalMSEMean, mean(finalMse(1,:))];
-    hiddenLayerFinalMSESD = [hiddenLayerFinalMSESD, std(finalMse(1,:))];
+    learningRateName = [hiddenLayerName, numHidden];
+    learningRateTestMean = [hiddenLayerTestMean, mean(finalTestRsq(1, :))];
+    learningRateTestSD = [hiddenLayerTestSD, std(finalTestRsq(1, :))];
+    learningRateEpochMean = [hiddenLayerEpochMean, mean(epochNum(1,:))];
+    learningRateEpochSD = [hiddenLayerEpochSD, std(epochNum(1,:))];
+    learningRateFinalMSEMean = [hiddenLayerFinalMSEMean, mean(finalMse(1,:))];
+    learningRateFinalMSESD = [hiddenLayerFinalMSESD, std(finalMse(1,:))];
     
     tblMedian(1:size(tblMovieCleaned,1)) = median(tblMovieCleaned.imdb_score);
     tblMedianOfSet(1:size(rSquaredTrain,2)) = rSquareValue(tblMedian,tblMovieCleaned.imdb_score);
@@ -243,12 +200,6 @@ for numHidden = hiddenNeuronRange
     %set(gca, 'Xlim', [-1 size(rSquaredTest, 2)+5])
     %title(strcat({'ANN with '}, num2str(hiddenNeurons), {' hidden neurons, '}, num2str(learningRate), {' learning rate'} ))
     %hold off
-
-    if showManualInput == 1
-        fprintf('M1 mean: %f.\n', mean(m1));
-        fprintf('M2 mean: %f.\n', mean(m2));
-    end;
-
 end;
 
 hiddenLayerTestMean
