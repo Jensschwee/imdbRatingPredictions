@@ -1,4 +1,4 @@
-% Run script for Linear Regression
+  % Run script for Linear Regression
 %https://github.com/quinnliu/machineLearning/tree/master/supervisedLearning/linearRegressionInMultipleVariables
 clc
 %close all
