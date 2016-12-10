@@ -1,17 +1,18 @@
 figure
 hold on
 bar(hiddenLayerName,hiddenLayerTestMean)
-errorbar(hiddenLayerName,hiddenLayerTestMean,hiddenLayerTestSD,'.')
+colormap([0.6901960784313725,0.8784313725490196,0.9019607843137255])
+errorbar(hiddenLayerName,hiddenLayerTestMean,hiddenLayerTestSD,'.','color',[1 0 0])
 xlabel('Number of neurons')
 ylabel('R Squared')
-
 set(gca, 'Ylim', [0 1])
 set(gca,'fontsize',18)
 
 figure
 hold on
 bar(hiddenLayerName,hiddenLayerEpochMean)
-errorbar(hiddenLayerName,hiddenLayerEpochMean,hiddenLayerEpochSD,'.')
+colormap([0.6901960784313725,0.8784313725490196,0.9019607843137255])
+errorbar(hiddenLayerName,hiddenLayerEpochMean,hiddenLayerEpochSD,'.','color',[1 0 0])
 xlabel('Number of neurons')
 ylabel('Epochs')
 

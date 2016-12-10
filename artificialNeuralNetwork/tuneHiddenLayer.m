@@ -23,7 +23,7 @@ hiddenLayerFinalMSESD = [];
 
 for numHidden = hiddenNeuronRange
     numHidden
-    hiddenNeurons = [numHidden];
+    hiddenNeurons = [100 numHidden];
     
     %---Add output layer
     layerOfNeurons = [hiddenNeurons, 1];

@@ -108,7 +108,7 @@ for repeat = 1:repeats;
         %---Stop if reach error threshold
         if (iter > 1)
             deltaErr = abs(err(iter) - err(iter-1));
-            if(errorThreshhold < deltaErr)
+            if(errorThreshhold > deltaErr)
                 break;
             end
         end

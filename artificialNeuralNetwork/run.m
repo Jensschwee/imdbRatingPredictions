@@ -5,13 +5,13 @@ clear all
 tblMovieCleaned=readtable('../movie_metadata_cleaned.csv');
 
 % Config
-repeats = 1;
-epochs = 1;
+repeats = 5;
+epochs = 300;
 errorbarGap = 4;
-errorThreshhold = 0.001;
+errorThreshhold = 0.0001;
 validationCheck = 5; %How many times may the model not get better?
-learningRate = 0.00005;
-hiddenNeurons = [72 70];
+learningRate = 0.005;
+hiddenNeurons = [35 25 15];
 
 %iterations = 50;
 %errorThreshhold = 0.001;
@@ -50,7 +50,7 @@ for repeat = 1:repeats;
     trainInp = input(trainInd,:);
     trainOut = output(trainInd);
     validationInp = input(valInd,:);
-    validationOut = output(valInd);
+    validationOut = output(valInd);<
     testInp = input(testInd,:);
     testRealOut = output(testInd);
 
@@ -134,7 +134,7 @@ for repeat = 1:repeats;
         %---Stop error threshold is reached
         if (iter > 1)
             deltaErr = abs(err(iter) - err(iter-1));
-            if(errorThreshhold < deltaErr)
+            if(errorThreshhold > deltaErr)
                 break;
             end
         end
