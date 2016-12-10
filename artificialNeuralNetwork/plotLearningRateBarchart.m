@@ -1,7 +1,16 @@
 figure
 hold on
-%bar(learningRateName,AlphaTuning(:,2))
+bar(learningRateName,learningRateTestMean)
 errorbar(learningRateName,learningRateTestMean,learningRateTestSD,'.')
+xlabel('Alpha')
+ylabel('R Squared')
+set(gca, 'Ylim', [0 1])
+set(gca,'fontsize',18)
+
+figure
+hold on
+bar(learningRateName,learningRateEpochMean)
+errorbar(learningRateName,learningRateEpochMean,learningRateEpochSD,'.')
 xlabel('Alpha')
 ylabel('Epochs')
 set(gca, 'Ylim', [0 350])
