@@ -8,15 +8,15 @@ tblMovieCleaned=readtable('../movie_metadata_cleaned_pca.csv');
 
 amountOfSampels=size(tblMovieCleaned,1);
 
-
 % Config
-repeats = 20;
+repeats = 10;
 epochs = 300;
 errorThreshhold = 0.0001;
 learningRate = 0.0001;
 
 % Tuning parameter
-hiddenNeuronRange = 5:5:200;
+hiddenNeuronRange = 60:10:120;
+hiddenNeuronRange1 = 5:10:60;
 
 hiddenLayerName = [];
 hiddenLayerTestMean = [];
@@ -27,8 +27,9 @@ hiddenLayerFinalMSEMean = [];
 hiddenLayerFinalMSESD = [];
 
 for numHidden = hiddenNeuronRange
-    numHidden
-    hiddenNeurons = [numHidden];
+    for numHidden1 = hiddenNeuronRange1
+    %numHidden  + numHidden1
+    hiddenNeurons = [numHidden, numHidden1];
 
     %---Add output layer
     layerOfNeurons = [hiddenNeurons, 1];
@@ -152,6 +153,7 @@ for numHidden = hiddenNeuronRange
         count = count + 1;
     end;
     
+%    layersettings = [layersettings, strcat('100, ', num2str(numHidden),' , ', num2str(numHidden1))]; 
     hiddenLayerName = [hiddenLayerName, numHidden];
     hiddenLayerTestMean = [hiddenLayerTestMean, mean(finalTestRsq(1, :))];
     hiddenLayerTestSD = [hiddenLayerTestSD, std(finalTestRsq(1, :))];
@@ -162,7 +164,7 @@ for numHidden = hiddenNeuronRange
 
     tblMedian(1:size(tblMovieCleaned,1)) = median(tblMovieCleaned.y50);
     tblMedianOfSet(1:size(rSquaredTrain,2)) = rSquareValue(tblMedian,tblMovieCleaned.y50);
- 
+    end
 end
     
 %clear input

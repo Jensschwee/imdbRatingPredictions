@@ -13,7 +13,7 @@ amountOfSampels=size(tblMovieCleaned,1);
 repeats = 20;
 epochs = 300;
 errorThreshhold = 0.0001;
-hiddenNeurons = [100];
+hiddenNeurons = [140, 120, 55];
 
 % Tuning parameter
 learningRates = [0.00001 0.00005 0.0001 0.0005 0.001 0.005 0.01 0.05];
@@ -163,7 +163,7 @@ for learningRate = learningRates
     tblMedianOfSet(1:size(rSquaredTrain,2)) = rSquareValue(tblMedian,tblMovieCleaned.y50);
  
 end
-    
+hiddenNeurons    
 %clear input
 %clear output
 %clear tblMovieCleaned

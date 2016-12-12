@@ -10,13 +10,13 @@ amountOfSampels=size(tblMovieCleaned,1);
 
 
 % Plot config
-repeats = 20;
+repeats = 10;
 errorbarGap = 2;
 validationCheck = 5; % How many times may the model not get better?
 learningRate = 0.001;
-hiddenNeurons = [25 35 15];
+hiddenNeurons = [25 10];
 errorThreshhold = 0.0001;
-epochs = 25;
+epochs = 200;
 %errorThreshhold = 0.000001;
 %learningRate = 0.001;
 %hiddenNeurons = [25 10];
@@ -108,7 +108,7 @@ for repeat = 1:repeats;
         %---Stop if reach error threshold
         if (iter > 1)
             deltaErr = abs(err(iter) - err(iter-1));
-            if(errorThreshhold < deltaErr)
+            if(errorThreshhold > deltaErr)
                 break;
             end
         end
