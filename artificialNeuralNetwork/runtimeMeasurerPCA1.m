@@ -8,7 +8,7 @@ tblMovieCleaned=readtable('../movie_metadata_cleaned.csv');
 repeats = 10;
 epochs = 300;
 errorThreshhold = 0.0001;
-learningRate = 0.0001;
+learningRate = 0.005;
 
 % Tuning parameter
 hiddenNeuronRange = 5:5:200;
