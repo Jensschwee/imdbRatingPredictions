@@ -5,23 +5,13 @@ clear all
 tblMovieCleaned=readtable('../movie_metadata_cleaned.csv');
 
 % Config
-repeats = 5;
+repeats = 1;
 epochs = 300;
 errorbarGap = 4;
-errorThreshhold = 0.0001;
+errorThreshhold = 0.001;
 validationCheck = 5; %How many times may the model not get better?
-learningRate = 0.005;
-hiddenNeurons = [35 25 15];
-
-%iterations = 50;
-%errorThreshhold = 0.001;
-%learningRate = 0.0005;
-%---Set hidden layer type, for example: [4, 3, 2]
-%hiddenNeurons = [25 10 3];
-
-%learningRate = 0.005;
-%---Set hidden layer type, for example: [4, 3, 2]
-%hiddenNeurons = [25 10];
+learningRate = 0.01;
+hiddenNeurons = [100 35 55];
 
 %---Add output layer
 layerOfNeurons = [hiddenNeurons, 1];
@@ -50,7 +40,7 @@ for repeat = 1:repeats;
     trainInp = input(trainInd,:);
     trainOut = output(trainInd);
     validationInp = input(valInd,:);
-    validationOut = output(valInd);<
+    validationOut = output(valInd);
     testInp = input(testInd,:);
     testRealOut = output(testInd);
 
@@ -140,6 +130,9 @@ for repeat = 1:repeats;
         end
     
     end
+    
+    
+    fprintf('Repeat %d ended with %d epochs.\n', repeat, iter);
     
     time(repeat) = toc(t1(repeat));
     
