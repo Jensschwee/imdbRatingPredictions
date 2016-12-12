@@ -5,10 +5,10 @@ clear all
 tblMovieCleaned=readtable('../movie_metadata_cleaned.csv');
 
 % Config
-repeats = 20;
+repeats = 10;
 epochs = 300;
 errorThreshhold = 0.0001;
-hiddenNeurons = [100];
+hiddenNeurons = [180];
 
 % Tuning parameter
 learningRates = [0.00001 0.00005 0.0001 0.0005 0.001 0.005 0.01 0.05];
