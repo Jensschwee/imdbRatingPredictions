@@ -18,7 +18,7 @@ outlieTable = [outlieTable logical(outlier)];
 %outlier = abs(tblMovie.num_voted_users-mean(tblMovie.num_voted_users)) > (zFactor * std(tblMovie.num_voted_users));
 %outlieTable = [outlieTable logical(outlier)];
 %cast_total_facebook_likes
-outlier = abs(tblMovie.cast_total_facebook_likes-mean(tblMovie.cast_total_facebook_likes)) > (zFactor * std(tblMovie.cast_total_facebook_likes));
+outlier = tblMovie.cast_total_facebook_likes > 700000;
 outlieTable = [outlieTable logical(outlier)];
 %imdb_score
 outlier = abs(tblMovie.imdb_score-mean(tblMovie.imdb_score)) > (zFactor * std(tblMovie.imdb_score));
