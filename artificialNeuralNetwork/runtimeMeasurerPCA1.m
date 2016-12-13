@@ -5,7 +5,7 @@ clear all
 tblMovieCleaned=readtable('../movie_metadata_cleaned.csv');
 
 % Config
-repeats = 10;
+repeats = 1;
 epochs = 300;
 errorThreshhold = 0.0001;
 learningRate = 0.005;
@@ -14,6 +14,8 @@ learningRate = 0.005;
 hiddenNeuronRange = 5:5:200;
 
 hiddenLayerName = [];
+hiddenLayerTimeMean = []; 
+hiddenLayerTimeSD = []; 
 hiddenLayerTestMean = [];
 hiddenLayerTestSD = [];
 hiddenLayerEpochMean = [];
@@ -170,9 +172,9 @@ for e = 1:size(rSquaredTest,2)
     count = count + 1;
 end
 
-hiddenLayerName = [hiddenLayerName, numHidden];
-hiddenLayerTimeMean = [hiddenLayerName, mean(time(1,:))];
-hiddenLayerTimeSD = [hiddenLayerName, std(time(1,:))];
+hiddenLayerName = ['PCAMeasurer1'];
+hiddenLayerTimeMean = [hiddenLayerTimeMean, mean(time(1,:))];
+hiddenLayerTimeSD = [hiddenLayerTimeSD, std(time(1,:))];
 hiddenLayerTestMean = [hiddenLayerTestMean, mean(finalTestRsq(1, :))];
 hiddenLayerTestSD = [hiddenLayerTestSD, std(finalTestRsq(1, :))];
 hiddenLayerEpochMean = [hiddenLayerEpochMean, mean(epochNum(1,:))];
