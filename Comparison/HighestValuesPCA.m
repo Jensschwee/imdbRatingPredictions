@@ -1,6 +1,7 @@
 comparisonList = {'../artificialNeuralNetwork/ANNHiddenLayerPCA/tunePCAHiddenLayer2Layers.mat',...
     '../artificialNeuralNetwork/ANNHiddenLayerPCA/tuneANNPCA105DualHiddenLayer.mat'...
     '../artificialNeuralNetwork/ANNHiddenLayerPCA/tuneANNPCA165DualHiddenLayer.mat'...
+     '../artificialNeuralNetwork/ANNHiddenLayerPCA/60-120,5-60TunePCAHiddenLayer.mat'...
     };
 
 names = [];
@@ -20,6 +21,8 @@ for listIndex = 1:length(comparisonList)
             cleanedNames = [cleanedNames {strcat('165--',num2str(hiddenLayerName(strIndex)))}];
         elseif listIndex == 1
             cleanedNames = [cleanedNames {strcat('5--',num2str(hiddenLayerName(strIndex)))}];
+        else
+            cleanedNames = [cleanedNames {strcat('10--',num2str(hiddenLayerName(strIndex)))}];
         end
     end
     names = [names cleanedNames];
@@ -36,8 +39,8 @@ pScore
 bestRMeanCase
 names(indexes(bestRMeanCase));
 
-[b, indexes1] = sort(ephos(indexes(bestRMeanCase)), 'ascend');
-[pScore2, bestEpochMeanCase] = tTestEphos(indexes(indexes1), ephos, ephosSds,10);
-pScore2
-bestEpochMeanCase
-names(indexes(indexes1(bestEpochMeanCase)));
+[b1, indexes1] = sort(ephos(indexes(bestRMeanCase)), 'ascend');
+[pScoreE, bestEpohsMeanCase] = tTestEphos(indexes(indexes1), ephos, ephosSds,10);
+pScoreE
+bestEpohsMeanCase
+names(indexes(indexes1(bestEpohsMeanCase)));

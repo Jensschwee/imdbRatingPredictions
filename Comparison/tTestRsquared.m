@@ -6,12 +6,11 @@ function [pScore, bestRMeanCase] = tTestRsquared(Indexs, means, sds, sampleSize)
         SE = sqrt(((BestRSD).^2/sampleSize) + (sds(Indexs(i)).^2/sampleSize));
         diffMean = BestRMean - means(Indexs(i)) ;
         tScore = diffMean/SE;
-        pScore(i) = tcdf(tScore,sampleSize-1);
+        pScore(i) = 1 - tcdf(tScore,sampleSize*2-2);
         if(pScore(i) >= 0.05)
             bestRMeanCase = [bestRMeanCase i];
         end
     end
-    
 end
 
 
