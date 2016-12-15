@@ -1,7 +1,7 @@
-rsquard = [0.55 0.39 0.2522];
-CI = [0.0297 0.0130 0];
-labels = {'Linear' 'Linear PCA' 'Median'};
-XLabel = 'Model';
+rsquard = [0.5208 0. 0.4960];
+CI = [0.0301 0. 0.0195];
+labels = {'180' '90 55' '100 35 55'};
+XLabel = 'ANN Hidden Layer Settings';
 amount = 1:length(rsquard);
 
 figure

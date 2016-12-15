@@ -8,7 +8,6 @@ tblMovieCleaned=readtable('../movie_metadata_cleaned_pca.csv');
 
 amountOfSampels=size(tblMovieCleaned,1);
 
-
 % Config
 repeats = 10;
 epochs = 300;
