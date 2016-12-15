@@ -41,6 +41,6 @@ names(indexes(bestRMeanCase));
 
 [b1, indexes1] = sort(ephos(indexes(bestRMeanCase)), 'ascend');
 [pScoreE, bestEpohsMeanCase] = tTestEphos(indexes(indexes1), ephos, ephosSds,10);
-pScoreE
+pScoreE(indexes1)
 bestEpohsMeanCase
 names(indexes(indexes1(bestEpohsMeanCase)));

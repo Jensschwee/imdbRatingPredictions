@@ -12,7 +12,7 @@ amountOfSampels=size(tblMovieCleaned,1);
 repeats = 10;
 epochs = 300;
 errorThreshhold = 0.0001;
-hiddenNeurons = [165 105];
+hiddenNeurons = [140 35 55];
 
 % Tuning parameter
 learningRates = [0.00001 0.00005 0.0001 0.0005 0.001 0.005 0.01 0.05];
