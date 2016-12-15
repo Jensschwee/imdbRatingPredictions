@@ -2,7 +2,8 @@
 %https://github.com/quinnliu/machineLearning/tree/master/supervisedLearning/linearRegressionInMultipleVariables
 clc
 %close all
-clear alltblMovieCleaned=readtable('../movie_metadata_cleaned.csv');
+clear all
+tblMovieCleaned=readtable('../movie_metadata_cleaned.csv');
 
 NumberOfReperts = 1;
 NumberOfIterations = 300;

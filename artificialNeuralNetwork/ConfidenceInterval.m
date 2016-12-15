@@ -3,7 +3,7 @@ function [ CI ] = ConfidenceInterval( means, sds)
 %   Detailed explanation goes here
     x = means;                     % Create Data
     SEM = sds/sqrt(10);               % Standard Error
-    ts = tinv([0.025  0.975],10-1);      % T-Score
+    ts = tinv([0.025  0.975],9);      % T-Score
     for i=1:size(x);
      CI(i)= (ts(1) .* SEM(i));                      % Confidence Intervals
     end
