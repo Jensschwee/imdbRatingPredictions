@@ -13,7 +13,7 @@ amountOfSampels=size(tblMovieCleaned,1);
 repeats = 10;
 epochs = 300;
 errorThreshhold = 0.0001;
-hiddenNeurons = [100 55];
+hiddenNeurons = [165 105];
 
 % Tuning parameter
 learningRates = [0.00001 0.00005 0.0001 0.0005 0.001 0.005 0.01 0.05];
@@ -23,6 +23,8 @@ learningRateTestMean = [];
 learningRateTestSD = [];
 learningRateEpochMean = [];
 learningRateEpochSD = [];
+learningRateTimeMean = [];
+learningRateTimeSD = [];
 learningRateFinalMSEMean = [];
 learningRateFinalMSESD = [];
 
@@ -156,14 +158,15 @@ for learningRate = learningRates
     learningRateTestSD = [learningRateTestSD, std(finalTestRsq(1, :))];
     learningRateEpochMean = [learningRateEpochMean, mean(epochNum(1,:))];
     learningRateEpochSD = [learningRateEpochSD, std(epochNum(1,:))];
+    learningRateTimeMean = [learningRateTimeMean, mean(time)];
+    learningRateTimeSD = [learningRateTimeSD, std(time)];
     learningRateFinalMSEMean = [learningRateFinalMSEMean, mean(finalMse(1,:))];
     learningRateFinalMSESD = [learningRateFinalMSESD, std(finalMse(1,:))];
 
     tblMedian(1:size(tblMovieCleaned,1)) = median(tblMovieCleaned.y50);
     tblMedianOfSet(1:size(rSquaredTrain,2)) = rSquareValue(tblMedian,tblMovieCleaned.y50);
  
-end
-hiddenNeurons    
+end   
 %clear input
 %clear output
 %clear tblMovieCleaned
