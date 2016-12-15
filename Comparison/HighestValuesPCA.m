@@ -37,7 +37,7 @@ bestRMeanCase
 names(indexes(bestRMeanCase));
 
 [b, indexes1] = sort(ephos(indexes(bestRMeanCase)), 'ascend');
-[pScore, bestRMeanCase] = tTestRsquared(indexes(indexes1), ephos, ephosSds,10);
-pScore
-bestRMeanCase
-names(indexes(indexes1(bestRMeanCase)));
+[pScore2, bestEpochMeanCase] = tTestEphos(indexes(indexes1), ephos, ephosSds,10);
+pScore2
+bestEpochMeanCase
+names(indexes(indexes1(bestEpochMeanCase)));

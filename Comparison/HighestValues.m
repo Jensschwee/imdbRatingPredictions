@@ -30,8 +30,16 @@ end
 
 [b, indexes] = sort(means, 'descend');
 
-orderedMeans = names(indexes)
+[pScore, bestRMeanCase] = tTestRsquared(indexes(1:10), means, sds,10);
+pScore
+bestRMeanCase
+names(indexes(bestRMeanCase));
 
+[b, indexes1] = sort(ephos(indexes(bestRMeanCase)), 'ascend');
+[pScore2, bestEpochMeanCase] = tTestEphos(indexes(indexes1), ephos, ephosSds,10);
+pScore2
+bestEpochMeanCase
+names(indexes(indexes1(bestEpochMeanCase)));
 
 
 
